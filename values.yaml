@@ -691,9 +691,10 @@ workers:
   #          defaultMode: 0640
   #          optional: true
   #
-  #   extraVolumeMounts:
-  #     - name: my-templated-extra-volume
-  #       mountPath: "{{ .Values.my_custom_path }}"
+    # extraVolumeMounts:
+    #   - name: airflow-logs
+    #     # mountPath: "{{ .Values.my_custom_path }}"
+    #     mountPath: /opt/airflow/logs
   #       readOnly: true
   extraVolumes: []
   extraVolumeMounts: []
@@ -2452,13 +2453,13 @@ dags:
     ## optional subpath for dag volume mount
     subPath: ~
   gitSync:
-    enabled: false
+    enabled: true
 
     # git repo clone url
     # ssh example: git@github.com:apache/airflow.git
     # https example: https://github.com/apache/airflow.git
     #repo: https://github.com/apache/airflow.git
-    repo: https://github.com/AnomP29/airflow-kube-local
+    repo: https://github.com/AnomP29/airflow-kube-local.git
     branch: main
     rev: HEAD
     # The git revision (branch, tag, or hash) to check out, v4 only
