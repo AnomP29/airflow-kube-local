@@ -691,13 +691,13 @@ workers:
   #          defaultMode: 0640
   #          optional: true
   #
-  extraVolumeMounts:
-    - name: airflow-logs
-      # mountPath: "{{ .Values.my_custom_path }}"
-      mountPath: /opt/airflow/logs
-      readOnly: true
+    # extraVolumeMounts:
+    #   - name: airflow-logs
+    #     # mountPath: "{{ .Values.my_custom_path }}"
+    #     mountPath: /opt/airflow/logs
+  #       readOnly: true
   extraVolumes: []
-  # extraVolumeMounts: []
+  extraVolumeMounts: []
 
   # Select certain nodes for airflow worker pods.
   nodeSelector: {}
@@ -2565,10 +2565,10 @@ logs:
     # Enable persistent volume for storing logs
     enabled: false
     # Volume size for logs
-    size: 5Gi
+    size: 100Gi
     # Annotations for the logs PVC
     annotations: {}
     # If using a custom storageClass, pass name here
     storageClassName:
     ## the name of an existing PVC to use
-    existingClaim: airflow-logs-pvc
+    existingClaim:
