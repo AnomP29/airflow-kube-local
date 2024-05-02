@@ -12,7 +12,7 @@ default_args = {
 with airflow.DAG(
         'dbt_dag_test',
         default_args=default_args,
-        schedule_interval=timedelta(days=1),
+        schedule_interval=None,
         catchup=False,
 ) as dag:
     test_command = KubernetesPodOperator(
