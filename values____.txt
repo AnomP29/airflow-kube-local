@@ -1,0 +1,27 @@
+fernetKey: am1xdk94RWhnajVwVFFRTFhWRTNIQnJHMHhISG5ZcE4=
+webserverSecretKey: 24dd83824e67d29fcbc9b16d9e740b5d
+executor: "KubernetesExecutor"
+
+dags:
+  gitSync:
+    enabled: true
+    repo: https://github.com/AnomP29/airflow-kube-local.git
+    branch: master
+    rev: HEAD
+    depth: 1
+    maxFailures: 0
+    subPath: "dags"
+
+airflow:
+  extraVolumeMounts:
+    - name: airflow-logs
+      mountPath: /opt/airflow/logs
+  extraVolumes:
+    - name: airflow-logs
+      persistentVolumeClaim:
+        claimName: airflow-logs-pvc
+
+logs:
+  persistence:
+    enabled: true
+    existingClaim: airflow-logs-pvc
