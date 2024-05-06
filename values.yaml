@@ -422,11 +422,11 @@ data:
 
 # Fernet key settings
 # Note: fernetKey can only be set during install, not upgrade
-fernetKey: am1xdk94RWhnajVwVFFRTFhWRTNIQnJHMHhISG5ZcE4=
+fernetKey: M2lpMjk2TFAwS1pHRWRMQU5xaDVSVEVTUkNlc3h1aHA=
 fernetKeySecretName: ~
 
 # Flask secret key for Airflow Webserver: `[webserver] secret_key` in airflow.cfg
-webserverSecretKey: 24dd83824e67d29fcbc9b16d9e740b5d
+webserverSecretKey: ~
 webserverSecretKeySecretName: ~
 
 # In order to use kerberos you need to create secret containing the keytab file
@@ -452,39 +452,39 @@ webserverSecretKeySecretName: ~
 #  kerberos.keytabBase64Content parameter. This parameter should contain base64 encoded keytab.
 #
 
-kerberos:
-  enabled: false
-  ccacheMountPath: /var/kerberos-ccache
-  ccacheFileName: cache
-  configPath: /etc/krb5.conf
-  keytabBase64Content: ~
-  keytabPath: /etc/airflow.keytab
-  principal: airflow@FOO.COM
-  reinitFrequency: 3600
-  config: |
-    # This is an example config showing how you can use templating and how "example" config
-    # might look like. It works with the test kerberos server that we are using during integration
-    # testing at Apache Airflow (see `scripts/ci/docker-compose/integration-kerberos.yml` but in
-    # order to make it production-ready you must replace it with your own configuration that
-    # Matches your kerberos deployment. Administrators of your Kerberos instance should
-    # provide the right configuration.
+# kerberos:
+#   enabled: false
+#   ccacheMountPath: /var/kerberos-ccache
+#   ccacheFileName: cache
+#   configPath: /etc/krb5.conf
+#   keytabBase64Content: ~
+#   keytabPath: /etc/airflow.keytab
+#   principal: airflow@FOO.COM
+#   reinitFrequency: 3600
+#   config: |
+#     # This is an example config showing how you can use templating and how "example" config
+#     # might look like. It works with the test kerberos server that we are using during integration
+#     # testing at Apache Airflow (see `scripts/ci/docker-compose/integration-kerberos.yml` but in
+#     # order to make it production-ready you must replace it with your own configuration that
+#     # Matches your kerberos deployment. Administrators of your Kerberos instance should
+#     # provide the right configuration.
 
-    [logging]
-    default = "FILE:{{ template "airflow_logs_no_quote" . }}/kerberos_libs.log"
-    kdc = "FILE:{{ template "airflow_logs_no_quote" . }}/kerberos_kdc.log"
-    admin_server = "FILE:{{ template "airflow_logs_no_quote" . }}/kadmind.log"
+#     [logging]
+#     default = "FILE:{{ template "airflow_logs_no_quote" . }}/kerberos_libs.log"
+#     kdc = "FILE:{{ template "airflow_logs_no_quote" . }}/kerberos_kdc.log"
+#     admin_server = "FILE:{{ template "airflow_logs_no_quote" . }}/kadmind.log"
 
-    [libdefaults]
-    default_realm = FOO.COM
-    ticket_lifetime = 10h
-    renew_lifetime = 7d
-    forwardable = true
+#     [libdefaults]
+#     default_realm = FOO.COM
+#     ticket_lifetime = 10h
+#     renew_lifetime = 7d
+#     forwardable = true
 
-    [realms]
-    FOO.COM = {
-      kdc = kdc-server.foo.com
-      admin_server = admin_server.foo.com
-    }
+#     [realms]
+#     FOO.COM = {
+#       kdc = kdc-server.foo.com
+#       admin_server = admin_server.foo.com
+#     }
 
 # Airflow Worker Config
 workers:
@@ -691,10 +691,9 @@ workers:
   #          defaultMode: 0640
   #          optional: true
   #
-    # extraVolumeMounts:
-    #   - name: airflow-logs
-    #     # mountPath: "{{ .Values.my_custom_path }}"
-    #     mountPath: /opt/airflow/logs
+  #   extraVolumeMounts:
+  #     - name: my-templated-extra-volume
+  #       mountPath: "{{ .Values.my_custom_path }}"
   #       readOnly: true
   extraVolumes: []
   extraVolumeMounts: []
@@ -2453,14 +2452,13 @@ dags:
     ## optional subpath for dag volume mount
     subPath: ~
   gitSync:
-    enabled: true
+    enabled: false
 
     # git repo clone url
     # ssh example: git@github.com:apache/airflow.git
     # https example: https://github.com/apache/airflow.git
-    #repo: https://github.com/apache/airflow.git
-    repo: https://github.com/AnomP29/airflow-kube-local.git
-    branch: main
+    repo: https://github.com/apache/airflow.git
+    branch: v2-2-stable
     rev: HEAD
     # The git revision (branch, tag, or hash) to check out, v4 only
     ref: v2-2-stable
@@ -2469,7 +2467,7 @@ dags:
     maxFailures: 0
     # subpath within the repo where dags are located
     # should be "" if dags are at repo root
-    subPath: "dags"
+    subPath: "tests/dags"
     # if your repo needs a user name password
     # you can load them to a k8s secret like the one below
     #   ---
@@ -2572,3 +2570,4 @@ logs:
     storageClassName:
     ## the name of an existing PVC to use
     existingClaim:
+
