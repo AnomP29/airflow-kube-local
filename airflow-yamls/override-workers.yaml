@@ -1,0 +1,674 @@
+webserverSecretKey: 1e3519f04002400a377781ae595f86ac
+webserverSecretKeySecretName: ~
+
+kind: Deployment
+apiVersion: apps/v1
+metadata:
+  name: airflow-worker-0
+  generateName: airflow-worker-
+  namespace: airflow-k8-local
+  uid: 3bcebe08-361a-40ac-b1f0-2037fc9289b8
+  resourceVersion: '37596'
+  creationTimestamp: '2024-05-07T15:45:04Z'
+  labels:
+    apps.kubernetes.io/pod-index: '0'
+    component: worker
+    controller-revision-hash: airflow-worker-698cdf6b4d
+    release: airflow
+    statefulset.kubernetes.io/pod-name: airflow-worker-0
+    tier: airflow
+  annotations:
+    checksum/airflow-config: 406173e5be952c6c82d463e3c2c65871106f2fc75489140e60788943e4312703
+    checksum/extra-configmaps: e862ea47e13e634cf17d476323784fa27dac20015550c230953b526182f5cac8
+    checksum/extra-secrets: e9582fdd622296c976cbc10a5ba7d6702c28a24fe80795ea5b84ba443a56c827
+    checksum/kerberos-keytab: 80979996aa3c1f48c95dfbe9bb27191e71f12442a08c0ed834413da9d430fd0e
+    checksum/metadata-secret: 319cd88a8ab7b207fcc25eb28e9e337b3f59d340e8888649aca6a54f206a4d09
+    checksum/pgbouncer-config-secret: 1dae2adc757473469686d37449d076b0c82404f61413b58ae68b3c5e99527688
+    checksum/result-backend-secret: 98a68f230007cfa8f5d3792e1aff843a76b0686409e4a46ab2f092f6865a1b71
+    checksum/webserver-secret-key: dc527ec1f7b380f724b4a9cbdc615120525b13aa32736e626b6cc03b7b1aa242
+    cluster-autoscaler.kubernetes.io/safe-to-evict: 'true'
+  ownerReferences:
+    - apiVersion: apps/v1
+      kind: StatefulSet
+      name: airflow-worker
+      uid: 0b1a0860-1554-4f36-994d-41fb2b656edd
+      controller: true
+      blockOwnerDeletion: true
+  managedFields:
+    - manager: kube-controller-manager
+      operation: Update
+      apiVersion: v1
+      time: '2024-05-07T15:45:04Z'
+      fieldsType: FieldsV1
+      fieldsV1:
+        f:metadata:
+          f:annotations:
+            .: {}
+            f:checksum/airflow-config: {}
+            f:checksum/extra-configmaps: {}
+            f:checksum/extra-secrets: {}
+            f:checksum/kerberos-keytab: {}
+            f:checksum/metadata-secret: {}
+            f:checksum/pgbouncer-config-secret: {}
+            f:checksum/result-backend-secret: {}
+            f:checksum/webserver-secret-key: {}
+            f:cluster-autoscaler.kubernetes.io/safe-to-evict: {}
+          f:generateName: {}
+          f:labels:
+            .: {}
+            f:apps.kubernetes.io/pod-index: {}
+            f:component: {}
+            f:controller-revision-hash: {}
+            f:release: {}
+            f:statefulset.kubernetes.io/pod-name: {}
+            f:tier: {}
+          f:ownerReferences:
+            .: {}
+            k:{"uid":"0b1a0860-1554-4f36-994d-41fb2b656edd"}: {}
+        f:spec:
+          f:affinity:
+            .: {}
+            f:podAntiAffinity:
+              .: {}
+              f:preferredDuringSchedulingIgnoredDuringExecution: {}
+          f:containers:
+            k:{"name":"worker"}:
+              .: {}
+              f:args: {}
+              f:env:
+                .: {}
+                k:{"name":"AIRFLOW_CONN_AIRFLOW_DB"}:
+                  .: {}
+                  f:name: {}
+                  f:valueFrom:
+                    .: {}
+                    f:secretKeyRef: {}
+                k:{"name":"AIRFLOW_HOME"}:
+                  .: {}
+                  f:name: {}
+                  f:value: {}
+                k:{"name":"AIRFLOW__CELERY__BROKER_URL"}:
+                  .: {}
+                  f:name: {}
+                  f:valueFrom:
+                    .: {}
+                    f:secretKeyRef: {}
+                k:{"name":"AIRFLOW__CORE__FERNET_KEY"}:
+                  .: {}
+                  f:name: {}
+                  f:valueFrom:
+                    .: {}
+                    f:secretKeyRef: {}
+                k:{"name":"AIRFLOW__CORE__SQL_ALCHEMY_CONN"}:
+                  .: {}
+                  f:name: {}
+                  f:valueFrom:
+                    .: {}
+                    f:secretKeyRef: {}
+                k:{"name":"AIRFLOW__DATABASE__SQL_ALCHEMY_CONN"}:
+                  .: {}
+                  f:name: {}
+                  f:valueFrom:
+                    .: {}
+                    f:secretKeyRef: {}
+                k:{"name":"AIRFLOW__WEBSERVER__SECRET_KEY"}:
+                  .: {}
+                  f:name: {}
+                  f:valueFrom:
+                    .: {}
+                    f:secretKeyRef: {}
+                k:{"name":"DUMB_INIT_SETSID"}:
+                  .: {}
+                  f:name: {}
+                  f:value: {}
+              f:image: {}
+              f:imagePullPolicy: {}
+              f:livenessProbe:
+                .: {}
+                f:exec:
+                  .: {}
+                  f:command: {}
+                f:failureThreshold: {}
+                f:initialDelaySeconds: {}
+                f:periodSeconds: {}
+                f:successThreshold: {}
+                f:timeoutSeconds: {}
+              f:name: {}
+              f:ports:
+                .: {}
+                k:{"containerPort":8793,"protocol":"TCP"}:
+                  .: {}
+                  f:containerPort: {}
+                  f:name: {}
+                  f:protocol: {}
+              f:resources: {}
+              f:securityContext:
+                .: {}
+                f:allowPrivilegeEscalation: {}
+                f:capabilities:
+                  .: {}
+                  f:drop: {}
+              f:terminationMessagePath: {}
+              f:terminationMessagePolicy: {}
+              f:volumeMounts:
+                .: {}
+                k:{"mountPath":"/opt/airflow/airflow.cfg"}:
+                  .: {}
+                  f:mountPath: {}
+                  f:name: {}
+                  f:readOnly: {}
+                  f:subPath: {}
+                k:{"mountPath":"/opt/airflow/config/airflow_local_settings.py"}:
+                  .: {}
+                  f:mountPath: {}
+                  f:name: {}
+                  f:readOnly: {}
+                  f:subPath: {}
+                k:{"mountPath":"/opt/airflow/logs"}:
+                  .: {}
+                  f:mountPath: {}
+                  f:name: {}
+            k:{"name":"worker-log-groomer"}:
+              .: {}
+              f:args: {}
+              f:env:
+                .: {}
+                k:{"name":"AIRFLOW_HOME"}:
+                  .: {}
+                  f:name: {}
+                  f:value: {}
+                k:{"name":"AIRFLOW__LOG_RETENTION_DAYS"}:
+                  .: {}
+                  f:name: {}
+                  f:value: {}
+              f:image: {}
+              f:imagePullPolicy: {}
+              f:name: {}
+              f:resources: {}
+              f:securityContext:
+                .: {}
+                f:allowPrivilegeEscalation: {}
+                f:capabilities:
+                  .: {}
+                  f:drop: {}
+              f:terminationMessagePath: {}
+              f:terminationMessagePolicy: {}
+              f:volumeMounts:
+                .: {}
+                k:{"mountPath":"/opt/airflow/logs"}:
+                  .: {}
+                  f:mountPath: {}
+                  f:name: {}
+          f:dnsPolicy: {}
+          f:enableServiceLinks: {}
+          f:hostname: {}
+          f:initContainers:
+            .: {}
+            k:{"name":"wait-for-airflow-migrations"}:
+              .: {}
+              f:args: {}
+              f:env:
+                .: {}
+                k:{"name":"AIRFLOW_CONN_AIRFLOW_DB"}:
+                  .: {}
+                  f:name: {}
+                  f:valueFrom:
+                    .: {}
+                    f:secretKeyRef: {}
+                k:{"name":"AIRFLOW_HOME"}:
+                  .: {}
+                  f:name: {}
+                  f:value: {}
+                k:{"name":"AIRFLOW__CELERY__BROKER_URL"}:
+                  .: {}
+                  f:name: {}
+                  f:valueFrom:
+                    .: {}
+                    f:secretKeyRef: {}
+                k:{"name":"AIRFLOW__CORE__FERNET_KEY"}:
+                  .: {}
+                  f:name: {}
+                  f:valueFrom:
+                    .: {}
+                    f:secretKeyRef: {}
+                k:{"name":"AIRFLOW__CORE__SQL_ALCHEMY_CONN"}:
+                  .: {}
+                  f:name: {}
+                  f:valueFrom:
+                    .: {}
+                    f:secretKeyRef: {}
+                k:{"name":"AIRFLOW__DATABASE__SQL_ALCHEMY_CONN"}:
+                  .: {}
+                  f:name: {}
+                  f:valueFrom:
+                    .: {}
+                    f:secretKeyRef: {}
+                k:{"name":"AIRFLOW__WEBSERVER__SECRET_KEY"}:
+                  .: {}
+                  f:name: {}
+                  f:valueFrom:
+                    .: {}
+                    f:secretKeyRef: {}
+              f:image: {}
+              f:imagePullPolicy: {}
+              f:name: {}
+              f:resources: {}
+              f:securityContext:
+                .: {}
+                f:allowPrivilegeEscalation: {}
+                f:capabilities:
+                  .: {}
+                  f:drop: {}
+              f:terminationMessagePath: {}
+              f:terminationMessagePolicy: {}
+              f:volumeMounts:
+                .: {}
+                k:{"mountPath":"/opt/airflow/airflow.cfg"}:
+                  .: {}
+                  f:mountPath: {}
+                  f:name: {}
+                  f:readOnly: {}
+                  f:subPath: {}
+                k:{"mountPath":"/opt/airflow/config/airflow_local_settings.py"}:
+                  .: {}
+                  f:mountPath: {}
+                  f:name: {}
+                  f:readOnly: {}
+                  f:subPath: {}
+          f:restartPolicy: {}
+          f:schedulerName: {}
+          f:securityContext:
+            .: {}
+            f:fsGroup: {}
+            f:runAsUser: {}
+          f:serviceAccount: {}
+          f:serviceAccountName: {}
+          f:subdomain: {}
+          f:terminationGracePeriodSeconds: {}
+          f:volumes:
+            .: {}
+            k:{"name":"config"}:
+              .: {}
+              f:configMap:
+                .: {}
+                f:defaultMode: {}
+                f:name: {}
+              f:name: {}
+            k:{"name":"logs"}:
+              .: {}
+              f:name: {}
+              f:persistentVolumeClaim:
+                .: {}
+                f:claimName: {}
+    - manager: kube-scheduler
+      operation: Update
+      apiVersion: v1
+      time: '2024-05-07T15:45:04Z'
+      fieldsType: FieldsV1
+      fieldsV1:
+        f:status:
+          f:conditions:
+            .: {}
+            k:{"type":"PodScheduled"}:
+              .: {}
+              f:lastProbeTime: {}
+              f:lastTransitionTime: {}
+              f:message: {}
+              f:reason: {}
+              f:status: {}
+              f:type: {}
+      subresource: status
+    - manager: kubelet
+      operation: Update
+      apiVersion: v1
+      time: '2024-05-07T15:45:13Z'
+      fieldsType: FieldsV1
+      fieldsV1:
+        f:status:
+          f:conditions:
+            k:{"type":"ContainersReady"}:
+              .: {}
+              f:lastProbeTime: {}
+              f:lastTransitionTime: {}
+              f:status: {}
+              f:type: {}
+            k:{"type":"Initialized"}:
+              .: {}
+              f:lastProbeTime: {}
+              f:lastTransitionTime: {}
+              f:status: {}
+              f:type: {}
+            k:{"type":"PodReadyToStartContainers"}:
+              .: {}
+              f:lastProbeTime: {}
+              f:lastTransitionTime: {}
+              f:status: {}
+              f:type: {}
+            k:{"type":"Ready"}:
+              .: {}
+              f:lastProbeTime: {}
+              f:lastTransitionTime: {}
+              f:status: {}
+              f:type: {}
+          f:containerStatuses: {}
+          f:hostIP: {}
+          f:hostIPs: {}
+          f:initContainerStatuses: {}
+          f:phase: {}
+          f:podIP: {}
+          f:podIPs:
+            .: {}
+            k:{"ip":"10.1.1.189"}:
+              .: {}
+              f:ip: {}
+          f:startTime: {}
+      subresource: status
+spec:
+  volumes:
+    - name: logs
+      persistentVolumeClaim:
+        claimName: airflow-logs-pvc-2
+    - name: config
+      configMap:
+        name: airflow-config
+        defaultMode: 420
+    - name: kube-api-access-xqt5f
+      projected:
+        sources:
+          - serviceAccountToken:
+              expirationSeconds: 3607
+              path: token
+          - configMap:
+              name: kube-root-ca.crt
+              items:
+                - key: ca.crt
+                  path: ca.crt
+          - downwardAPI:
+              items:
+                - path: namespace
+                  fieldRef:
+                    apiVersion: v1
+                    fieldPath: metadata.namespace
+        defaultMode: 420
+  initContainers:
+    - name: wait-for-airflow-migrations
+      image: apache/airflow:2.8.3
+      args:
+        - airflow
+        - db
+        - check-migrations
+        - '--migration-wait-timeout=60'
+      env:
+        - name: AIRFLOW__CORE__FERNET_KEY
+          valueFrom:
+            secretKeyRef:
+              name: airflow-fernet-key
+              key: fernet-key
+        - name: AIRFLOW_HOME
+          value: /opt/airflow
+        - name: AIRFLOW__CORE__SQL_ALCHEMY_CONN
+          valueFrom:
+            secretKeyRef:
+              name: airflow-metadata
+              key: connection
+        - name: AIRFLOW__DATABASE__SQL_ALCHEMY_CONN
+          valueFrom:
+            secretKeyRef:
+              name: airflow-metadata
+              key: connection
+        - name: AIRFLOW_CONN_AIRFLOW_DB
+          valueFrom:
+            secretKeyRef:
+              name: airflow-metadata
+              key: connection
+        - name: AIRFLOW__WEBSERVER__SECRET_KEY
+          valueFrom:
+            secretKeyRef:
+              name: airflow-webserver-secret-key
+              key: webserver-secret-key
+        - name: AIRFLOW__CELERY__BROKER_URL
+          valueFrom:
+            secretKeyRef:
+              name: airflow-broker-url
+              key: connection
+      resources: {}
+      volumeMounts:
+        - name: config
+          readOnly: true
+          mountPath: /opt/airflow/airflow.cfg
+          subPath: airflow.cfg
+        - name: config
+          readOnly: true
+          mountPath: /opt/airflow/config/airflow_local_settings.py
+          subPath: airflow_local_settings.py
+        - name: kube-api-access-xqt5f
+          readOnly: true
+          mountPath: /var/run/secrets/kubernetes.io/serviceaccount
+      terminationMessagePath: /dev/termination-log
+      terminationMessagePolicy: File
+      imagePullPolicy: IfNotPresent
+      securityContext:
+        capabilities:
+          drop:
+            - ALL
+        allowPrivilegeEscalation: false
+  containers:
+    - name: worker
+      image: apache/airflow:2.8.3
+      args:
+        - bash
+        - '-c'
+        - |-
+          exec \
+          airflow celery worker
+      ports:
+        - name: worker-logs
+          containerPort: 8793
+          protocol: TCP
+      env:
+        - name: DUMB_INIT_SETSID
+          value: '0'
+        - name: AIRFLOW__CORE__FERNET_KEY
+          valueFrom:
+            secretKeyRef:
+              name: airflow-fernet-key
+              key: fernet-key
+        - name: AIRFLOW_HOME
+          value: /opt/airflow
+        - name: AIRFLOW__CORE__SQL_ALCHEMY_CONN
+          valueFrom:
+            secretKeyRef:
+              name: airflow-metadata
+              key: connection
+        - name: AIRFLOW__DATABASE__SQL_ALCHEMY_CONN
+          valueFrom:
+            secretKeyRef:
+              name: airflow-metadata
+              key: connection
+        - name: AIRFLOW_CONN_AIRFLOW_DB
+          valueFrom:
+            secretKeyRef:
+              name: airflow-metadata
+              key: connection
+        - name: AIRFLOW__WEBSERVER__SECRET_KEY
+          valueFrom:
+            secretKeyRef:
+              name: airflow-webserver-secret-key
+              key: webserver-secret-key
+        - name: AIRFLOW__CELERY__BROKER_URL
+          valueFrom:
+            secretKeyRef:
+              name: airflow-broker-url
+              key: connection
+      resources: {}
+      volumeMounts:
+        - name: logs
+          mountPath: /opt/airflow/logs
+        - name: config
+          readOnly: true
+          mountPath: /opt/airflow/airflow.cfg
+          subPath: airflow.cfg
+        - name: config
+          readOnly: true
+          mountPath: /opt/airflow/config/airflow_local_settings.py
+          subPath: airflow_local_settings.py
+        - name: kube-api-access-xqt5f
+          readOnly: true
+          mountPath: /var/run/secrets/kubernetes.io/serviceaccount
+      livenessProbe:
+        exec:
+          command:
+            - sh
+            - '-c'
+            - >-
+              CONNECTION_CHECK_MAX_COUNT=0 exec /entrypoint python -m celery
+              --app airflow.providers.celery.executors.celery_executor.app
+              inspect ping -d celery@$(hostname)
+        initialDelaySeconds: 10
+        timeoutSeconds: 20
+        periodSeconds: 60
+        successThreshold: 1
+        failureThreshold: 5
+      terminationMessagePath: /dev/termination-log
+      terminationMessagePolicy: File
+      imagePullPolicy: IfNotPresent
+      securityContext:
+        capabilities:
+          drop:
+            - ALL
+        allowPrivilegeEscalation: false
+    - name: worker-log-groomer
+      image: apache/airflow:2.8.3
+      args:
+        - bash
+        - /clean-logs
+      env:
+        - name: AIRFLOW__LOG_RETENTION_DAYS
+          value: '15'
+        - name: AIRFLOW_HOME
+          value: /opt/airflow
+      resources: {}
+      volumeMounts:
+        - name: logs
+          mountPath: /opt/airflow/logs
+        - name: kube-api-access-xqt5f
+          readOnly: true
+          mountPath: /var/run/secrets/kubernetes.io/serviceaccount
+      terminationMessagePath: /dev/termination-log
+      terminationMessagePolicy: File
+      imagePullPolicy: IfNotPresent
+      securityContext:
+        capabilities:
+          drop:
+            - ALL
+        allowPrivilegeEscalation: false
+  restartPolicy: Always
+  terminationGracePeriodSeconds: 600
+  dnsPolicy: ClusterFirst
+  serviceAccountName: airflow-worker
+  serviceAccount: airflow-worker
+  nodeName: docker-desktop
+  securityContext:
+    runAsUser: 50000
+    fsGroup: 0
+  hostname: airflow-worker-0
+  subdomain: airflow-worker
+  affinity:
+    podAntiAffinity:
+      preferredDuringSchedulingIgnoredDuringExecution:
+        - weight: 100
+          podAffinityTerm:
+            labelSelector:
+              matchLabels:
+                component: worker
+            topologyKey: kubernetes.io/hostname
+  schedulerName: default-scheduler
+  tolerations:
+    - key: node.kubernetes.io/not-ready
+      operator: Exists
+      effect: NoExecute
+      tolerationSeconds: 300
+    - key: node.kubernetes.io/unreachable
+      operator: Exists
+      effect: NoExecute
+      tolerationSeconds: 300
+  priority: 0
+  enableServiceLinks: true
+  preemptionPolicy: PreemptLowerPriority
+status:
+  phase: Running
+  conditions:
+    - type: PodReadyToStartContainers
+      status: 'True'
+      lastProbeTime: null
+      lastTransitionTime: '2024-05-07T15:45:06Z'
+    - type: Initialized
+      status: 'True'
+      lastProbeTime: null
+      lastTransitionTime: '2024-05-07T15:45:12Z'
+    - type: Ready
+      status: 'True'
+      lastProbeTime: null
+      lastTransitionTime: '2024-05-07T15:45:13Z'
+    - type: ContainersReady
+      status: 'True'
+      lastProbeTime: null
+      lastTransitionTime: '2024-05-07T15:45:13Z'
+    - type: PodScheduled
+      status: 'True'
+      lastProbeTime: null
+      lastTransitionTime: '2024-05-07T15:45:05Z'
+  hostIP: 192.168.65.3
+  hostIPs:
+    - ip: 192.168.65.3
+  podIP: 10.1.1.189
+  podIPs:
+    - ip: 10.1.1.189
+  startTime: '2024-05-07T15:45:05Z'
+  initContainerStatuses:
+    - name: wait-for-airflow-migrations
+      state:
+        terminated:
+          exitCode: 0
+          reason: Completed
+          startedAt: '2024-05-07T15:45:06Z'
+          finishedAt: '2024-05-07T15:45:12Z'
+          containerID: >-
+            docker://7fa826bd162c50c1c07bb82973159bc58af9c43989d9734cc2bf849a26d27a6e
+      lastState: {}
+      ready: true
+      restartCount: 0
+      image: apache/airflow:2.8.3
+      imageID: >-
+        docker-pullable://apache/airflow@sha256:9668695ebb0253c3b09fe763ba20a70b619ca89d8efeb088cc5468b6a301dfbb
+      containerID: >-
+        docker://7fa826bd162c50c1c07bb82973159bc58af9c43989d9734cc2bf849a26d27a6e
+      started: false
+  containerStatuses:
+    - name: worker
+      state:
+        running:
+          startedAt: '2024-05-07T15:45:12Z'
+      lastState: {}
+      ready: true
+      restartCount: 0
+      image: apache/airflow:2.8.3
+      imageID: >-
+        docker-pullable://apache/airflow@sha256:9668695ebb0253c3b09fe763ba20a70b619ca89d8efeb088cc5468b6a301dfbb
+      containerID: >-
+        docker://3a7f39077eec38bfb0b6b89b88f486316a0fc3f2686ab8623c8412e37d0682e3
+      started: true
+    - name: worker-log-groomer
+      state:
+        running:
+          startedAt: '2024-05-07T15:45:12Z'
+      lastState: {}
+      ready: true
+      restartCount: 0
+      image: apache/airflow:2.8.3
+      imageID: >-
+        docker-pullable://apache/airflow@sha256:9668695ebb0253c3b09fe763ba20a70b619ca89d8efeb088cc5468b6a301dfbb
+      containerID: >-
+        docker://955872fca4468de39d0a17c6293a5305dced47116295be8fe940d496aa4f6089
+      started: true
+  qosClass: BestEffort
