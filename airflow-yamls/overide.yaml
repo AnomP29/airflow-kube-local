@@ -1,0 +1,23 @@
+# Fernet key settings
+# Note: fernetKey can only be set during install, not upgrade
+fernetKey: SDBFWGJVdU5keE82RHJyREVzYk9qN2t4UnpMT2Y1WHQ=
+fernetKeySecretName: ~
+
+# Flask secret key for Airflow Webserver: `[webserver] secret_key` in airflow.cfg
+webserverSecretKey: 1e3519f04002400a377781ae595f86ac
+webserverSecretKeySecretName: ~
+
+airflow:
+  webserver:
+    extraVolumeMounts:
+      - name: airflow-logs
+        mountPath: /opt/airflow/logs
+    extraVolumes:
+      - name: airflow-logs
+        persistentVolumeClaim:
+          claimName: airflow-logs-pvc-2
+
+# logs:
+#   persistence:
+#     enabled: true
+#     existingClaim: airflow-logs-pvc

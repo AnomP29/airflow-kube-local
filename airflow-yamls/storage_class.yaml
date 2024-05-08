@@ -1,0 +1,10 @@
+apiVersion: storage.k8s.io/v1
+kind: StorageClass
+metadata:
+    name: standard
+reclaimPolicy: Retain
+allowVolumeExpansion: true
+provisioner: docker.io/standard
+mountOptions:
+  - debug
+volumeBindingMode: Immediate
