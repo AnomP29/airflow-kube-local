@@ -1,3 +1,7 @@
+# Flask secret key for Airflow Webserver: `[webserver] secret_key` in airflow.cfg
+webserverSecretKey: 1e3519f04002400a377781ae595f86ac
+webserverSecretKeySecretName: ~
+
 airflow:
   dags:
     # Where dags volume will be mounted. Works for both persistence and gitSync.
