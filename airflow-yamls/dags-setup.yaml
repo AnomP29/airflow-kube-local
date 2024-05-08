@@ -1,8 +1,14 @@
 # Flask secret key for Airflow Webserver: `[webserver] secret_key` in airflow.cfg
-webserverSecretKey: 1e3519f04002400a377781ae595f86ac
-webserverSecretKeySecretName: ~
+# webserverSecretKey: 1e3519f04002400a377781ae595f86ac
+# webserverSecretKeySecretName: ~
 
 airflow:
+  extraEnv:
+    - name: AIRFLOW__WEBSERVER__SECRET_KEY
+      valueFrom:
+        secretKeyRef:
+          name: sh.helm.release.v1.airflow.v30
+          key: value
   dags:
     # Where dags volume will be mounted. Works for both persistence and gitSync.
     # If not specified, dags mount path will be set to $AIRFLOW_HOME/dags
