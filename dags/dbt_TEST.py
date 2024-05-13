@@ -39,7 +39,7 @@ def preview_data(**kwargs):
 
 
 default_args = {
-    'owner': 'rafaverama',
+    'owner': 'aprasetyo',
     'start_date': datetime(2024, 5, 10),
     'catchup': False
 }
