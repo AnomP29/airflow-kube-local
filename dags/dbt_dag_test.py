@@ -19,7 +19,7 @@ with airflow.DAG(
         namespace='default',
         image='jrvm/dbt_bigquery:dbt-image',
         cmds=["ls"],  # Comando a ejecutar
-        arguments=["-lah", "/dbt"],  # Argumentos del comando, lista el contenido del directorio /dbt
+        arguments=["-lah", "/opt/airflow/logs"],  # Argumentos del comando, lista el contenido del directorio /dbt
         name="test_command",
         task_id="test_command",
         get_logs=True,
