@@ -17,7 +17,7 @@ with airflow.DAG(
 ) as dag:
     test_command = KubernetesPodOperator(
         namespace='default',
-        image='jrvm/dbt_bigquery:dbt-image',
+        image='apache/airflow',
         cmds=["ls"],  # Comando a ejecutar
         arguments=["-lah", "/opt/airflow/logs"],  # Argumentos del comando, lista el contenido del directorio /dbt
         name="test_command",
