@@ -261,7 +261,7 @@ rbac:
 
 # Airflow executor
 # One of: LocalExecutor, LocalKubernetesExecutor, CeleryExecutor, KubernetesExecutor, CeleryKubernetesExecutor
-executor: "CeleryExecutor"
+executor: "KubernetesExecutor"
 
 # If this is true and using LocalExecutor/KubernetesExecutor/CeleryKubernetesExecutor, the scheduler's
 # service account will have access to communicate with the api-server and launch pods.
@@ -618,13 +618,13 @@ workers:
     # Enable persistent volumes
     enabled: true
     # Volume size for worker StatefulSet
-    size: 100Gi
+    size: 10Gi
     # If using a custom storageClass, pass name ref to all statefulSets here
-    storageClassName:
+    storageClassName: 
     # Execute init container to chown log directory.
     # This is currently only needed in kind, due to usage
     # of local-path provisioner.
-    fixPermissions: false
+    fixPermissions: true
     # Annotations to add to worker volumes
     annotations: {}
     # Detailed default security context for persistence for container level
@@ -1425,7 +1425,7 @@ triggerer:
 
   persistence:
     # Enable persistent volumes
-    enabled: true
+    enabled: false
     # Volume size for triggerer StatefulSet
     size: 100Gi
     # If using a custom storageClass, pass name ref to all statefulSets here
@@ -2561,7 +2561,7 @@ logs:
 
   persistence:
     # Enable persistent volume for storing logs
-    enabled: false
+    enabled: true
     # Volume size for logs
     size: 100Gi
     # Annotations for the logs PVC
@@ -2569,5 +2569,5 @@ logs:
     # If using a custom storageClass, pass name here
     storageClassName:
     ## the name of an existing PVC to use
-    existingClaim:
+    existingClaim: airflow-logs-01
 
