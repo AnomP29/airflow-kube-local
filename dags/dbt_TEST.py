@@ -47,7 +47,7 @@ default_args = {
 dag = DAG(
     'dbt_TEST',
     default_args=default_args,
-    schedule=timedelta(days=1)
+    schedule=None
 )
 
 get_data_from_url = PythonOperator(
