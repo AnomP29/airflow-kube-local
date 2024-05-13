@@ -422,11 +422,11 @@ data:
 
 # Fernet key settings
 # Note: fernetKey can only be set during install, not upgrade
-fernetKey: M2lpMjk2TFAwS1pHRWRMQU5xaDVSVEVTUkNlc3h1aHA=
+fernetKey: ~
 fernetKeySecretName: ~
 
 # Flask secret key for Airflow Webserver: `[webserver] secret_key` in airflow.cfg
-webserverSecretKey: ~
+webserverSecretKey: 1e3519f04002400a377781ae595f86ac
 webserverSecretKeySecretName: ~
 
 # In order to use kerberos you need to create secret containing the keytab file
@@ -452,39 +452,39 @@ webserverSecretKeySecretName: ~
 #  kerberos.keytabBase64Content parameter. This parameter should contain base64 encoded keytab.
 #
 
-# kerberos:
-#   enabled: false
-#   ccacheMountPath: /var/kerberos-ccache
-#   ccacheFileName: cache
-#   configPath: /etc/krb5.conf
-#   keytabBase64Content: ~
-#   keytabPath: /etc/airflow.keytab
-#   principal: airflow@FOO.COM
-#   reinitFrequency: 3600
-#   config: |
-#     # This is an example config showing how you can use templating and how "example" config
-#     # might look like. It works with the test kerberos server that we are using during integration
-#     # testing at Apache Airflow (see `scripts/ci/docker-compose/integration-kerberos.yml` but in
-#     # order to make it production-ready you must replace it with your own configuration that
-#     # Matches your kerberos deployment. Administrators of your Kerberos instance should
-#     # provide the right configuration.
+kerberos:
+  enabled: false
+  ccacheMountPath: /var/kerberos-ccache
+  ccacheFileName: cache
+  configPath: /etc/krb5.conf
+  keytabBase64Content: ~
+  keytabPath: /etc/airflow.keytab
+  principal: airflow@FOO.COM
+  reinitFrequency: 3600
+  config: |
+    # This is an example config showing how you can use templating and how "example" config
+    # might look like. It works with the test kerberos server that we are using during integration
+    # testing at Apache Airflow (see `scripts/ci/docker-compose/integration-kerberos.yml` but in
+    # order to make it production-ready you must replace it with your own configuration that
+    # Matches your kerberos deployment. Administrators of your Kerberos instance should
+    # provide the right configuration.
 
-#     [logging]
-#     default = "FILE:{{ template "airflow_logs_no_quote" . }}/kerberos_libs.log"
-#     kdc = "FILE:{{ template "airflow_logs_no_quote" . }}/kerberos_kdc.log"
-#     admin_server = "FILE:{{ template "airflow_logs_no_quote" . }}/kadmind.log"
+    [logging]
+    default = "FILE:{{ template "airflow_logs_no_quote" . }}/kerberos_libs.log"
+    kdc = "FILE:{{ template "airflow_logs_no_quote" . }}/kerberos_kdc.log"
+    admin_server = "FILE:{{ template "airflow_logs_no_quote" . }}/kadmind.log"
 
-#     [libdefaults]
-#     default_realm = FOO.COM
-#     ticket_lifetime = 10h
-#     renew_lifetime = 7d
-#     forwardable = true
+    [libdefaults]
+    default_realm = FOO.COM
+    ticket_lifetime = 10h
+    renew_lifetime = 7d
+    forwardable = true
 
-#     [realms]
-#     FOO.COM = {
-#       kdc = kdc-server.foo.com
-#       admin_server = admin_server.foo.com
-#     }
+    [realms]
+    FOO.COM = {
+      kdc = kdc-server.foo.com
+      admin_server = admin_server.foo.com
+    }
 
 # Airflow Worker Config
 workers:
@@ -2452,13 +2452,13 @@ dags:
     ## optional subpath for dag volume mount
     subPath: ~
   gitSync:
-    enabled: false
+    enabled: true
 
     # git repo clone url
     # ssh example: git@github.com:apache/airflow.git
     # https example: https://github.com/apache/airflow.git
-    repo: https://github.com/apache/airflow.git
-    branch: v2-2-stable
+    repo: https://github.com/AnomP29/airflow-kube-local.git
+    branch: main
     rev: HEAD
     # The git revision (branch, tag, or hash) to check out, v4 only
     ref: v2-2-stable
