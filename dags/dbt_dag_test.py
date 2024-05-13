@@ -5,14 +5,14 @@ import airflow
 default_args = {
     'owner': 'airflow',
     'depends_on_past': False,
-    'start_date': datetime(2024, 3, 4),
+    'start_date': datetime(2024, 5, 10),
     'catchup': False
 }
 
 with airflow.DAG(
         'dbt_dag_test',
         default_args=default_args,
-        schedule_interval=timedelta(days=1),
+        schedule_interval=None,
         catchup=False,
 ) as dag:
     test_command = KubernetesPodOperator(
