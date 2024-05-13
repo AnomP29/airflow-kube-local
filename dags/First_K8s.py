@@ -12,7 +12,8 @@ default_args = {
 dag = DAG(
     'First_K8s',
     default_args = default_args,
-    schedule = timedelta(days=1)
+    # schedule = timedelta(days=1)
+    schedule = None
 )
 
 t1 = BashOperator(
