@@ -4,8 +4,8 @@ from datetime import datetime, timedelta
 from airflow.operators.dummy import DummyOperator
 
 default_args = {
-    'owner': 'rafaverama',
-    'start_date': datetime(2024, 0o3, 0o4),
+    'owner': 'aprasetyo',
+    'start_date': datetime(2024, 5, 10),
     'catchup': False
 }
 
