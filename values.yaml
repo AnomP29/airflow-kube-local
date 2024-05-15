@@ -2442,13 +2442,13 @@ dags:
     # Enable persistent volume for storing dags
     enabled: false
     # Volume size for dags
-    size: 1Gi
+    size: 5Gi
     # If using a custom storageClass, pass name here
-    storageClassName:
+    storageClassName: hostpath
     # access mode of the persistent volume
-    accessMode: ReadWriteOnce
+    accessMode: ReadWriteMany
     ## the name of an existing PVC to use
-    existingClaim:
+    existingClaim: airflow-dags-volmount-5
     ## optional subpath for dag volume mount
     subPath: ~
   gitSync:
