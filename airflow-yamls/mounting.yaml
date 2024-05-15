@@ -1,0 +1,26 @@
+# This manifest mounts /data/foo on the host as /foo inside the
+# single container that runs within the hostpath-example-linux Pod.
+#
+# The mount into the container is read-only.
+apiVersion: v1
+kind: Pod
+metadata:
+  name: hostpath-example-linux-0
+  namespace: airflow-k8-local 
+spec:
+  os: { name: linux }
+  nodeSelector:
+    kubernetes.io/os: linux
+  containers:
+  - name: dag-container-01
+    image: apache/airflow:2.8.3
+    volumeMounts:
+    - mountPath: /opt/airflow/dags
+      name: example-volume
+      readOnly: true
+  volumes:
+  - name: example-volume
+    # mount /data/foo, but only if that directory already exists
+    hostPath:
+      path: /run/desktop/mnt/host/d/Kube # directory location on host
+      type: DirectoryOrCreate # this field is optional

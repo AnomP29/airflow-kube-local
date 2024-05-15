@@ -1,14 +1,16 @@
 apiVersion: v1
 kind: PersistentVolume
 metadata:
-  name: airflow-local-dags-folder-2
+  name: airflow-dags-volmount-5
+  namespace: airflow-k8-local
   labels:
     type: local
 spec:
-  storageClassName: manual
+  storageClassName: hostpath
   capacity:
-    storage: 2Gi
+    storage: 5Gi
   accessModes:
-    - ReadWriteOnce
+    - ReadWriteMany
   hostPath:
-    path: "/home/anomp/dev/kube-local/airflow-kube-local/dags"
+    path: /run/desktop/mnt/host/wsl/home/anomp/dev/kube-local/airflow-kube-local/dags
+    
