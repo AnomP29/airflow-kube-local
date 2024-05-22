@@ -1,0 +1,529 @@
+[0m11:45:07.431858 [debug] [MainThread]: Sending event: {'category': 'dbt', 'action': 'invocation', 'label': 'start', 'context': [<snowplow_tracker.self_describing_json.SelfDescribingJson object at 0x7fe98c7777c0>, <snowplow_tracker.self_describing_json.SelfDescribingJson object at 0x7fe98ad27ac0>, <snowplow_tracker.self_describing_json.SelfDescribingJson object at 0x7fe98ad27a60>]}
+
+
+============================== 11:45:07.435213 | 410cf571-27c8-4fea-9fc7-1ab0561ff15a ==============================
+[0m11:45:07.435213 [info ] [MainThread]: Running with dbt=1.8.0
+[0m11:45:07.435655 [debug] [MainThread]: running dbt with arguments {'printer_width': '80', 'indirect_selection': 'eager', 'write_json': 'True', 'log_cache_events': 'False', 'partial_parse': 'True', 'cache_selected_only': 'False', 'warn_error': 'None', 'version_check': 'True', 'fail_fast': 'False', 'log_path': 'logs', 'profiles_dir': '/home/anomp/.dbt', 'debug': 'False', 'use_colors': 'True', 'use_experimental_parser': 'False', 'no_print': 'None', 'quiet': 'False', 'warn_error_options': 'WarnErrorOptions(include=[], exclude=[])', 'introspect': 'True', 'static_parser': 'True', 'log_format': 'default', 'target_path': 'None', 'invocation_command': 'dbt init dbt-bigquery', 'send_anonymous_usage_stats': 'True'}
+[0m11:45:07.450535 [warn ] [MainThread]: [ConfigFolderDirectory]: Unable to parse dict {'dir': PosixPath('/home/anomp/.dbt')}
+[0m11:45:07.451015 [info ] [MainThread]: Creating dbt configuration folder at 
+[0m11:45:40.900975 [debug] [MainThread]: Starter project path: /home/anomp/dev/kube-local/airflow-kube-local/venv/lib/python3.10/site-packages/dbt/include/starter_project
+[0m11:45:40.904280 [info ] [MainThread]: 
+Your new dbt project "dbt_bq" was created!
+
+For more information on how to configure the profiles.yml file,
+please consult the dbt documentation here:
+
+  https://docs.getdbt.com/docs/configure-your-profile
+
+One more thing:
+
+Need help? Don't hesitate to reach out to us via GitHub issues or on Slack:
+
+  https://community.getdbt.com/
+
+Happy modeling!
+
+[0m11:45:40.904766 [info ] [MainThread]: Setting up your profile.
+[0m11:49:40.587800 [error] [MainThread]: Encountered an error:
+
+[0m11:49:40.592036 [error] [MainThread]: Traceback (most recent call last):
+  File "/home/anomp/dev/kube-local/airflow-kube-local/venv/lib/python3.10/site-packages/dbt/cli/requires.py", line 138, in wrapper
+    result, success = func(*args, **kwargs)
+  File "/home/anomp/dev/kube-local/airflow-kube-local/venv/lib/python3.10/site-packages/dbt/cli/requires.py", line 101, in wrapper
+    return func(*args, **kwargs)
+  File "/home/anomp/dev/kube-local/airflow-kube-local/venv/lib/python3.10/site-packages/dbt/cli/main.py", line 469, in init
+    results = task.run()
+  File "/home/anomp/dev/kube-local/airflow-kube-local/venv/lib/python3.10/site-packages/dbt/task/init.py", line 347, in run
+    self.setup_profile(profile_name)
+  File "/home/anomp/dev/kube-local/airflow-kube-local/venv/lib/python3.10/site-packages/dbt/task/init.py", line 263, in setup_profile
+    self.create_profile_from_target(adapter, profile_name=profile_name)
+  File "/home/anomp/dev/kube-local/airflow-kube-local/venv/lib/python3.10/site-packages/dbt/task/init.py", line 180, in create_profile_from_target
+    self.create_profile_from_profile_template(profile_template, profile_name)
+  File "/home/anomp/dev/kube-local/airflow-kube-local/venv/lib/python3.10/site-packages/dbt/task/init.py", line 164, in create_profile_from_profile_template
+    target = self.generate_target_from_input(prompts, initial_target)
+  File "/home/anomp/dev/kube-local/airflow-kube-local/venv/lib/python3.10/site-packages/dbt/task/init.py", line 117, in generate_target_from_input
+    target = self.generate_target_from_input(
+  File "/home/anomp/dev/kube-local/airflow-kube-local/venv/lib/python3.10/site-packages/dbt/task/init.py", line 130, in generate_target_from_input
+    target[key] = click.prompt(
+  File "/home/anomp/dev/kube-local/airflow-kube-local/venv/lib/python3.10/site-packages/click/termui.py", line 164, in prompt
+    value = prompt_func(prompt)
+  File "/home/anomp/dev/kube-local/airflow-kube-local/venv/lib/python3.10/site-packages/click/termui.py", line 147, in prompt_func
+    raise Abort() from None
+click.exceptions.Abort
+
+[0m11:49:40.596969 [debug] [MainThread]: Resource report: {"command_name": "init", "command_wall_clock_time": 273.2248, "process_user_time": 2.029313, "process_kernel_time": 0.988639, "process_mem_max_rss": "206876", "process_in_blocks": "30696", "process_out_blocks": "88", "command_success": false}
+[0m11:49:40.598408 [debug] [MainThread]: Command `dbt init` failed at 11:49:40.598194 after 273.23 seconds
+[0m11:49:40.599054 [debug] [MainThread]: Sending event: {'category': 'dbt', 'action': 'invocation', 'label': 'end', 'context': [<snowplow_tracker.self_describing_json.SelfDescribingJson object at 0x7fe98c7777c0>, <snowplow_tracker.self_describing_json.SelfDescribingJson object at 0x7fe95e532800>, <snowplow_tracker.self_describing_json.SelfDescribingJson object at 0x7fe95e5325f0>]}
+[0m11:49:40.599604 [debug] [MainThread]: Flushing usage events
+[0m11:49:45.949049 [debug] [MainThread]: Sending event: {'category': 'dbt', 'action': 'invocation', 'label': 'start', 'context': [<snowplow_tracker.self_describing_json.SelfDescribingJson object at 0x7f5805c03760>, <snowplow_tracker.self_describing_json.SelfDescribingJson object at 0x7f580418fa30>, <snowplow_tracker.self_describing_json.SelfDescribingJson object at 0x7f580418f9d0>]}
+
+
+============================== 11:49:45.951496 | de720cb2-6e4b-4f94-9541-c2462879a0d6 ==============================
+[0m11:49:45.951496 [info ] [MainThread]: Running with dbt=1.8.0
+[0m11:49:45.952465 [debug] [MainThread]: running dbt with arguments {'printer_width': '80', 'indirect_selection': 'eager', 'write_json': 'True', 'log_cache_events': 'False', 'partial_parse': 'True', 'cache_selected_only': 'False', 'profiles_dir': '/home/anomp/.dbt', 'fail_fast': 'False', 'warn_error': 'None', 'log_path': 'logs', 'version_check': 'True', 'debug': 'False', 'use_colors': 'True', 'use_experimental_parser': 'False', 'no_print': 'None', 'quiet': 'False', 'warn_error_options': 'WarnErrorOptions(include=[], exclude=[])', 'invocation_command': 'dbt init dbt-bigquery', 'static_parser': 'True', 'log_format': 'default', 'target_path': 'None', 'introspect': 'True', 'send_anonymous_usage_stats': 'True'}
+[0m11:49:50.460317 [info ] [MainThread]: A project called dbt_bq already exists here.
+[0m11:49:50.462043 [debug] [MainThread]: Resource report: {"command_name": "init", "command_success": true, "command_wall_clock_time": 4.5727215, "process_user_time": 1.174796, "process_kernel_time": 0.029867, "process_mem_max_rss": "87656", "process_in_blocks": "16", "process_out_blocks": "0"}
+[0m11:49:50.463159 [debug] [MainThread]: Command `dbt init` succeeded at 11:49:50.462961 after 4.57 seconds
+[0m11:49:50.463783 [debug] [MainThread]: Sending event: {'category': 'dbt', 'action': 'invocation', 'label': 'end', 'context': [<snowplow_tracker.self_describing_json.SelfDescribingJson object at 0x7f5805c03760>, <snowplow_tracker.self_describing_json.SelfDescribingJson object at 0x7f580436a290>, <snowplow_tracker.self_describing_json.SelfDescribingJson object at 0x7f580418fbe0>]}
+[0m11:49:50.464504 [debug] [MainThread]: Flushing usage events
+[0m11:50:05.186224 [debug] [MainThread]: Sending event: {'category': 'dbt', 'action': 'invocation', 'label': 'start', 'context': [<snowplow_tracker.self_describing_json.SelfDescribingJson object at 0x7f3316993700>, <snowplow_tracker.self_describing_json.SelfDescribingJson object at 0x7f3314ee7a00>, <snowplow_tracker.self_describing_json.SelfDescribingJson object at 0x7f3314ee79a0>]}
+
+
+============================== 11:50:05.188601 | b48c6152-5de7-4441-935f-8cc826406f48 ==============================
+[0m11:50:05.188601 [info ] [MainThread]: Running with dbt=1.8.0
+[0m11:50:05.189115 [debug] [MainThread]: running dbt with arguments {'printer_width': '80', 'indirect_selection': 'eager', 'log_cache_events': 'False', 'write_json': 'True', 'partial_parse': 'True', 'cache_selected_only': 'False', 'profiles_dir': '/home/anomp/.dbt', 'version_check': 'True', 'debug': 'False', 'log_path': 'logs', 'fail_fast': 'False', 'warn_error': 'None', 'use_colors': 'True', 'use_experimental_parser': 'False', 'no_print': 'None', 'quiet': 'False', 'log_format': 'default', 'invocation_command': 'dbt init dbt-bigquery', 'introspect': 'True', 'warn_error_options': 'WarnErrorOptions(include=[], exclude=[])', 'target_path': 'None', 'static_parser': 'True', 'send_anonymous_usage_stats': 'True'}
+[0m11:50:07.577868 [debug] [MainThread]: Starter project path: /home/anomp/dev/kube-local/airflow-kube-local/venv/lib/python3.10/site-packages/dbt/include/starter_project
+[0m11:50:07.580426 [info ] [MainThread]: 
+Your new dbt project "dbt_bq" was created!
+
+For more information on how to configure the profiles.yml file,
+please consult the dbt documentation here:
+
+  https://docs.getdbt.com/docs/configure-your-profile
+
+One more thing:
+
+Need help? Don't hesitate to reach out to us via GitHub issues or on Slack:
+
+  https://community.getdbt.com/
+
+Happy modeling!
+
+[0m11:50:07.580858 [info ] [MainThread]: Setting up your profile.
+[0m11:51:36.798331 [info ] [MainThread]: Profile dbt_bq written to /home/anomp/.dbt/profiles.yml using target's profile_template.yml and your supplied values. Run 'dbt debug' to validate the connection.
+[0m11:51:36.801547 [debug] [MainThread]: Resource report: {"command_name": "init", "command_success": true, "command_wall_clock_time": 91.660805, "process_user_time": 1.82132, "process_kernel_time": 0.897639, "process_mem_max_rss": "194912", "process_out_blocks": "80", "process_in_blocks": "0"}
+[0m11:51:36.803135 [debug] [MainThread]: Command `dbt init` succeeded at 11:51:36.802893 after 91.66 seconds
+[0m11:51:36.803894 [debug] [MainThread]: Sending event: {'category': 'dbt', 'action': 'invocation', 'label': 'end', 'context': [<snowplow_tracker.self_describing_json.SelfDescribingJson object at 0x7f3316993700>, <snowplow_tracker.self_describing_json.SelfDescribingJson object at 0x7f33150bdba0>, <snowplow_tracker.self_describing_json.SelfDescribingJson object at 0x7f3314ee7a60>]}
+[0m11:51:36.804679 [debug] [MainThread]: Flushing usage events
+[0m11:51:47.022847 [debug] [MainThread]: Sending event: {'category': 'dbt', 'action': 'invocation', 'label': 'start', 'context': [<snowplow_tracker.self_describing_json.SelfDescribingJson object at 0x7fdc0e203700>, <snowplow_tracker.self_describing_json.SelfDescribingJson object at 0x7fdc0c75fa30>, <snowplow_tracker.self_describing_json.SelfDescribingJson object at 0x7fdc0c75f9a0>]}
+
+
+============================== 11:51:47.025097 | d1ec5d3b-ac13-40e6-885f-ab3c2788de98 ==============================
+[0m11:51:47.025097 [info ] [MainThread]: Running with dbt=1.8.0
+[0m11:51:47.025698 [debug] [MainThread]: running dbt with arguments {'printer_width': '80', 'indirect_selection': 'eager', 'write_json': 'True', 'log_cache_events': 'False', 'partial_parse': 'True', 'cache_selected_only': 'False', 'warn_error': 'None', 'debug': 'False', 'fail_fast': 'False', 'log_path': 'logs', 'version_check': 'True', 'profiles_dir': '/home/anomp/.dbt', 'use_colors': 'True', 'use_experimental_parser': 'False', 'no_print': 'None', 'quiet': 'False', 'log_format': 'default', 'invocation_command': 'dbt debug', 'introspect': 'True', 'static_parser': 'True', 'target_path': 'None', 'warn_error_options': 'WarnErrorOptions(include=[], exclude=[])', 'send_anonymous_usage_stats': 'True'}
+[0m11:51:47.033407 [info ] [MainThread]: dbt version: 1.8.0
+[0m11:51:47.033874 [info ] [MainThread]: python version: 3.10.12
+[0m11:51:47.034318 [info ] [MainThread]: python path: /home/anomp/dev/kube-local/airflow-kube-local/venv/bin/python
+[0m11:51:47.034681 [info ] [MainThread]: os info: Linux-5.15.146.1-microsoft-standard-WSL2-x86_64-with-glibc2.35
+[0m11:51:47.625727 [info ] [MainThread]: Using profiles dir at /home/anomp/.dbt
+[0m11:51:47.626577 [info ] [MainThread]: Using profiles.yml file at /home/anomp/.dbt/profiles.yml
+[0m11:51:47.628690 [info ] [MainThread]: Using dbt_project.yml file at /home/anomp/dev/kube-local/airflow-kube-local/dbt_project.yml
+[0m11:51:47.629530 [info ] [MainThread]: adapter type: bigquery
+[0m11:51:47.629986 [info ] [MainThread]: adapter version: 1.8.1
+[0m11:51:47.630464 [info ] [MainThread]: Configuration:
+[0m11:51:47.630910 [info ] [MainThread]:   profiles.yml file [[32mOK found and valid[0m]
+[0m11:51:47.631343 [info ] [MainThread]:   dbt_project.yml file [[31mERROR not found[0m]
+[0m11:51:47.631780 [info ] [MainThread]: Required dependencies:
+[0m11:51:47.632250 [debug] [MainThread]: Executing "git --help"
+[0m11:51:47.634729 [debug] [MainThread]: STDOUT: "b"usage: git [--version] [--help] [-C <path>] [-c <name>=<value>]\n           [--exec-path[=<path>]] [--html-path] [--man-path] [--info-path]\n           [-p | --paginate | -P | --no-pager] [--no-replace-objects] [--bare]\n           [--git-dir=<path>] [--work-tree=<path>] [--namespace=<name>]\n           [--super-prefix=<path>] [--config-env=<name>=<envvar>]\n           <command> [<args>]\n\nThese are common Git commands used in various situations:\n\nstart a working area (see also: git help tutorial)\n   clone     Clone a repository into a new directory\n   init      Create an empty Git repository or reinitialize an existing one\n\nwork on the current change (see also: git help everyday)\n   add       Add file contents to the index\n   mv        Move or rename a file, a directory, or a symlink\n   restore   Restore working tree files\n   rm        Remove files from the working tree and from the index\n\nexamine the history and state (see also: git help revisions)\n   bisect    Use binary search to find the commit that introduced a bug\n   diff      Show changes between commits, commit and working tree, etc\n   grep      Print lines matching a pattern\n   log       Show commit logs\n   show      Show various types of objects\n   status    Show the working tree status\n\ngrow, mark and tweak your common history\n   branch    List, create, or delete branches\n   commit    Record changes to the repository\n   merge     Join two or more development histories together\n   rebase    Reapply commits on top of another base tip\n   reset     Reset current HEAD to the specified state\n   switch    Switch branches\n   tag       Create, list, delete or verify a tag object signed with GPG\n\ncollaborate (see also: git help workflows)\n   fetch     Download objects and refs from another repository\n   pull      Fetch from and integrate with another repository or a local branch\n   push      Update remote refs along with associated objects\n\n'git help -a' and 'git help -g' list available subcommands and some\nconcept guides. See 'git help <command>' or 'git help <concept>'\nto read about a specific subcommand or concept.\nSee 'git help git' for an overview of the system.\n""
+[0m11:51:47.635299 [debug] [MainThread]: STDERR: "b''"
+[0m11:51:47.635703 [info ] [MainThread]:  - git [[32mOK found[0m]
+
+[0m11:51:47.636100 [info ] [MainThread]: Connection:
+[0m11:51:47.636542 [info ] [MainThread]:   method: oauth
+[0m11:51:47.636936 [info ] [MainThread]:   database: alami-group-data
+[0m11:51:47.637352 [info ] [MainThread]:   execution_project: alami-group-data
+[0m11:51:47.637712 [info ] [MainThread]:   schema: temp_7_days
+[0m11:51:47.638076 [info ] [MainThread]:   location: US
+[0m11:51:47.638464 [info ] [MainThread]:   priority: interactive
+[0m11:51:47.638877 [info ] [MainThread]:   maximum_bytes_billed: None
+[0m11:51:47.639274 [info ] [MainThread]:   impersonate_service_account: None
+[0m11:51:47.639630 [info ] [MainThread]:   job_retry_deadline_seconds: None
+[0m11:51:47.639995 [info ] [MainThread]:   job_retries: 1
+[0m11:51:47.640373 [info ] [MainThread]:   job_creation_timeout_seconds: None
+[0m11:51:47.640786 [info ] [MainThread]:   job_execution_timeout_seconds: 300
+[0m11:51:47.641203 [info ] [MainThread]:   timeout_seconds: 300
+[0m11:51:47.641732 [info ] [MainThread]:   client_id: None
+[0m11:51:47.643501 [info ] [MainThread]:   token_uri: None
+[0m11:51:47.644239 [info ] [MainThread]:   dataproc_region: None
+[0m11:51:47.644821 [info ] [MainThread]:   dataproc_cluster_name: None
+[0m11:51:47.645278 [info ] [MainThread]:   gcs_bucket: None
+[0m11:51:47.645911 [info ] [MainThread]:   dataproc_batch: None
+[0m11:51:47.646495 [info ] [MainThread]: Registered adapter: bigquery=1.8.1
+[0m11:51:47.650343 [debug] [MainThread]: Acquiring new bigquery connection 'debug'
+[0m11:51:47.651006 [debug] [MainThread]: Opening a new connection, currently in state init
+[0m11:51:48.201787 [debug] [MainThread]: On debug: select 1 as id
+[0m11:51:49.310104 [debug] [MainThread]: BigQuery adapter: https://console.cloud.google.com/bigquery?project=alami-group-data&j=bq:US:020b6455-9cb2-425d-9e60-43974ba76602&page=queryresults
+[0m11:51:50.218334 [info ] [MainThread]:   Connection test: [[32mOK connection ok[0m]
+
+[0m11:51:50.219388 [info ] [MainThread]: [31m1 check failed:[0m
+[0m11:51:50.220066 [info ] [MainThread]: Project loading failed for the following reason:
+ project path </home/anomp/dev/kube-local/airflow-kube-local/dbt_project.yml> not found
+
+[0m11:51:50.221741 [debug] [MainThread]: Resource report: {"command_name": "debug", "command_wall_clock_time": 3.2459686, "process_user_time": 2.033374, "process_kernel_time": 0.966356, "process_mem_max_rss": "206136", "process_in_blocks": "56", "process_out_blocks": "24", "command_success": false}
+[0m11:51:50.222828 [debug] [MainThread]: Command `dbt debug` failed at 11:51:50.222603 after 3.25 seconds
+[0m11:51:50.223533 [debug] [MainThread]: Connection 'debug' was properly closed.
+[0m11:51:50.224215 [debug] [MainThread]: Sending event: {'category': 'dbt', 'action': 'invocation', 'label': 'end', 'context': [<snowplow_tracker.self_describing_json.SelfDescribingJson object at 0x7fdc0e203700>, <snowplow_tracker.self_describing_json.SelfDescribingJson object at 0x7fdc0e6e0970>, <snowplow_tracker.self_describing_json.SelfDescribingJson object at 0x7fdbdffb46d0>]}
+[0m11:51:50.224993 [debug] [MainThread]: Flushing usage events
+[0m13:51:21.494535 [debug] [MainThread]: Sending event: {'category': 'dbt', 'action': 'invocation', 'label': 'start', 'context': [<snowplow_tracker.self_describing_json.SelfDescribingJson object at 0x7f9afbd13760>, <snowplow_tracker.self_describing_json.SelfDescribingJson object at 0x7f9afa2bba60>, <snowplow_tracker.self_describing_json.SelfDescribingJson object at 0x7f9afa2bba00>]}
+
+
+============================== 13:51:21.496430 | 1e274e6d-333f-472f-9d64-b6cd7264e014 ==============================
+[0m13:51:21.496430 [info ] [MainThread]: Running with dbt=1.8.0
+[0m13:51:21.496847 [debug] [MainThread]: running dbt with arguments {'printer_width': '80', 'indirect_selection': 'eager', 'log_cache_events': 'False', 'write_json': 'True', 'partial_parse': 'True', 'cache_selected_only': 'False', 'profiles_dir': '/home/anomp/.dbt', 'debug': 'False', 'fail_fast': 'False', 'log_path': 'logs', 'warn_error': 'None', 'version_check': 'True', 'use_colors': 'True', 'use_experimental_parser': 'False', 'no_print': 'None', 'quiet': 'False', 'warn_error_options': 'WarnErrorOptions(include=[], exclude=[])', 'introspect': 'True', 'static_parser': 'True', 'log_format': 'default', 'target_path': 'None', 'invocation_command': 'dbt debug', 'send_anonymous_usage_stats': 'True'}
+[0m13:51:21.501683 [info ] [MainThread]: dbt version: 1.8.0
+[0m13:51:21.502006 [info ] [MainThread]: python version: 3.10.12
+[0m13:51:21.502219 [info ] [MainThread]: python path: /home/anomp/dev/kube-local/airflow-kube-local/venv/bin/python
+[0m13:51:21.502418 [info ] [MainThread]: os info: Linux-5.15.146.1-microsoft-standard-WSL2-x86_64-with-glibc2.35
+[0m13:51:21.894407 [info ] [MainThread]: Using profiles dir at /home/anomp/.dbt
+[0m13:51:21.894880 [info ] [MainThread]: Using profiles.yml file at /home/anomp/.dbt/profiles.yml
+[0m13:51:21.895212 [info ] [MainThread]: Using dbt_project.yml file at /home/anomp/dev/kube-local/airflow-kube-local/dbt_project.yml
+[0m13:51:21.895508 [info ] [MainThread]: adapter type: bigquery
+[0m13:51:21.895743 [info ] [MainThread]: adapter version: 1.8.1
+[0m13:51:21.896040 [info ] [MainThread]: Configuration:
+[0m13:51:21.896306 [info ] [MainThread]:   profiles.yml file [[32mOK found and valid[0m]
+[0m13:51:21.896525 [info ] [MainThread]:   dbt_project.yml file [[31mERROR not found[0m]
+[0m13:51:21.896736 [info ] [MainThread]: Required dependencies:
+[0m13:51:21.896953 [debug] [MainThread]: Executing "git --help"
+[0m13:51:21.898264 [debug] [MainThread]: STDOUT: "b"usage: git [--version] [--help] [-C <path>] [-c <name>=<value>]\n           [--exec-path[=<path>]] [--html-path] [--man-path] [--info-path]\n           [-p | --paginate | -P | --no-pager] [--no-replace-objects] [--bare]\n           [--git-dir=<path>] [--work-tree=<path>] [--namespace=<name>]\n           [--super-prefix=<path>] [--config-env=<name>=<envvar>]\n           <command> [<args>]\n\nThese are common Git commands used in various situations:\n\nstart a working area (see also: git help tutorial)\n   clone     Clone a repository into a new directory\n   init      Create an empty Git repository or reinitialize an existing one\n\nwork on the current change (see also: git help everyday)\n   add       Add file contents to the index\n   mv        Move or rename a file, a directory, or a symlink\n   restore   Restore working tree files\n   rm        Remove files from the working tree and from the index\n\nexamine the history and state (see also: git help revisions)\n   bisect    Use binary search to find the commit that introduced a bug\n   diff      Show changes between commits, commit and working tree, etc\n   grep      Print lines matching a pattern\n   log       Show commit logs\n   show      Show various types of objects\n   status    Show the working tree status\n\ngrow, mark and tweak your common history\n   branch    List, create, or delete branches\n   commit    Record changes to the repository\n   merge     Join two or more development histories together\n   rebase    Reapply commits on top of another base tip\n   reset     Reset current HEAD to the specified state\n   switch    Switch branches\n   tag       Create, list, delete or verify a tag object signed with GPG\n\ncollaborate (see also: git help workflows)\n   fetch     Download objects and refs from another repository\n   pull      Fetch from and integrate with another repository or a local branch\n   push      Update remote refs along with associated objects\n\n'git help -a' and 'git help -g' list available subcommands and some\nconcept guides. See 'git help <command>' or 'git help <concept>'\nto read about a specific subcommand or concept.\nSee 'git help git' for an overview of the system.\n""
+[0m13:51:21.898607 [debug] [MainThread]: STDERR: "b''"
+[0m13:51:21.898818 [info ] [MainThread]:  - git [[32mOK found[0m]
+
+[0m13:51:21.899071 [info ] [MainThread]: Connection:
+[0m13:51:21.899325 [info ] [MainThread]:   method: oauth
+[0m13:51:21.899544 [info ] [MainThread]:   database: alami-group-data
+[0m13:51:21.899748 [info ] [MainThread]:   execution_project: alami-group-data
+[0m13:51:21.899950 [info ] [MainThread]:   schema: temp_7_days
+[0m13:51:21.900148 [info ] [MainThread]:   location: US
+[0m13:51:21.900341 [info ] [MainThread]:   priority: interactive
+[0m13:51:21.900544 [info ] [MainThread]:   maximum_bytes_billed: None
+[0m13:51:21.900767 [info ] [MainThread]:   impersonate_service_account: None
+[0m13:51:21.900963 [info ] [MainThread]:   job_retry_deadline_seconds: None
+[0m13:51:21.901156 [info ] [MainThread]:   job_retries: 1
+[0m13:51:21.901367 [info ] [MainThread]:   job_creation_timeout_seconds: None
+[0m13:51:21.901559 [info ] [MainThread]:   job_execution_timeout_seconds: 300
+[0m13:51:21.901746 [info ] [MainThread]:   timeout_seconds: 300
+[0m13:51:21.901924 [info ] [MainThread]:   client_id: None
+[0m13:51:21.902122 [info ] [MainThread]:   token_uri: None
+[0m13:51:21.902314 [info ] [MainThread]:   dataproc_region: None
+[0m13:51:21.902516 [info ] [MainThread]:   dataproc_cluster_name: None
+[0m13:51:21.902712 [info ] [MainThread]:   gcs_bucket: None
+[0m13:51:21.902905 [info ] [MainThread]:   dataproc_batch: None
+[0m13:51:21.903236 [info ] [MainThread]: Registered adapter: bigquery=1.8.1
+[0m13:51:21.904811 [debug] [MainThread]: Acquiring new bigquery connection 'debug'
+[0m13:51:21.905471 [debug] [MainThread]: Opening a new connection, currently in state init
+[0m13:51:22.160384 [debug] [MainThread]: On debug: select 1 as id
+[0m13:51:22.967127 [debug] [MainThread]: BigQuery adapter: https://console.cloud.google.com/bigquery?project=alami-group-data&j=bq:US:3ace79a8-4e2d-4fe9-a855-7c241f044883&page=queryresults
+[0m13:51:23.906557 [info ] [MainThread]:   Connection test: [[32mOK connection ok[0m]
+
+[0m13:51:23.907590 [info ] [MainThread]: [31m1 check failed:[0m
+[0m13:51:23.908407 [info ] [MainThread]: Project loading failed for the following reason:
+ project path </home/anomp/dev/kube-local/airflow-kube-local/dbt_project.yml> not found
+
+[0m13:51:23.910623 [debug] [MainThread]: Resource report: {"command_name": "debug", "command_wall_clock_time": 2.445678, "process_user_time": 1.444848, "process_kernel_time": 0.890878, "process_mem_max_rss": "199868", "process_out_blocks": "24", "command_success": false, "process_in_blocks": "0"}
+[0m13:51:23.912198 [debug] [MainThread]: Command `dbt debug` failed at 13:51:23.911806 after 2.45 seconds
+[0m13:51:23.913345 [debug] [MainThread]: Connection 'debug' was properly closed.
+[0m13:51:23.913824 [debug] [MainThread]: Sending event: {'category': 'dbt', 'action': 'invocation', 'label': 'end', 'context': [<snowplow_tracker.self_describing_json.SelfDescribingJson object at 0x7f9afbd13760>, <snowplow_tracker.self_describing_json.SelfDescribingJson object at 0x7f9ace0d9870>, <snowplow_tracker.self_describing_json.SelfDescribingJson object at 0x7f9acdb4c6a0>]}
+[0m13:51:23.914130 [debug] [MainThread]: Flushing usage events
+[0m14:02:07.947916 [debug] [MainThread]: Sending event: {'category': 'dbt', 'action': 'invocation', 'label': 'start', 'context': [<snowplow_tracker.self_describing_json.SelfDescribingJson object at 0x7fe006867790>, <snowplow_tracker.self_describing_json.SelfDescribingJson object at 0x7fe004fc3be0>, <snowplow_tracker.self_describing_json.SelfDescribingJson object at 0x7fe004fc3b80>]}
+
+
+============================== 14:02:07.949736 | d051f663-b207-4b9e-90c8-f768bd42afea ==============================
+[0m14:02:07.949736 [info ] [MainThread]: Running with dbt=1.8.0
+[0m14:02:07.950143 [debug] [MainThread]: running dbt with arguments {'printer_width': '80', 'indirect_selection': 'eager', 'write_json': 'True', 'log_cache_events': 'False', 'partial_parse': 'True', 'cache_selected_only': 'False', 'profiles_dir': '/home/anomp/dev/kube-local/airflow-kube-local/dbt_profiles.yaml', 'fail_fast': 'False', 'warn_error': 'None', 'log_path': 'logs', 'version_check': 'True', 'debug': 'False', 'use_colors': 'True', 'use_experimental_parser': 'False', 'no_print': 'None', 'quiet': 'False', 'log_format': 'default', 'static_parser': 'True', 'invocation_command': 'dbt run --project-dir /home/anomp/dev/kube-local/airflow-kube-local/dbt_project.yaml --profiles-dir /home/anomp/dev/kube-local/airflow-kube-local/dbt_profiles.yaml', 'introspect': 'True', 'target_path': 'None', 'warn_error_options': 'WarnErrorOptions(include=[], exclude=[])', 'send_anonymous_usage_stats': 'True'}
+[0m14:02:07.950487 [error] [MainThread]: Encountered an error:
+Runtime Error
+  No dbt_project.yml found at expected path /home/anomp/dev/kube-local/airflow-kube-local/dbt_project.yaml/dbt_project.yml
+  Verify that each entry within packages.yml (and their transitive dependencies) contains a file named dbt_project.yml
+  
+[0m14:02:07.951057 [debug] [MainThread]: Resource report: {"command_name": "run", "command_wall_clock_time": 0.031877156, "process_user_time": 0.69551, "process_kernel_time": 0.020159, "process_mem_max_rss": "87360", "process_out_blocks": "8", "command_success": false, "process_in_blocks": "0"}
+[0m14:02:07.951446 [debug] [MainThread]: Command `dbt run` failed at 14:02:07.951373 after 0.03 seconds
+[0m14:02:07.951707 [debug] [MainThread]: Sending event: {'category': 'dbt', 'action': 'invocation', 'label': 'end', 'context': [<snowplow_tracker.self_describing_json.SelfDescribingJson object at 0x7fe006867790>, <snowplow_tracker.self_describing_json.SelfDescribingJson object at 0x7fe004fc3ca0>, <snowplow_tracker.self_describing_json.SelfDescribingJson object at 0x7fe004fc3c10>]}
+[0m14:02:07.951962 [debug] [MainThread]: Flushing usage events
+[0m14:02:14.025124 [debug] [MainThread]: Error sending anonymous usage statistics. Disabling tracking for this execution. If you wish to permanently disable tracking, see: https://docs.getdbt.com/reference/global-configs#send-anonymous-usage-stats.
+[0m14:02:33.676274 [debug] [MainThread]: Sending event: {'category': 'dbt', 'action': 'invocation', 'label': 'start', 'context': [<snowplow_tracker.self_describing_json.SelfDescribingJson object at 0x7f12a865b6d0>, <snowplow_tracker.self_describing_json.SelfDescribingJson object at 0x7f12a6bb7af0>, <snowplow_tracker.self_describing_json.SelfDescribingJson object at 0x7f12a6bb7a90>]}
+
+
+============================== 14:02:33.678068 | 7e0d1a35-21b4-4194-906b-9ba08b523ede ==============================
+[0m14:02:33.678068 [info ] [MainThread]: Running with dbt=1.8.0
+[0m14:02:33.678471 [debug] [MainThread]: running dbt with arguments {'printer_width': '80', 'indirect_selection': 'eager', 'write_json': 'True', 'log_cache_events': 'False', 'partial_parse': 'True', 'cache_selected_only': 'False', 'warn_error': 'None', 'version_check': 'True', 'fail_fast': 'False', 'log_path': 'logs', 'debug': 'False', 'profiles_dir': '/home/anomp/dev/kube-local/airflow-kube-local/dbt_profiles.yml', 'use_colors': 'True', 'use_experimental_parser': 'False', 'no_print': 'None', 'quiet': 'False', 'warn_error_options': 'WarnErrorOptions(include=[], exclude=[])', 'static_parser': 'True', 'invocation_command': 'dbt run --project-dir /home/anomp/dev/kube-local/airflow-kube-local/dbt_project.yml --profiles-dir /home/anomp/dev/kube-local/airflow-kube-local/dbt_profiles.yml', 'introspect': 'True', 'target_path': 'None', 'log_format': 'default', 'send_anonymous_usage_stats': 'True'}
+[0m14:02:33.678842 [error] [MainThread]: Encountered an error:
+Runtime Error
+  No dbt_project.yml found at expected path /home/anomp/dev/kube-local/airflow-kube-local/dbt_project.yml/dbt_project.yml
+  Verify that each entry within packages.yml (and their transitive dependencies) contains a file named dbt_project.yml
+  
+[0m14:02:33.679508 [debug] [MainThread]: Resource report: {"command_name": "run", "command_wall_clock_time": 0.032798085, "process_user_time": 0.668358, "process_kernel_time": 0.040506, "process_mem_max_rss": "87372", "command_success": false, "process_in_blocks": "0", "process_out_blocks": "0"}
+[0m14:02:33.679960 [debug] [MainThread]: Command `dbt run` failed at 14:02:33.679880 after 0.03 seconds
+[0m14:02:33.680235 [debug] [MainThread]: Sending event: {'category': 'dbt', 'action': 'invocation', 'label': 'end', 'context': [<snowplow_tracker.self_describing_json.SelfDescribingJson object at 0x7f12a865b6d0>, <snowplow_tracker.self_describing_json.SelfDescribingJson object at 0x7f12a6bb7bb0>, <snowplow_tracker.self_describing_json.SelfDescribingJson object at 0x7f12a6bb7b20>]}
+[0m14:02:33.680495 [debug] [MainThread]: Flushing usage events
+[0m14:02:39.496013 [debug] [MainThread]: Error sending anonymous usage statistics. Disabling tracking for this execution. If you wish to permanently disable tracking, see: https://docs.getdbt.com/reference/global-configs#send-anonymous-usage-stats.
+[0m14:03:00.519565 [debug] [MainThread]: Sending event: {'category': 'dbt', 'action': 'invocation', 'label': 'start', 'context': [<snowplow_tracker.self_describing_json.SelfDescribingJson object at 0x7fc3fc68f700>, <snowplow_tracker.self_describing_json.SelfDescribingJson object at 0x7fc3fabe7b80>, <snowplow_tracker.self_describing_json.SelfDescribingJson object at 0x7fc3fabe7b20>]}
+
+
+============================== 14:03:00.521404 | 095d5a17-36e4-479d-ab3f-ede619d470ee ==============================
+[0m14:03:00.521404 [info ] [MainThread]: Running with dbt=1.8.0
+[0m14:03:00.521804 [debug] [MainThread]: running dbt with arguments {'printer_width': '80', 'indirect_selection': 'eager', 'log_cache_events': 'False', 'write_json': 'True', 'partial_parse': 'True', 'cache_selected_only': 'False', 'warn_error': 'None', 'debug': 'False', 'fail_fast': 'False', 'log_path': '/home/anomp/dev/kube-local/airflow-kube-local/logs', 'version_check': 'True', 'profiles_dir': '/home/anomp/dev/kube-local/airflow-kube-local/dbt_profiles.yml', 'use_colors': 'True', 'use_experimental_parser': 'False', 'no_print': 'None', 'quiet': 'False', 'log_format': 'default', 'static_parser': 'True', 'invocation_command': 'dbt run --project-dir /home/anomp/dev/kube-local/airflow-kube-local --profiles-dir /home/anomp/dev/kube-local/airflow-kube-local/dbt_profiles.yml', 'warn_error_options': 'WarnErrorOptions(include=[], exclude=[])', 'target_path': 'None', 'introspect': 'True', 'send_anonymous_usage_stats': 'True'}
+[0m14:03:00.524375 [error] [MainThread]: Encountered an error:
+Runtime Error
+  Could not find profile named 'dbt_bq'
+[0m14:03:00.525192 [debug] [MainThread]: Resource report: {"command_name": "run", "command_wall_clock_time": 0.037243705, "process_user_time": 0.723961, "process_kernel_time": 0.039669, "process_mem_max_rss": "87340", "process_out_blocks": "16", "command_success": false, "process_in_blocks": "0"}
+[0m14:03:00.525663 [debug] [MainThread]: Command `dbt run` failed at 14:03:00.525589 after 0.04 seconds
+[0m14:03:00.525933 [debug] [MainThread]: Sending event: {'category': 'dbt', 'action': 'invocation', 'label': 'end', 'context': [<snowplow_tracker.self_describing_json.SelfDescribingJson object at 0x7fc3fc68f700>, <snowplow_tracker.self_describing_json.SelfDescribingJson object at 0x7fc3fabe4250>, <snowplow_tracker.self_describing_json.SelfDescribingJson object at 0x7fc3fabe6dd0>]}
+[0m14:03:00.526197 [debug] [MainThread]: Flushing usage events
+[0m14:22:12.521973 [debug] [MainThread]: Sending event: {'category': 'dbt', 'action': 'invocation', 'label': 'start', 'context': [<snowplow_tracker.self_describing_json.SelfDescribingJson object at 0x7fdb4c4536d0>, <snowplow_tracker.self_describing_json.SelfDescribingJson object at 0x7fdb4a9a3af0>, <snowplow_tracker.self_describing_json.SelfDescribingJson object at 0x7fdb4a9a3a90>]}
+
+
+============================== 14:22:12.523820 | c1810efb-dc82-4977-abf6-90567820900e ==============================
+[0m14:22:12.523820 [info ] [MainThread]: Running with dbt=1.8.0
+[0m14:22:12.524215 [debug] [MainThread]: running dbt with arguments {'printer_width': '80', 'indirect_selection': 'eager', 'log_cache_events': 'False', 'write_json': 'True', 'partial_parse': 'True', 'cache_selected_only': 'False', 'warn_error': 'None', 'debug': 'False', 'version_check': 'True', 'log_path': 'logs', 'fail_fast': 'False', 'profiles_dir': '/home/anomp/dev/kube-local/airflow-kube-local/', 'use_colors': 'True', 'use_experimental_parser': 'False', 'no_print': 'None', 'quiet': 'False', 'warn_error_options': 'WarnErrorOptions(include=[], exclude=[])', 'introspect': 'True', 'log_format': 'default', 'static_parser': 'True', 'target_path': 'None', 'invocation_command': 'dbt run --profiles-dir /home/anomp/dev/kube-local/airflow-kube-local/', 'send_anonymous_usage_stats': 'True'}
+[0m14:22:12.524532 [error] [MainThread]: Encountered an error:
+Runtime Error
+  No dbt_project.yml found at expected path /home/anomp/dev/kube-local/airflow-kube-local/dbt_project.yml
+  Verify that each entry within packages.yml (and their transitive dependencies) contains a file named dbt_project.yml
+  
+[0m14:22:12.525094 [debug] [MainThread]: Resource report: {"command_name": "run", "command_wall_clock_time": 0.040348202, "process_user_time": 0.656608, "process_kernel_time": 0.070711, "process_mem_max_rss": "87372", "process_out_blocks": "8", "command_success": false, "process_in_blocks": "0"}
+[0m14:22:12.525477 [debug] [MainThread]: Command `dbt run` failed at 14:22:12.525406 after 0.04 seconds
+[0m14:22:12.525728 [debug] [MainThread]: Sending event: {'category': 'dbt', 'action': 'invocation', 'label': 'end', 'context': [<snowplow_tracker.self_describing_json.SelfDescribingJson object at 0x7fdb4c4536d0>, <snowplow_tracker.self_describing_json.SelfDescribingJson object at 0x7fdb4a9a3bb0>, <snowplow_tracker.self_describing_json.SelfDescribingJson object at 0x7fdb4a9a3b20>]}
+[0m14:22:12.525983 [debug] [MainThread]: Flushing usage events
+[0m14:22:53.411727 [debug] [MainThread]: Sending event: {'category': 'dbt', 'action': 'invocation', 'label': 'start', 'context': [<snowplow_tracker.self_describing_json.SelfDescribingJson object at 0x7f7e74f27790>, <snowplow_tracker.self_describing_json.SelfDescribingJson object at 0x7f7e734dbbe0>, <snowplow_tracker.self_describing_json.SelfDescribingJson object at 0x7f7e734dbb50>]}
+
+
+============================== 14:22:53.413389 | 44c75110-b4b9-463f-924d-832b4f1929e3 ==============================
+[0m14:22:53.413389 [info ] [MainThread]: Running with dbt=1.8.0
+[0m14:22:53.413745 [debug] [MainThread]: running dbt with arguments {'printer_width': '80', 'indirect_selection': 'eager', 'write_json': 'True', 'log_cache_events': 'False', 'partial_parse': 'True', 'cache_selected_only': 'False', 'warn_error': 'None', 'fail_fast': 'False', 'profiles_dir': '/home/anomp/dev/kube-local/airflow-kube-local/', 'log_path': 'logs', 'debug': 'False', 'version_check': 'True', 'use_colors': 'True', 'use_experimental_parser': 'False', 'no_print': 'None', 'quiet': 'False', 'log_format': 'default', 'invocation_command': 'dbt run --profiles-dir /home/anomp/dev/kube-local/airflow-kube-local/', 'introspect': 'True', 'static_parser': 'True', 'target_path': 'None', 'warn_error_options': 'WarnErrorOptions(include=[], exclude=[])', 'send_anonymous_usage_stats': 'True'}
+[0m14:22:53.414033 [error] [MainThread]: Encountered an error:
+Runtime Error
+  No dbt_project.yml found at expected path /home/anomp/dev/kube-local/airflow-kube-local/dbt_project.yml
+  Verify that each entry within packages.yml (and their transitive dependencies) contains a file named dbt_project.yml
+  
+[0m14:22:53.414612 [debug] [MainThread]: Resource report: {"command_name": "run", "command_wall_clock_time": 0.03591749, "process_user_time": 0.662098, "process_kernel_time": 0.050158, "process_mem_max_rss": "87596", "process_out_blocks": "16", "command_success": false, "process_in_blocks": "0"}
+[0m14:22:53.415013 [debug] [MainThread]: Command `dbt run` failed at 14:22:53.414938 after 0.04 seconds
+[0m14:22:53.415265 [debug] [MainThread]: Sending event: {'category': 'dbt', 'action': 'invocation', 'label': 'end', 'context': [<snowplow_tracker.self_describing_json.SelfDescribingJson object at 0x7f7e74f27790>, <snowplow_tracker.self_describing_json.SelfDescribingJson object at 0x7f7e734dbf10>, <snowplow_tracker.self_describing_json.SelfDescribingJson object at 0x7f7e734dbc40>]}
+[0m14:22:53.415497 [debug] [MainThread]: Flushing usage events
+[0m14:58:28.954406 [debug] [MainThread]: Sending event: {'category': 'dbt', 'action': 'invocation', 'label': 'start', 'context': [<snowplow_tracker.self_describing_json.SelfDescribingJson object at 0x7f1cc8b8f700>, <snowplow_tracker.self_describing_json.SelfDescribingJson object at 0x7f1cc70e3a30>, <snowplow_tracker.self_describing_json.SelfDescribingJson object at 0x7f1cc70e39d0>]}
+
+
+============================== 14:58:28.958470 | 51292c38-65ae-4727-be45-591d2fa74ed9 ==============================
+[0m14:58:28.958470 [info ] [MainThread]: Running with dbt=1.8.0
+[0m14:58:28.958868 [debug] [MainThread]: running dbt with arguments {'printer_width': '80', 'indirect_selection': 'eager', 'log_cache_events': 'False', 'write_json': 'True', 'partial_parse': 'True', 'cache_selected_only': 'False', 'profiles_dir': '/home/anomp/dev/kube-local/airflow-kube-local', 'version_check': 'True', 'warn_error': 'None', 'log_path': 'logs', 'fail_fast': 'False', 'debug': 'False', 'use_colors': 'True', 'use_experimental_parser': 'False', 'no_print': 'None', 'quiet': 'False', 'log_format': 'default', 'static_parser': 'True', 'invocation_command': 'dbt init', 'introspect': 'True', 'target_path': 'None', 'warn_error_options': 'WarnErrorOptions(include=[], exclude=[])', 'send_anonymous_usage_stats': 'True'}
+[0m14:58:39.196938 [error] [MainThread]: Encountered an error:
+
+[0m14:58:39.204379 [error] [MainThread]: Traceback (most recent call last):
+  File "/home/anomp/dev/kube-local/airflow-kube-local/venv/lib/python3.10/site-packages/dbt/cli/requires.py", line 138, in wrapper
+    result, success = func(*args, **kwargs)
+  File "/home/anomp/dev/kube-local/airflow-kube-local/venv/lib/python3.10/site-packages/dbt/cli/requires.py", line 101, in wrapper
+    return func(*args, **kwargs)
+  File "/home/anomp/dev/kube-local/airflow-kube-local/venv/lib/python3.10/site-packages/dbt/cli/main.py", line 469, in init
+    results = task.run()
+  File "/home/anomp/dev/kube-local/airflow-kube-local/venv/lib/python3.10/site-packages/dbt/task/init.py", line 325, in run
+    project_name = self.get_valid_project_name()
+  File "/home/anomp/dev/kube-local/airflow-kube-local/venv/lib/python3.10/site-packages/dbt/task/init.py", line 279, in get_valid_project_name
+    name = click.prompt("Enter a name for your project (letters, digits, underscore)")
+  File "/home/anomp/dev/kube-local/airflow-kube-local/venv/lib/python3.10/site-packages/click/termui.py", line 164, in prompt
+    value = prompt_func(prompt)
+  File "/home/anomp/dev/kube-local/airflow-kube-local/venv/lib/python3.10/site-packages/click/termui.py", line 147, in prompt_func
+    raise Abort() from None
+click.exceptions.Abort
+
+[0m14:58:39.207127 [debug] [MainThread]: Resource report: {"command_name": "init", "command_wall_clock_time": 10.2821455, "process_user_time": 0.643137, "process_kernel_time": 0.059951, "process_mem_max_rss": "88076", "process_in_blocks": "880", "process_out_blocks": "16", "command_success": false}
+[0m14:58:39.207631 [debug] [MainThread]: Command `dbt init` failed at 14:58:39.207503 after 10.28 seconds
+[0m14:58:39.207892 [debug] [MainThread]: Sending event: {'category': 'dbt', 'action': 'invocation', 'label': 'end', 'context': [<snowplow_tracker.self_describing_json.SelfDescribingJson object at 0x7f1cc8b8f700>, <snowplow_tracker.self_describing_json.SelfDescribingJson object at 0x7f1cc72b5ba0>, <snowplow_tracker.self_describing_json.SelfDescribingJson object at 0x7f1cc70dcbb0>]}
+[0m14:58:39.208188 [debug] [MainThread]: Flushing usage events
+[0m15:05:24.592269 [debug] [MainThread]: Sending event: {'category': 'dbt', 'action': 'invocation', 'label': 'start', 'context': [<snowplow_tracker.self_describing_json.SelfDescribingJson object at 0x7fe9b71bb730>, <snowplow_tracker.self_describing_json.SelfDescribingJson object at 0x7fe9b5713a30>, <snowplow_tracker.self_describing_json.SelfDescribingJson object at 0x7fe9b57139d0>]}
+
+
+============================== 15:05:24.595431 | b4ec9bc7-ba6a-43d1-9603-ef347061179a ==============================
+[0m15:05:24.595431 [info ] [MainThread]: Running with dbt=1.8.0
+[0m15:05:24.595829 [debug] [MainThread]: running dbt with arguments {'printer_width': '80', 'indirect_selection': 'eager', 'log_cache_events': 'False', 'write_json': 'True', 'partial_parse': 'True', 'cache_selected_only': 'False', 'warn_error': 'None', 'fail_fast': 'False', 'profiles_dir': '/home/anomp/.dbt', 'log_path': 'logs', 'version_check': 'True', 'debug': 'False', 'use_colors': 'True', 'use_experimental_parser': 'False', 'no_print': 'None', 'quiet': 'False', 'warn_error_options': 'WarnErrorOptions(include=[], exclude=[])', 'introspect': 'True', 'invocation_command': 'dbt debug', 'log_format': 'default', 'target_path': 'None', 'static_parser': 'True', 'send_anonymous_usage_stats': 'True'}
+[0m15:05:24.606454 [info ] [MainThread]: dbt version: 1.8.0
+[0m15:05:24.606859 [info ] [MainThread]: python version: 3.10.12
+[0m15:05:24.607189 [info ] [MainThread]: python path: /home/anomp/dev/kube-local/airflow-kube-local/venv/bin/python
+[0m15:05:24.607405 [info ] [MainThread]: os info: Linux-5.15.146.1-microsoft-standard-WSL2-x86_64-with-glibc2.35
+[0m15:05:26.125497 [info ] [MainThread]: Using profiles dir at /home/anomp/.dbt
+[0m15:05:26.125983 [info ] [MainThread]: Using profiles.yml file at /home/anomp/.dbt/profiles.yml
+[0m15:05:26.126299 [info ] [MainThread]: Using dbt_project.yml file at /home/anomp/dev/kube-local/airflow-kube-local/dbt_project.yml
+[0m15:05:26.126753 [info ] [MainThread]: adapter type: bigquery
+[0m15:05:26.126998 [info ] [MainThread]: adapter version: 1.8.1
+[0m15:05:26.127219 [info ] [MainThread]: Configuration:
+[0m15:05:26.127431 [info ] [MainThread]:   profiles.yml file [[32mOK found and valid[0m]
+[0m15:05:26.127623 [info ] [MainThread]:   dbt_project.yml file [[31mERROR not found[0m]
+[0m15:05:26.127808 [info ] [MainThread]: Required dependencies:
+[0m15:05:26.128016 [debug] [MainThread]: Executing "git --help"
+[0m15:05:26.143450 [debug] [MainThread]: STDOUT: "b"usage: git [--version] [--help] [-C <path>] [-c <name>=<value>]\n           [--exec-path[=<path>]] [--html-path] [--man-path] [--info-path]\n           [-p | --paginate | -P | --no-pager] [--no-replace-objects] [--bare]\n           [--git-dir=<path>] [--work-tree=<path>] [--namespace=<name>]\n           [--super-prefix=<path>] [--config-env=<name>=<envvar>]\n           <command> [<args>]\n\nThese are common Git commands used in various situations:\n\nstart a working area (see also: git help tutorial)\n   clone     Clone a repository into a new directory\n   init      Create an empty Git repository or reinitialize an existing one\n\nwork on the current change (see also: git help everyday)\n   add       Add file contents to the index\n   mv        Move or rename a file, a directory, or a symlink\n   restore   Restore working tree files\n   rm        Remove files from the working tree and from the index\n\nexamine the history and state (see also: git help revisions)\n   bisect    Use binary search to find the commit that introduced a bug\n   diff      Show changes between commits, commit and working tree, etc\n   grep      Print lines matching a pattern\n   log       Show commit logs\n   show      Show various types of objects\n   status    Show the working tree status\n\ngrow, mark and tweak your common history\n   branch    List, create, or delete branches\n   commit    Record changes to the repository\n   merge     Join two or more development histories together\n   rebase    Reapply commits on top of another base tip\n   reset     Reset current HEAD to the specified state\n   switch    Switch branches\n   tag       Create, list, delete or verify a tag object signed with GPG\n\ncollaborate (see also: git help workflows)\n   fetch     Download objects and refs from another repository\n   pull      Fetch from and integrate with another repository or a local branch\n   push      Update remote refs along with associated objects\n\n'git help -a' and 'git help -g' list available subcommands and some\nconcept guides. See 'git help <command>' or 'git help <concept>'\nto read about a specific subcommand or concept.\nSee 'git help git' for an overview of the system.\n""
+[0m15:05:26.143951 [debug] [MainThread]: STDERR: "b''"
+[0m15:05:26.144215 [info ] [MainThread]:  - git [[32mOK found[0m]
+
+[0m15:05:26.144609 [info ] [MainThread]: Connection:
+[0m15:05:26.144952 [info ] [MainThread]:   method: oauth
+[0m15:05:26.145187 [info ] [MainThread]:   database: alami-group-data
+[0m15:05:26.145397 [info ] [MainThread]:   execution_project: alami-group-data
+[0m15:05:26.145590 [info ] [MainThread]:   schema: temp_7_days
+[0m15:05:26.145794 [info ] [MainThread]:   location: asia-southeast2
+[0m15:05:26.145987 [info ] [MainThread]:   priority: interactive
+[0m15:05:26.146175 [info ] [MainThread]:   maximum_bytes_billed: None
+[0m15:05:26.146368 [info ] [MainThread]:   impersonate_service_account: None
+[0m15:05:26.146559 [info ] [MainThread]:   job_retry_deadline_seconds: None
+[0m15:05:26.146750 [info ] [MainThread]:   job_retries: 1
+[0m15:05:26.146943 [info ] [MainThread]:   job_creation_timeout_seconds: None
+[0m15:05:26.147150 [info ] [MainThread]:   job_execution_timeout_seconds: 300
+[0m15:05:26.147350 [info ] [MainThread]:   timeout_seconds: 300
+[0m15:05:26.147550 [info ] [MainThread]:   client_id: None
+[0m15:05:26.147736 [info ] [MainThread]:   token_uri: None
+[0m15:05:26.147915 [info ] [MainThread]:   dataproc_region: None
+[0m15:05:26.148090 [info ] [MainThread]:   dataproc_cluster_name: None
+[0m15:05:26.148314 [info ] [MainThread]:   gcs_bucket: None
+[0m15:05:26.148513 [info ] [MainThread]:   dataproc_batch: None
+[0m15:05:26.148892 [info ] [MainThread]: Registered adapter: bigquery=1.8.1
+[0m15:05:26.151592 [debug] [MainThread]: Acquiring new bigquery connection 'debug'
+[0m15:05:26.151923 [debug] [MainThread]: Opening a new connection, currently in state init
+[0m15:05:27.336027 [debug] [MainThread]: On debug: select 1 as id
+[0m15:05:28.174571 [debug] [MainThread]: BigQuery adapter: https://console.cloud.google.com/bigquery?project=alami-group-data&j=bq:asia-southeast2:5f14a47b-4624-47a5-8abf-6bb3a0c87982&page=queryresults
+[0m15:05:28.449505 [info ] [MainThread]:   Connection test: [[32mOK connection ok[0m]
+
+[0m15:05:28.450221 [info ] [MainThread]: [31m1 check failed:[0m
+[0m15:05:28.450800 [info ] [MainThread]: Project loading failed for the following reason:
+ project path </home/anomp/dev/kube-local/airflow-kube-local/dbt_project.yml> not found
+
+[0m15:05:28.453546 [debug] [MainThread]: Resource report: {"command_name": "debug", "command_wall_clock_time": 3.895326, "process_user_time": 1.611317, "process_kernel_time": 1.459306, "process_mem_max_rss": "216148", "process_in_blocks": "170912", "process_out_blocks": "24", "command_success": false}
+[0m15:05:28.454847 [debug] [MainThread]: Command `dbt debug` failed at 15:05:28.454562 after 3.90 seconds
+[0m15:05:28.455554 [debug] [MainThread]: Connection 'debug' was properly closed.
+[0m15:05:28.456362 [debug] [MainThread]: Sending event: {'category': 'dbt', 'action': 'invocation', 'label': 'end', 'context': [<snowplow_tracker.self_describing_json.SelfDescribingJson object at 0x7fe9b71bb730>, <snowplow_tracker.self_describing_json.SelfDescribingJson object at 0x7fe98cfc2cb0>, <snowplow_tracker.self_describing_json.SelfDescribingJson object at 0x7fe98cfc07f0>]}
+[0m15:05:28.457063 [debug] [MainThread]: Flushing usage events
+[0m15:06:28.430950 [debug] [MainThread]: Sending event: {'category': 'dbt', 'action': 'invocation', 'label': 'start', 'context': [<snowplow_tracker.self_describing_json.SelfDescribingJson object at 0x7ff2f9b3f730>, <snowplow_tracker.self_describing_json.SelfDescribingJson object at 0x7ff2f8097b50>, <snowplow_tracker.self_describing_json.SelfDescribingJson object at 0x7ff2f8097ac0>]}
+
+
+============================== 15:06:28.432735 | 005aaf1b-0798-418f-bad3-9d429f4e91f9 ==============================
+[0m15:06:28.432735 [info ] [MainThread]: Running with dbt=1.8.0
+[0m15:06:28.433110 [debug] [MainThread]: running dbt with arguments {'printer_width': '80', 'indirect_selection': 'eager', 'write_json': 'True', 'log_cache_events': 'False', 'partial_parse': 'True', 'cache_selected_only': 'False', 'profiles_dir': '/home/anomp/dev/kube-local/airflow-kube-local/dbt_bq/', 'version_check': 'True', 'warn_error': 'None', 'log_path': 'logs', 'fail_fast': 'False', 'debug': 'False', 'use_colors': 'True', 'use_experimental_parser': 'False', 'no_print': 'None', 'quiet': 'False', 'log_format': 'default', 'invocation_command': 'dbt run --profiles-dir /home/anomp/dev/kube-local/airflow-kube-local/dbt_bq/', 'introspect': 'True', 'warn_error_options': 'WarnErrorOptions(include=[], exclude=[])', 'target_path': 'None', 'static_parser': 'True', 'send_anonymous_usage_stats': 'True'}
+[0m15:06:28.433412 [error] [MainThread]: Encountered an error:
+Runtime Error
+  No dbt_project.yml found at expected path /home/anomp/dev/kube-local/airflow-kube-local/dbt_project.yml
+  Verify that each entry within packages.yml (and their transitive dependencies) contains a file named dbt_project.yml
+  
+[0m15:06:28.434027 [debug] [MainThread]: Resource report: {"command_name": "run", "command_wall_clock_time": 0.032768596, "process_user_time": 0.700194, "process_kernel_time": 0.030443, "process_mem_max_rss": "87324", "process_out_blocks": "16", "command_success": false, "process_in_blocks": "0"}
+[0m15:06:28.434450 [debug] [MainThread]: Command `dbt run` failed at 15:06:28.434347 after 0.03 seconds
+[0m15:06:28.434757 [debug] [MainThread]: Sending event: {'category': 'dbt', 'action': 'invocation', 'label': 'end', 'context': [<snowplow_tracker.self_describing_json.SelfDescribingJson object at 0x7ff2f9b3f730>, <snowplow_tracker.self_describing_json.SelfDescribingJson object at 0x7ff2f8097e80>, <snowplow_tracker.self_describing_json.SelfDescribingJson object at 0x7ff2f8097bb0>]}
+[0m15:06:28.435025 [debug] [MainThread]: Flushing usage events
+[0m15:08:56.800293 [debug] [MainThread]: Sending event: {'category': 'dbt', 'action': 'invocation', 'label': 'start', 'context': [<snowplow_tracker.self_describing_json.SelfDescribingJson object at 0x7f94594d7700>, <snowplow_tracker.self_describing_json.SelfDescribingJson object at 0x7f9457a37a30>, <snowplow_tracker.self_describing_json.SelfDescribingJson object at 0x7f9457a379d0>]}
+
+
+============================== 15:08:56.801966 | 24f8cff1-ef04-43df-b94e-e8e5d9d75188 ==============================
+[0m15:08:56.801966 [info ] [MainThread]: Running with dbt=1.8.0
+[0m15:08:56.802323 [debug] [MainThread]: running dbt with arguments {'printer_width': '80', 'indirect_selection': 'eager', 'log_cache_events': 'False', 'write_json': 'True', 'partial_parse': 'True', 'cache_selected_only': 'False', 'profiles_dir': '/home/anomp/.dbt', 'version_check': 'True', 'warn_error': 'None', 'log_path': 'logs', 'fail_fast': 'False', 'debug': 'False', 'use_colors': 'True', 'use_experimental_parser': 'False', 'no_print': 'None', 'quiet': 'False', 'log_format': 'default', 'introspect': 'True', 'warn_error_options': 'WarnErrorOptions(include=[], exclude=[])', 'static_parser': 'True', 'target_path': 'None', 'invocation_command': 'dbt debug --config-dir', 'send_anonymous_usage_stats': 'True'}
+[0m15:08:56.807098 [info ] [MainThread]: To view your profiles.yml file, run:
+
+xdg-open /home/anomp/.dbt
+[0m15:08:56.807732 [debug] [MainThread]: Resource report: {"command_name": "debug", "command_success": true, "command_wall_clock_time": 0.03662805, "process_user_time": 0.691342, "process_kernel_time": 0.040077, "process_mem_max_rss": "87916", "process_out_blocks": "8", "process_in_blocks": "0"}
+[0m15:08:56.808114 [debug] [MainThread]: Command `dbt debug` succeeded at 15:08:56.808040 after 0.04 seconds
+[0m15:08:56.808356 [debug] [MainThread]: Sending event: {'category': 'dbt', 'action': 'invocation', 'label': 'end', 'context': [<snowplow_tracker.self_describing_json.SelfDescribingJson object at 0x7f94594d7700>, <snowplow_tracker.self_describing_json.SelfDescribingJson object at 0x7f9457a37a90>, <snowplow_tracker.self_describing_json.SelfDescribingJson object at 0x7f9457a37a30>]}
+[0m15:08:56.808598 [debug] [MainThread]: Flushing usage events
+[0m15:10:47.290036 [debug] [MainThread]: Sending event: {'category': 'dbt', 'action': 'invocation', 'label': 'start', 'context': [<snowplow_tracker.self_describing_json.SelfDescribingJson object at 0x7f0488677760>, <snowplow_tracker.self_describing_json.SelfDescribingJson object at 0x7f0486dbba60>, <snowplow_tracker.self_describing_json.SelfDescribingJson object at 0x7f0486dbba00>]}
+
+
+============================== 15:10:47.291727 | bb2b8e3e-7f7e-49a8-82b7-74c258e7b19b ==============================
+[0m15:10:47.291727 [info ] [MainThread]: Running with dbt=1.8.0
+[0m15:10:47.292090 [debug] [MainThread]: running dbt with arguments {'printer_width': '80', 'indirect_selection': 'eager', 'log_cache_events': 'False', 'write_json': 'True', 'partial_parse': 'True', 'cache_selected_only': 'False', 'profiles_dir': '/home/anomp/.dbt', 'fail_fast': 'False', 'warn_error': 'None', 'log_path': 'logs', 'version_check': 'True', 'debug': 'False', 'use_colors': 'True', 'use_experimental_parser': 'False', 'no_print': 'None', 'quiet': 'False', 'warn_error_options': 'WarnErrorOptions(include=[], exclude=[])', 'static_parser': 'True', 'invocation_command': 'dbt debug', 'log_format': 'default', 'target_path': 'None', 'introspect': 'True', 'send_anonymous_usage_stats': 'True'}
+[0m15:10:47.297508 [info ] [MainThread]: dbt version: 1.8.0
+[0m15:10:47.297885 [info ] [MainThread]: python version: 3.10.12
+[0m15:10:47.298110 [info ] [MainThread]: python path: /home/anomp/dev/kube-local/airflow-kube-local/venv/bin/python
+[0m15:10:47.298324 [info ] [MainThread]: os info: Linux-5.15.146.1-microsoft-standard-WSL2-x86_64-with-glibc2.35
+[0m15:10:47.686465 [info ] [MainThread]: Using profiles dir at /home/anomp/.dbt
+[0m15:10:47.686892 [info ] [MainThread]: Using profiles.yml file at /home/anomp/.dbt/profiles.yml
+[0m15:10:47.687153 [info ] [MainThread]: Using dbt_project.yml file at /home/anomp/dev/kube-local/airflow-kube-local/dbt_project.yml
+[0m15:10:47.687387 [info ] [MainThread]: adapter type: bigquery
+[0m15:10:47.687591 [info ] [MainThread]: adapter version: 1.8.1
+[0m15:10:47.687802 [info ] [MainThread]: Configuration:
+[0m15:10:47.687993 [info ] [MainThread]:   profiles.yml file [[32mOK found and valid[0m]
+[0m15:10:47.688177 [info ] [MainThread]:   dbt_project.yml file [[31mERROR not found[0m]
+[0m15:10:47.688360 [info ] [MainThread]: Required dependencies:
+[0m15:10:47.688564 [debug] [MainThread]: Executing "git --help"
+[0m15:10:47.689994 [debug] [MainThread]: STDOUT: "b"usage: git [--version] [--help] [-C <path>] [-c <name>=<value>]\n           [--exec-path[=<path>]] [--html-path] [--man-path] [--info-path]\n           [-p | --paginate | -P | --no-pager] [--no-replace-objects] [--bare]\n           [--git-dir=<path>] [--work-tree=<path>] [--namespace=<name>]\n           [--super-prefix=<path>] [--config-env=<name>=<envvar>]\n           <command> [<args>]\n\nThese are common Git commands used in various situations:\n\nstart a working area (see also: git help tutorial)\n   clone     Clone a repository into a new directory\n   init      Create an empty Git repository or reinitialize an existing one\n\nwork on the current change (see also: git help everyday)\n   add       Add file contents to the index\n   mv        Move or rename a file, a directory, or a symlink\n   restore   Restore working tree files\n   rm        Remove files from the working tree and from the index\n\nexamine the history and state (see also: git help revisions)\n   bisect    Use binary search to find the commit that introduced a bug\n   diff      Show changes between commits, commit and working tree, etc\n   grep      Print lines matching a pattern\n   log       Show commit logs\n   show      Show various types of objects\n   status    Show the working tree status\n\ngrow, mark and tweak your common history\n   branch    List, create, or delete branches\n   commit    Record changes to the repository\n   merge     Join two or more development histories together\n   rebase    Reapply commits on top of another base tip\n   reset     Reset current HEAD to the specified state\n   switch    Switch branches\n   tag       Create, list, delete or verify a tag object signed with GPG\n\ncollaborate (see also: git help workflows)\n   fetch     Download objects and refs from another repository\n   pull      Fetch from and integrate with another repository or a local branch\n   push      Update remote refs along with associated objects\n\n'git help -a' and 'git help -g' list available subcommands and some\nconcept guides. See 'git help <command>' or 'git help <concept>'\nto read about a specific subcommand or concept.\nSee 'git help git' for an overview of the system.\n""
+[0m15:10:47.690278 [debug] [MainThread]: STDERR: "b''"
+[0m15:10:47.690484 [info ] [MainThread]:  - git [[32mOK found[0m]
+
+[0m15:10:47.690715 [info ] [MainThread]: Connection:
+[0m15:10:47.690946 [info ] [MainThread]:   method: oauth
+[0m15:10:47.691149 [info ] [MainThread]:   database: alami-group-data
+[0m15:10:47.691338 [info ] [MainThread]:   execution_project: alami-group-data
+[0m15:10:47.691526 [info ] [MainThread]:   schema: temp_7_days
+[0m15:10:47.691708 [info ] [MainThread]:   location: asia-southeast2
+[0m15:10:47.691890 [info ] [MainThread]:   priority: interactive
+[0m15:10:47.692077 [info ] [MainThread]:   maximum_bytes_billed: None
+[0m15:10:47.692239 [info ] [MainThread]:   impersonate_service_account: None
+[0m15:10:47.692456 [info ] [MainThread]:   job_retry_deadline_seconds: None
+[0m15:10:47.692640 [info ] [MainThread]:   job_retries: 1
+[0m15:10:47.692833 [info ] [MainThread]:   job_creation_timeout_seconds: None
+[0m15:10:47.693015 [info ] [MainThread]:   job_execution_timeout_seconds: 300
+[0m15:10:47.693188 [info ] [MainThread]:   timeout_seconds: 300
+[0m15:10:47.693362 [info ] [MainThread]:   client_id: None
+[0m15:10:47.693537 [info ] [MainThread]:   token_uri: None
+[0m15:10:47.693711 [info ] [MainThread]:   dataproc_region: None
+[0m15:10:47.693896 [info ] [MainThread]:   dataproc_cluster_name: None
+[0m15:10:47.694093 [info ] [MainThread]:   gcs_bucket: None
+[0m15:10:47.694277 [info ] [MainThread]:   dataproc_batch: None
+[0m15:10:47.694612 [info ] [MainThread]: Registered adapter: bigquery=1.8.1
+[0m15:10:47.696023 [debug] [MainThread]: Acquiring new bigquery connection 'debug'
+[0m15:10:47.696339 [debug] [MainThread]: Opening a new connection, currently in state init
+[0m15:10:48.090373 [debug] [MainThread]: On debug: select 1 as id
+[0m15:10:48.656428 [debug] [MainThread]: BigQuery adapter: https://console.cloud.google.com/bigquery?project=alami-group-data&j=bq:asia-southeast2:01238a10-e40a-4588-8ba5-aa9cfc95944c&page=queryresults
+[0m15:10:48.947087 [info ] [MainThread]:   Connection test: [[32mOK connection ok[0m]
+
+[0m15:10:48.948035 [info ] [MainThread]: [31m1 check failed:[0m
+[0m15:10:48.948446 [info ] [MainThread]: Project loading failed for the following reason:
+ project path </home/anomp/dev/kube-local/airflow-kube-local/dbt_project.yml> not found
+
+[0m15:10:48.949124 [debug] [MainThread]: Resource report: {"command_name": "debug", "command_wall_clock_time": 1.6918149, "process_user_time": 1.411996, "process_kernel_time": 0.89126, "process_mem_max_rss": "214808", "process_out_blocks": "24", "command_success": false, "process_in_blocks": "0"}
+[0m15:10:48.949538 [debug] [MainThread]: Command `dbt debug` failed at 15:10:48.949462 after 1.69 seconds
+[0m15:10:48.949785 [debug] [MainThread]: Connection 'debug' was properly closed.
+[0m15:10:48.950017 [debug] [MainThread]: Sending event: {'category': 'dbt', 'action': 'invocation', 'label': 'end', 'context': [<snowplow_tracker.self_describing_json.SelfDescribingJson object at 0x7f0488677760>, <snowplow_tracker.self_describing_json.SelfDescribingJson object at 0x7f045abd1870>, <snowplow_tracker.self_describing_json.SelfDescribingJson object at 0x7f045a4606a0>]}
+[0m15:10:48.950296 [debug] [MainThread]: Flushing usage events
+[0m15:11:33.525816 [debug] [MainThread]: Sending event: {'category': 'dbt', 'action': 'invocation', 'label': 'start', 'context': [<snowplow_tracker.self_describing_json.SelfDescribingJson object at 0x7f6a86b8b760>, <snowplow_tracker.self_describing_json.SelfDescribingJson object at 0x7f6a852d7a60>, <snowplow_tracker.self_describing_json.SelfDescribingJson object at 0x7f6a852d7a00>]}
+
+
+============================== 15:11:33.527566 | 6fdd145b-2ab7-43e9-9e69-629ae8a407b7 ==============================
+[0m15:11:33.527566 [info ] [MainThread]: Running with dbt=1.8.0
+[0m15:11:33.527935 [debug] [MainThread]: running dbt with arguments {'printer_width': '80', 'indirect_selection': 'eager', 'write_json': 'True', 'log_cache_events': 'False', 'partial_parse': 'True', 'cache_selected_only': 'False', 'profiles_dir': '/home/anomp/dev/kube-local/airflow-kube-local/dbt_bq/', 'version_check': 'True', 'debug': 'False', 'log_path': 'logs', 'warn_error': 'None', 'fail_fast': 'False', 'use_colors': 'True', 'use_experimental_parser': 'False', 'no_print': 'None', 'quiet': 'False', 'log_format': 'default', 'static_parser': 'True', 'warn_error_options': 'WarnErrorOptions(include=[], exclude=[])', 'introspect': 'True', 'target_path': 'None', 'invocation_command': 'dbt debug', 'send_anonymous_usage_stats': 'True'}
+[0m15:11:33.532440 [info ] [MainThread]: dbt version: 1.8.0
+[0m15:11:33.532803 [info ] [MainThread]: python version: 3.10.12
+[0m15:11:33.533035 [info ] [MainThread]: python path: /home/anomp/dev/kube-local/airflow-kube-local/venv/bin/python
+[0m15:11:33.533242 [info ] [MainThread]: os info: Linux-5.15.146.1-microsoft-standard-WSL2-x86_64-with-glibc2.35
+[0m15:11:33.920132 [info ] [MainThread]: Using profiles dir at /home/anomp/dev/kube-local/airflow-kube-local/dbt_bq/
+[0m15:11:33.920561 [info ] [MainThread]: Using profiles.yml file at /home/anomp/dev/kube-local/airflow-kube-local/dbt_bq/profiles.yml
+[0m15:11:33.920837 [info ] [MainThread]: Using dbt_project.yml file at /home/anomp/dev/kube-local/airflow-kube-local/dbt_project.yml
+[0m15:11:33.921105 [info ] [MainThread]: adapter type: bigquery
+[0m15:11:33.921324 [info ] [MainThread]: adapter version: 1.8.1
+[0m15:11:33.921551 [info ] [MainThread]: Configuration:
+[0m15:11:33.921791 [info ] [MainThread]:   profiles.yml file [[32mOK found and valid[0m]
+[0m15:11:33.922019 [info ] [MainThread]:   dbt_project.yml file [[31mERROR not found[0m]
+[0m15:11:33.922215 [info ] [MainThread]: Required dependencies:
+[0m15:11:33.922526 [debug] [MainThread]: Executing "git --help"
+[0m15:11:33.924126 [debug] [MainThread]: STDOUT: "b"usage: git [--version] [--help] [-C <path>] [-c <name>=<value>]\n           [--exec-path[=<path>]] [--html-path] [--man-path] [--info-path]\n           [-p | --paginate | -P | --no-pager] [--no-replace-objects] [--bare]\n           [--git-dir=<path>] [--work-tree=<path>] [--namespace=<name>]\n           [--super-prefix=<path>] [--config-env=<name>=<envvar>]\n           <command> [<args>]\n\nThese are common Git commands used in various situations:\n\nstart a working area (see also: git help tutorial)\n   clone     Clone a repository into a new directory\n   init      Create an empty Git repository or reinitialize an existing one\n\nwork on the current change (see also: git help everyday)\n   add       Add file contents to the index\n   mv        Move or rename a file, a directory, or a symlink\n   restore   Restore working tree files\n   rm        Remove files from the working tree and from the index\n\nexamine the history and state (see also: git help revisions)\n   bisect    Use binary search to find the commit that introduced a bug\n   diff      Show changes between commits, commit and working tree, etc\n   grep      Print lines matching a pattern\n   log       Show commit logs\n   show      Show various types of objects\n   status    Show the working tree status\n\ngrow, mark and tweak your common history\n   branch    List, create, or delete branches\n   commit    Record changes to the repository\n   merge     Join two or more development histories together\n   rebase    Reapply commits on top of another base tip\n   reset     Reset current HEAD to the specified state\n   switch    Switch branches\n   tag       Create, list, delete or verify a tag object signed with GPG\n\ncollaborate (see also: git help workflows)\n   fetch     Download objects and refs from another repository\n   pull      Fetch from and integrate with another repository or a local branch\n   push      Update remote refs along with associated objects\n\n'git help -a' and 'git help -g' list available subcommands and some\nconcept guides. See 'git help <command>' or 'git help <concept>'\nto read about a specific subcommand or concept.\nSee 'git help git' for an overview of the system.\n""
+[0m15:11:33.924413 [debug] [MainThread]: STDERR: "b''"
+[0m15:11:33.924618 [info ] [MainThread]:  - git [[32mOK found[0m]
+
+[0m15:11:33.924846 [info ] [MainThread]: Connection:
+[0m15:11:33.925071 [info ] [MainThread]:   method: oauth
+[0m15:11:33.925285 [info ] [MainThread]:   database: alami-group-data
+[0m15:11:33.925484 [info ] [MainThread]:   execution_project: alami-group-data
+[0m15:11:33.925674 [info ] [MainThread]:   schema: temp_7_days
+[0m15:11:33.925857 [info ] [MainThread]:   location: asia-southeast2
+[0m15:11:33.926037 [info ] [MainThread]:   priority: interactive
+[0m15:11:33.926217 [info ] [MainThread]:   maximum_bytes_billed: None
+[0m15:11:33.926373 [info ] [MainThread]:   impersonate_service_account: None
+[0m15:11:33.926553 [info ] [MainThread]:   job_retry_deadline_seconds: None
+[0m15:11:33.926739 [info ] [MainThread]:   job_retries: 1
+[0m15:11:33.926920 [info ] [MainThread]:   job_creation_timeout_seconds: None
+[0m15:11:33.927109 [info ] [MainThread]:   job_execution_timeout_seconds: 300
+[0m15:11:33.927289 [info ] [MainThread]:   timeout_seconds: 300
+[0m15:11:33.927468 [info ] [MainThread]:   client_id: None
+[0m15:11:33.927648 [info ] [MainThread]:   token_uri: None
+[0m15:11:33.927830 [info ] [MainThread]:   dataproc_region: None
+[0m15:11:33.928007 [info ] [MainThread]:   dataproc_cluster_name: None
+[0m15:11:33.928182 [info ] [MainThread]:   gcs_bucket: None
+[0m15:11:33.928355 [info ] [MainThread]:   dataproc_batch: None
+[0m15:11:33.928668 [info ] [MainThread]: Registered adapter: bigquery=1.8.1
+[0m15:11:33.929909 [debug] [MainThread]: Acquiring new bigquery connection 'debug'
+[0m15:11:33.930184 [debug] [MainThread]: Opening a new connection, currently in state init
+[0m15:11:34.272790 [debug] [MainThread]: On debug: select 1 as id
+[0m15:11:34.785048 [debug] [MainThread]: BigQuery adapter: https://console.cloud.google.com/bigquery?project=alami-group-data&j=bq:asia-southeast2:b40b11eb-2727-40a0-8dcb-fcb1350a18c4&page=queryresults
+[0m15:11:35.042424 [info ] [MainThread]:   Connection test: [[32mOK connection ok[0m]
+
+[0m15:11:35.043290 [info ] [MainThread]: [31m1 check failed:[0m
+[0m15:11:35.043880 [info ] [MainThread]: Project loading failed for the following reason:
+ project path </home/anomp/dev/kube-local/airflow-kube-local/dbt_project.yml> not found
+
+[0m15:11:35.044966 [debug] [MainThread]: Resource report: {"command_name": "debug", "command_wall_clock_time": 1.55171, "process_user_time": 1.453264, "process_kernel_time": 0.858437, "process_mem_max_rss": "210548", "process_out_blocks": "24", "command_success": false, "process_in_blocks": "0"}
+[0m15:11:35.045533 [debug] [MainThread]: Command `dbt debug` failed at 15:11:35.045437 after 1.55 seconds
+[0m15:11:35.045850 [debug] [MainThread]: Connection 'debug' was properly closed.
+[0m15:11:35.046117 [debug] [MainThread]: Sending event: {'category': 'dbt', 'action': 'invocation', 'label': 'end', 'context': [<snowplow_tracker.self_describing_json.SelfDescribingJson object at 0x7f6a86b8b760>, <snowplow_tracker.self_describing_json.SelfDescribingJson object at 0x7f6a5cef9870>, <snowplow_tracker.self_describing_json.SelfDescribingJson object at 0x7f6a5c9806a0>]}
+[0m15:11:35.046388 [debug] [MainThread]: Flushing usage events
