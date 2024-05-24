@@ -24,11 +24,12 @@ large_tables = [
 
 
 # def create_dag(dag_id, bash_command, encryption_command, queue_pool, db, table, schedule, is_paused):
-def create_dag(db, table, schedule, queue_pool, entity):
-    if entity != '':
-        dag_id = "pipelines-datalake-{entity}-{db}-production-to-bq-{schedule}".format(entity=entity, db=db, schedule=schedule.replace(" ","_"))    
+def create_dag(yml_conf):
+    if "entity" in yml_conf:
+        dag_id = "pipelines-datalake-{entity}-{db}-production-to-bq-{schedule}".format(entity=yml_conf["entity"], db=yml_conf["database"], schedule=yml_conf["schedule"].replace(" ","_"))    
     else:
-        dag_id = "pipelines-datalake-{db}-production-to-bq-{schedule}".format(db=db,schedule=schedule.replace(" ","_"))
+        dag_id = "pipelines-datalake-{db}-production-to-bq-{schedule}".format(db=yml_conf["database"],schedule=yml_conf["schedule"].replace(" ","_"))
+
 
     default_args = {
         "owner": "data_engineer",
@@ -50,7 +51,7 @@ def create_dag(db, table, schedule, queue_pool, entity):
     )
 
     with dag:
-        for table in table:
+        for table in yml_conf["tables"]:
             task = DummyOperator(task_id=table, dag=dag)
             task
             # bash_command = "PYTHONPATH={dags} python {dags}/{pipeline_script} --db={db} {schema} --dataset={dataset} --table={table} ".format(
@@ -113,18 +114,12 @@ for db in config_dir_path.glob("*.y*ml"):
     db=yml_conf["database"]
     schedule = yml_conf["schedule"]
     table = yml_conf["tables"]
-    if "entity" in yml_conf:
-        entity = yml_conf["entity"]
-    else:
-        entity = ''
+    # if "entity" in yml_conf:
+    #     entity = yml_conf["entity"]
+    # else:
+    #     entity = ''
     
-
-
-
-
-
-
-    create_dag(db, table, schedule, queue_pool, entity)
+    create_dag(yml_conf)
     
 
 
