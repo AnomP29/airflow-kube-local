@@ -42,7 +42,7 @@ def create_dag(db, table, schedule, queue_pool, entity):
         description="Data Lake from DB {db} to BigQuery".format(
             db=db
         ),
-        schedule_interval=schedule,
+        # schedule_interval=schedule,
         schedule_interval=None,
         default_args=default_args,
         catchup=False,
