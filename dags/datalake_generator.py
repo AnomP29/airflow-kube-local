@@ -9,7 +9,7 @@ from airflow.operators.bash import BashOperator
 from ruamel.yaml import YAML
 from datetime import timedelta
 from dependencies.utils import DAGS_FOLDER
-
+from airflow.operators.dummy import DummyOperator
 
 large_tables = [
     'partner_ekyc_integration_record',
@@ -51,40 +51,49 @@ def create_dag(db, table, schedule, queue_pool, entity):
 
     with dag:
         for table in table:
+            task = DummyOperator(task_id=table, dag=dag)
+            task
+            # bash_command = "PYTHONPATH={dags} python {dags}/{pipeline_script} --db={db} {schema} --dataset={dataset} --table={table} ".format(
+            #     dags=DAGS_FOLDER,
+            #     pipeline_script=pipeline_script,
+            #     db=yml_conf["database"],
+            #     schema=schema,
+            #     dataset=yml_conf["dataset"],
+            #     table=table["name"],
+            # )
+            # bash_args = {
+            #     "task_id": table["name"],
+            #     # "on_failure_callback": task_fail_slack_alert,
+            #     "pool": queue_pool,
+            #     "bash_command": bash_command,
+            #     "execution_timeout": timedelta(hours=2),
+            # }
 
-            bash_args = {
-                "task_id": table["name"],
-                # "on_failure_callback": task_fail_slack_alert,
-                "pool": queue_pool,
-                "bash_command": bash_command,
-                "execution_timeout": timedelta(hours=2),
-            }
+            # if table in large_tables:
+            #     executor_conf = {
+            #         "KubernetesExecutor": {
+            #             "request_memory": "16Gi",
+            #             "request_cpu": "4",
+            #         }
+            #     }
+            # bash_args["executor_config"] = executor_conf
+            # bash_args["queue"] = "kubernetes"
 
-            if table in large_tables:
-                executor_conf = {
-                    "KubernetesExecutor": {
-                        "request_memory": "16Gi",
-                        "request_cpu": "4",
-                    }
-                }
-            bash_args["executor_config"] = executor_conf
-            bash_args["queue"] = "kubernetes"
+            # task = BashOperator(**bash_args)
 
-            task = BashOperator(**bash_args)
+            # encryption_command = ''
+            # if encryption_command != '':
+            #     encryption = BashOperator(
+            #         task_id=table + "_encryption",
+            #         # on_failure_callback=task_fail_slack_alert,
+            #         pool=queue_pool,
+            #         bash_command=encryption_command
+            #     )
 
-            encryption_command = ''
-            if encryption_command != '':
-                encryption = BashOperator(
-                    task_id=table + "_encryption",
-                    # on_failure_callback=task_fail_slack_alert,
-                    pool=queue_pool,
-                    bash_command=encryption_command
-                )
+            #     task >> encryption #type: ignore
 
-                task >> encryption #type: ignore
-
-            else:
-                task #type: ignore
+            # else:
+            #     task #type: ignore
 
     dag_model = DagModel(dag_id=dag_id)
     dag_model.set_is_paused(is_paused)
@@ -103,7 +112,7 @@ for db in config_dir_path.glob("*.y*ml"):
 
     db=yml_conf["database"]
     schedule = yml_conf["schedule"]
-    table = yml_conf["table"]
+    table = yml_conf["tables"]
     if "entity" in yml_conf:
         entity = yml_conf["entity"]
     else:
