@@ -114,7 +114,7 @@ for db in config_dir_path.glob("*.y*ml"):
 
 
 
-    globals() = create_dag(db, table, schedule, queue_pool, entity)
+    create_dag(db, table, schedule, queue_pool, entity)
     
 
 
