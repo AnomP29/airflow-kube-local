@@ -37,8 +37,9 @@ def create_dag(yml_conf):
         "retries": 3,
         "retry_delay": timedelta(seconds=300),
     }
-    tbl_stat = yml_conf["tables"]
-    is_paused = tbl_stat["status"] != 'on'
+    # tbl_stat = yml_conf["tables"]
+    # is_paused = tbl_stat["status"] != 'on'
+    is_paused = True
     dag = DAG(
         dag_id,
         description="Data Lake from DB {db} to BigQuery".format(
