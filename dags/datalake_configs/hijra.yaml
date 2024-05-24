@@ -1,0 +1,264 @@
+database: hijra
+template: templates/pipeline-datalake-hijra-production-to-bq.py.tmpl
+dataset: hijra_lake
+type: postgresql
+schema: public
+schedule : 0 17 * * *
+tables:
+  # not usable table
+  # - name: application_activity
+  #   schema: common
+  #   encryption: true
+  #   status: off
+  - name: authorization_role
+    schema: ciam
+    encryption: false
+    status: on
+  - name: ayah
+    schema: common
+    encryption: false
+    status: off
+  - name: blacklist_token
+    schema: ciam
+    encryption: false
+    status: on
+  - name: ciam_failed_otp_phone
+    schema: ciam
+    encryption: true
+    status: on
+  - name: ciam_permission
+    schema: ciam
+    encryption: false
+    status: on
+  - name: ciam_role_permission
+    schema: ciam
+    encryption: false
+    status: on
+  - name: ciam_user_backoffice_activity
+    schema: ciam
+    encryption: false
+    status: on
+    schedule : 0 20 * * *
+  - name: ciam_user_backoffice_login
+    schema: ciam
+    encryption: true
+    status: on
+  - name: ciam_user_backoffice_login_approval
+    schema: ciam
+    encryption: false
+    status: on
+  - name: common_in_backoffice_app_notification
+    schema: common
+    encryption: false
+    status: on
+  - name: customer_address
+    schema: customer
+    encryption: true
+    status: on
+  - name: customer_business_campaign_draft
+    schema: customer
+    encryption: false
+    status: on
+  - name: customer_business_campaign_published
+    schema: customer
+    encryption: false
+    status: on
+  - name: customer_business_data
+    schema: customer
+    encryption: false
+    status: on
+  - name: customer_content_campaign_draft
+    schema: customer
+    encryption: false
+    status: on
+  - name: customer_content_campaign_published
+    schema: customer
+    encryption: false
+    status: on
+  - name: customer_data
+    schema: customer
+    encryption: true
+    status: on
+    schedule : 0 20 * * *
+  - name: customer_delete_request
+    schema: customer
+    encryption: true
+    status: on
+  - name: customer_manual_verification
+    schema: customer
+    encryption: true
+    status: on
+  - name: customer_marketing_campaign_draft
+    schema: customer
+    encryption: false
+    status: on
+  - name: customer_marketing_campaign_publish
+    schema: customer
+    encryption: false
+    status: on
+  - name: customer_update_status
+    schema: customer
+    encryption: false
+    status: on
+  - name: daily_insight
+    schema: common
+    encryption: false
+    status: on
+  - name: device_info
+    schema: ciam
+    encryption: false
+    status: on
+  - name: in_app_notification
+    schema: common
+    encryption: false
+    status: on
+  - name: juz
+    schema: common
+    encryption: false
+    status: off
+  - name: mobile_text
+    encryption: false
+    status: off
+  - name: notification_preference
+    schema: ciam
+    encryption: false
+    status: on
+  - name: otp_token
+    schema: ciam
+    encryption: false
+    status: on
+  - name: surah
+    schema: common
+    encryption: false
+    status: off
+  # removed from database
+  # - name: temp_mambu_data
+  #   encryption: false
+  #   status: off
+  - name: text
+    schema: common
+    encryption: false
+    status: on
+  - name: user_activity_request
+    schema: ciam
+    encryption: false
+    status: on
+  - name: user_login
+    schema: ciam
+    encryption: true
+    status: on
+  - name: user_preference
+    schema: ciam
+    encryption: false
+    status: on
+  - name: verification_token
+    schema: ciam
+    encryption: false
+    status: on
+  - name: verify_data
+    schema: customer
+    encryption: false
+    status: on
+  - name: withdraw_history
+    encryption: false
+    status: off
+  - name: anl_ocr_result
+    schema: customer
+    encryption: false
+    status: on
+  - name: anl_ocr_output
+    schema: customer
+    encryption: true
+    status: off
+  - name: anl_user_register
+    schema: ciam
+    encryption: true
+    status: on
+  - name: user_lounges
+    schema: ciam
+    encryption: true
+    status: on
+  - name: insider_webhook
+    schema: common
+    encryption: false
+    status: on
+  - name: lifestyle_event_registrations
+    schema: customer
+    encryption: false
+    status: on
+  - name: lifestyle_events
+    schema: customer
+    encryption: false
+    status: on
+  - name: customer_deleted_data
+    schema: customer
+    encryption: false
+    status: on
+  - name: user_referrals
+    schema: ciam
+    encryption: false
+    status: on
+  - name: lifestyle_video
+    schema: customer
+    encryption: false
+    status: on
+  - name: lifestyle_video_theme
+    schema: customer
+    encryption: false
+    status: on
+  - name: meta_content
+    schema: common
+    encryption: false
+    status: on
+  - name: shortlisted_hijrabiz_users
+    schema: customer
+    encryption: false
+    status: on
+  - name: lifestyle_events_draft
+    schema: customer
+    encryption: false
+    status: off
+  - name: dua_category
+    schema: common
+    encryption: false
+    status: on
+  - name: dua_category_detail
+    schema: common
+    encryption: false
+    status: on
+  - name: dua_content
+    schema: common
+    encryption: false
+    status: on
+  - name: dua_content_detail
+    schema: common
+    encryption: false
+    status: on
+  - name: lifestyle_spotlight
+    schema: customer
+    encryption: false
+    status: on
+  - name: lifestyle_spotlight_thumbnail
+    schema: customer
+    encryption: false
+    status: on
+  - name: customer_ekycstatus_histories
+    schema: customer
+    encryption: false
+    status: on
+  - name: customer_data_state_history
+    schema: customer
+    encryption: false
+    status: on
+  - name: customer_data_validations
+    schema: customer
+    encryption: false
+    status: on
+  - name: customer_detail_manual_verification
+    schema: customer
+    encryption: false
+    status: on
+  - name: customer_adjustment_history
+    schema: customer
+    encryption: false
+    status: on
