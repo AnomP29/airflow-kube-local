@@ -72,6 +72,7 @@ def create_dag(db, table, schedule, queue_pool, entity):
 
             task = BashOperator(**bash_args)
 
+            encryption_command = ''
             if encryption_command != '':
                 encryption = BashOperator(
                     task_id=table + "_encryption",
