@@ -6,7 +6,7 @@ from airflow import DAG
 from airflow.configuration import conf
 from airflow.utils.trigger_rule import TriggerRule
 
-from dependencies.slack_notification import task_fail_slack_alert
+# from dependencies.slack_notification import task_fail_slack_alert
 
 
 DAGS_FOLDER = conf.get("core", "dags_folder")
