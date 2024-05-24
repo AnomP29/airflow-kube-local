@@ -1,0 +1,55 @@
+database: hijra_account
+template: templates/pipeline-datalake-hijra_account-production-to-bq.py.tmpl
+dataset: hijra_lake
+type: postgresql
+schema: account
+schedule : 0 17 * * *
+tables:
+  - name: account_hijra_box
+    encryption: true
+    status: on
+  - name: account_info
+    encryption: true
+    status: on
+  - name: donation_account_agency
+    encryption: true
+    status: on
+  - name: donation_reward
+    encryption: false
+    status: on
+  - name: donation_transaction
+    encryption: true
+    status: on
+  # table was deleted on 7 April 2022
+  # - name: recommendation_hijra_box
+  #   status: on
+  - name: account_professional_approval
+    encryption: false
+    status: off
+  - name: account_professional_specialization_approval
+    encryption: false
+    status: off
+  - name: account_professional_category
+    encryption: false
+    status: on
+  - name: account_professional_subcategory
+    encryption: false
+    status: on
+  - name: account_professional_specialization
+    encryption: false
+    status: on
+  - name: account_professional
+    encryption: false
+    status: on
+  - name: account_consultation_question
+    encryption: false
+    status: on
+  - name: account_consultation_answer
+    encryption: false
+    status: on
+  - name: account_consultation_info
+    encryption: false
+    status: on
+  - name: account_consultation_history
+    encryption: false
+    status: on
