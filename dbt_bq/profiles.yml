@@ -1,0 +1,13 @@
+dbt_bq:
+  outputs:
+    dev:
+      dataset: temp_7_days
+      job_execution_timeout_seconds: 300
+      job_retries: 1
+      location: asia-southeast2
+      method: oauth
+      priority: interactive
+      project: alami-group-data
+      threads: 1
+      type: bigquery
+  target: dev
