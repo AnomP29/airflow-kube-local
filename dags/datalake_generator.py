@@ -54,7 +54,7 @@ def create_dag(yml_conf):
 
     with dag:
         for table in yml_conf["tables"]:
-            task = DummyOperator(task_id=table, dag=dag)
+            task = DummyOperator(task_id=table["name"], dag=dag)
             task
             # bash_command = "PYTHONPATH={dags} python {dags}/{pipeline_script} --db={db} {schema} --dataset={dataset} --table={table} ".format(
             #     dags=DAGS_FOLDER,
