@@ -42,7 +42,7 @@ def create_dag(yml_conf):
     dag = DAG(
         dag_id,
         description="Data Lake from DB {db} to BigQuery".format(
-            db=db
+            db=yml_conf["database"]
         ),
         # schedule_interval=schedule,
         schedule_interval=None,
