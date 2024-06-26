@@ -4,28 +4,29 @@ from datetime import datetime, timedelta
 from airflow.operators.dummy import DummyOperator
 
 default_args = {
-    'owner': 'aprasetyo',
+    'owner': 'airflow',
+    'depends_on_past': False,
     'start_date': datetime(2024, 5, 10),
     'catchup': False
 }
 
-dag = DAG(
-    'bashop_param',
-    default_args = default_args,
-    # schedule = timedelta(days=1)
-    schedule = None
-)
+with airflow.DAG(
+        'bashop_param',
+        default_args=default_args,
+        schedule_interval=None,
+        catchup=False,
+) as dag:
+    
+    start_task = DummyOperator(task_id='start_task', dag=dag)
+    end_task = DummyOperator(task_id='end_task', dag=dag)
+    
+    params_t1 = BashOperator(
+        task_id = 'params_t1',
+        bash_command ='echo "params_t1_222222"',
+        dag=dag,
+    )
 
-start_task = DummyOperator(task_id='start_task', dag=dag)
-end_task = DummyOperator(task_id='end_task', dag=dag)
-
-params_t1 = BashOperator(
-    task_id = 'params_t1',
-    bash_command ='echo "params_t1_222222"',
-    dag=dag,
-)
-
-start_task >> params_t1 >> end_task
+    start_task >> params_t1 >> end_task
     # orders_path = pathlib.Path(DAGS_FOLDER).joinpath("scripts/bashop/orders.txt")
     # orders_conf = []
 
