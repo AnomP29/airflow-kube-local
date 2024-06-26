@@ -8,11 +8,10 @@ from airflow.sensors.external_task import ExternalTaskSensor
 from airflow import models
 from airflow.operators.bash import BashOperator
 from dependencies.utils import DAGS_FOLDER
-from datetime import datetime, timedelta
 
 default_args = {
     'owner': 'aprasetyo',
-    'start_date': datetime(2024, 5, 10),
+    "start_date": airflow.utils.dates.days_ago(1),
     "provide_context": True,
     "retries": 1,
     "retry_delay": datetime.timedelta(minutes=5),
