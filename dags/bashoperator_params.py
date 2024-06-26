@@ -46,8 +46,7 @@ with DAG(
                 dags=DAGS_FOLDER, task=task)
         tasks[task] = BashOperator(
             task_id=task,
-            bash_command= bash_cmd_template
-            ),
+            bash_command= bash_cmd_template,
             params={
                 'exec_date': "{{ ds }}"
             },
