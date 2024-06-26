@@ -46,6 +46,6 @@ with DAG(
         tasks[task] = BashOperator(
             task_id=task,
             params={'exec_date': "{{ ds }}"},
-            bash_command= "PYTHONPATH={dags} python {dags}/scripts/bashop/{task}.py {{ params.exec_date }}".format(
+            bash_command= "PYTHONPATH={dags} python {dags}/scripts/bashop/{task}.py {{ ds }}".format(
                 dags=DAGS_FOLDER, task=task),
         )
