@@ -23,7 +23,7 @@ with DAG(
     'bashop_param',
     default_args=default_args,
     schedule=None
-) as base:
+) as dag:
 
     orders_path = pathlib.Path(DAGS_FOLDER).joinpath("scripts/bashop/orders.txt")
     orders_conf = []
