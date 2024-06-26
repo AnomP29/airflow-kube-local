@@ -8,7 +8,7 @@ from airflow.sensors.external_task import ExternalTaskSensor
 from airflow import models
 from airflow.operators.bash import BashOperator
 from dependencies.utils import DAGS_FOLDER
-from datetime import datetime, timedelta
+from datetime import datetime
 from airflow.operators.dummy import DummyOperator
 
 
