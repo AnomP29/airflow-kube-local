@@ -42,7 +42,7 @@ with DAG(
             params={
                 'exec_date': '{{ ds }}'
             },
-            bash_command="PYTHONPATH={dags} python {dags}/scripts/bashop/{task}.py".format(
+            bash_command='echo "PYTHONPATH={dags} python {dags}/scripts/bashop/{task}.py"'.format(
                 dags=DAGS_FOLDER, task=task
             ),
         )
