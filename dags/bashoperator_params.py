@@ -8,6 +8,7 @@ from airflow.sensors.external_task import ExternalTaskSensor
 from airflow import models
 from airflow.operators.bash import BashOperator
 from dependencies.utils import DAGS_FOLDER
+from airflow.operators.dummy import DummyOperator
 
 default_args = {
     'owner': 'aprasetyo',
@@ -34,7 +35,8 @@ with DAG(
             orders_conf.append(order)
 
     listed_tasks = set([task for tasks in orders_conf for task in tasks])
-
+    start_task = DummyOperator(task_id='start_task', dag=dag)
+    end_task = DummyOperator(task_id='end_task', dag=dag)
     tasks = {}
     for task in listed_tasks:
         tasks[task] = BashOperator(
