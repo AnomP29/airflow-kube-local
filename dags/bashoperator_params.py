@@ -24,7 +24,7 @@ with DAG(
     catchup=False,
     default_args=default_args,
     schedule=None
-) as dag:
+) as dags:
 
     orders_path = pathlib.Path(DAGS_FOLDER).joinpath("scripts/bashop/orders.txt")
     orders_conf = []
@@ -41,7 +41,7 @@ with DAG(
         tasks[task] = BashOperator(
             task_id=task,
             bash_command= 'echo "coba"',
-            
+            dag=dags,
             )
             # params={
             #     'exec_date': '{{ ds }}'
