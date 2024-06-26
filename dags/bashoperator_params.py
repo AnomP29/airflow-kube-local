@@ -24,24 +24,24 @@ with DAG(
     schedule=None
 ) as base:
 
-    orders_path = pathlib.Path(DAGS_FOLDER).joinpath("scripts/bashop/orders.txt")
-    orders_conf = []
+    # orders_path = pathlib.Path(DAGS_FOLDER).joinpath("scripts/bashop/orders.txt")
+    # orders_conf = []
 
-    for order in open(orders_path).read().splitlines():
-        if order != "":
-            order = [o.strip() for o in order.split() if o != ">>"]
-            orders_conf.append(order)
+    # for order in open(orders_path).read().splitlines():
+    #     if order != "":
+    #         order = [o.strip() for o in order.split() if o != ">>"]
+    #         orders_conf.append(order)
 
-    listed_tasks = set([task for tasks in orders_conf for task in tasks])
+    # listed_tasks = set([task for tasks in orders_conf for task in tasks])
 
-    tasks = {}
-    for task in listed_tasks:
-        tasks[task] = BashOperator(
-            task_id=task,
-            bash_command="PYTHONPATH={dags} python {dags}/scripts/bashop/{task}.py".format(
-                dags=DAGS_FOLDER, task=task
-            ),
-            params={
-                'exec_date': '{{ ds }}'
-            }
-        )
+    # tasks = {}
+    # for task in listed_tasks:
+    #     tasks[task] = BashOperator(
+    #         task_id=task,
+    #         bash_command="PYTHONPATH={dags} python {dags}/scripts/bashop/{task}.py".format(
+    #             dags=DAGS_FOLDER, task=task
+    #         ),
+    #         params={
+    #             'exec_date': '{{ ds }}'
+    #         }
+    #     )
