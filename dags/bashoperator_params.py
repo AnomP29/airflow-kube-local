@@ -10,7 +10,7 @@ default_args = {
 }
 
 dag = DAG(
-    'First_K8s',
+    'bashop_param',
     default_args = default_args,
     # schedule = timedelta(days=1)
     schedule = None
