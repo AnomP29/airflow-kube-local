@@ -11,11 +11,13 @@ from dependencies.utils import DAGS_FOLDER
 
 
 default_args = {
-    'owner': 'aprasetyo',
-    'start_date': datetime(2024, 5, 10),
-    'catchup': False
+    "owner": "anmp",
+    "start_date": airflow.utils.dates.days_ago(1),
+    "email_on_failure": True,
+    "email_on_retry": False,
+    "provide_context": True,
+    "retries": 1,
 }
-
 with DAG(
     'bashop_param',
     default_args=default_args,
