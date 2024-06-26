@@ -14,13 +14,6 @@ from airflow.operators.dummy import DummyOperator
 
 default_args = {
     'owner': 'aprasetyo',
-    "start_date": airflow.utils.dates.days_ago(1),
-    "provide_context": True,
-    "retries": 1,
-}
-
-default_args = {
-    'owner': 'aprasetyo',
     'start_date': datetime(2024, 5, 10),
     'catchup': False
 }
