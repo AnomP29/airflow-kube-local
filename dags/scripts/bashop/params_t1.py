@@ -10,7 +10,7 @@ query = '''
 {{ execution_date.strftime('%Y-%m-%dT%H:%M:%S') }}
 '''
 """---------------------------------END--------------------------------"""
-
+print({{ execution_date.strftime('%Y-%m-%dT%H:%M:%S') }})
 print(query)
 
 # if __name__ == "__main__":
