@@ -34,14 +34,14 @@ with DAG(
 
     listed_tasks = set([task for tasks in orders_conf for task in tasks])
 
-    # tasks = {}
-    # for task in listed_tasks:
-    #     tasks[task] = BashOperator(
-    #         task_id=task,
-    #         bash_command="PYTHONPATH={dags} python {dags}/scripts/bashop/{task}.py".format(
-    #             dags=DAGS_FOLDER, task=task
-    #         ),
-    #         params={
-    #             'exec_date': '{{ ds }}'
-    #         }
-    #     )
+    tasks = {}
+    for task in listed_tasks:
+        tasks[task] = BashOperator(
+            task_id=task,
+            bash_command="PYTHONPATH={dags} python {dags}/scripts/bashop/{task}.py".format(
+                dags=DAGS_FOLDER, task=task
+            ),
+            params={
+                'exec_date': '{{ ds }}'
+            }
+        )
