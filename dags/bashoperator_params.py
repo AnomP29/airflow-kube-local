@@ -10,7 +10,7 @@ default_args = {
     'catchup': False
 }
 
-with airflow.DAG(
+with DAG(
         'bashop_param',
         default_args=default_args,
         schedule_interval=None,
