@@ -1,5 +1,5 @@
 import airflow
-import datetime
+# import datetime
 import pathlib
 
 from airflow import DAG
@@ -8,7 +8,9 @@ from airflow.sensors.external_task import ExternalTaskSensor
 from airflow import models
 from airflow.operators.bash import BashOperator
 from dependencies.utils import DAGS_FOLDER
+from datetime import datetime, timedelta
 from airflow.operators.dummy import DummyOperator
+
 
 default_args = {
     'owner': 'aprasetyo',
@@ -19,17 +21,22 @@ default_args = {
 
 }
 
-with DAG(
-    'bashop_param',
-    catchup=False,
-    default_args=default_args,
-    schedule=None
-):
+default_args = {
+    'owner': 'aprasetyo',
+    'start_date': datetime(2024, 5, 10),
+    'catchup': False
+}
 
-    BashOperator(
-        task_id = 'params_t1',
-        bash_command ='echo "params_t1_222222"',
-    )
+dag = DAG(
+    'bashop_param',
+    default_args = default_args,
+    # schedule = timedelta(days=1)
+    schedule = None
+)
+BashOperator(
+    task_id = 'params_t1',
+    bash_command ='echo "params_t1_222222"',
+)
     # orders_path = pathlib.Path(DAGS_FOLDER).joinpath("scripts/bashop/orders.txt")
     # orders_conf = []
 
