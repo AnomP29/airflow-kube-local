@@ -11,11 +11,13 @@ from dependencies.utils import DAGS_FOLDER
 
 
 default_args = {
-    'owner': 'aprasetyo',
-    'start_date': datetime(2024, 5, 10),
-    'catchup': False
+    "owner": "anmp",
+    "start_date": airflow.utils.dates.days_ago(1),
+    "email_on_failure": True,
+    "email_on_retry": False,
+    "provide_context": True,
+    "retries": 1,
 }
-
 with DAG(
     'bashop_param',
     default_args=default_args,
@@ -30,16 +32,16 @@ with DAG(
             order = [o.strip() for o in order.split() if o != ">>"]
             orders_conf.append(order)
 
-    listed_tasks = set([task for tasks in orders_conf for task in tasks])
+    # listed_tasks = set([task for tasks in orders_conf for task in tasks])
 
-    tasks = {}
-    for task in listed_tasks:
-        tasks[task] = BashOperator(
-            task_id=task,
-            bash_command="PYTHONPATH={dags} python {dags}/scripts/bashop/{task}.py".format(
-                dags=DAGS_FOLDER, task=task
-            ),
-            params={
-                'exec_date': '{{ ds }}'
-            }
-        )
+    # tasks = {}
+    # for task in listed_tasks:
+    #     tasks[task] = BashOperator(
+    #         task_id=task,
+    #         bash_command="PYTHONPATH={dags} python {dags}/scripts/bashop/{task}.py".format(
+    #             dags=DAGS_FOLDER, task=task
+    #         ),
+    #         params={
+    #             'exec_date': '{{ ds }}'
+    #         }
+    #     )
