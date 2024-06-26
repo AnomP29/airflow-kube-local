@@ -17,8 +17,8 @@ with DAG(
         catchup=False,
 ) as param:
     
-    start_task = DummyOperator(task_id='start_task', dag=dag)
-    end_task = DummyOperator(task_id='end_task', dag=dag)
+    start_task = DummyOperator(task_id='start_task', dag=param)
+    end_task = DummyOperator(task_id='end_task', dag=param)
     
     params_t1 = BashOperator(
         task_id = 'params_t1',
