@@ -1,16 +1,7 @@
-import airflow
-# import datetime
-import pathlib
-
 from airflow import DAG
-from airflow.utils.session import provide_session
-from airflow.sensors.external_task import ExternalTaskSensor
-from airflow import models
 from airflow.operators.bash import BashOperator
-from dependencies.utils import DAGS_FOLDER
-from datetime import datetime
+from datetime import datetime, timedelta
 from airflow.operators.dummy import DummyOperator
-
 
 default_args = {
     'owner': 'aprasetyo',
@@ -19,18 +10,22 @@ default_args = {
 }
 
 dag = DAG(
-    'bashop_param',
+    'First_K8s',
     default_args = default_args,
     # schedule = timedelta(days=1)
     schedule = None
 )
+
+start_task = DummyOperator(task_id='start_task', dag=dag)
+end_task = DummyOperator(task_id='end_task', dag=dag)
+
 params_t1 = BashOperator(
     task_id = 'params_t1',
     bash_command ='echo "params_t1_222222"',
     dag=dag,
 )
 
-params_t1
+start_task >> params_t1 >> end_task
     # orders_path = pathlib.Path(DAGS_FOLDER).joinpath("scripts/bashop/orders.txt")
     # orders_conf = []
 
