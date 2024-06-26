@@ -29,6 +29,8 @@ BashOperator(
     bash_command ='echo "params_t1_222222"',
     dag=dag,
 )
+
+params_t1
     # orders_path = pathlib.Path(DAGS_FOLDER).joinpath("scripts/bashop/orders.txt")
     # orders_conf = []
 
