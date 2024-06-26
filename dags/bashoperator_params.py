@@ -17,8 +17,6 @@ default_args = {
     "start_date": airflow.utils.dates.days_ago(1),
     "provide_context": True,
     "retries": 1,
-    "retry_delay": datetime.timedelta(minutes=5),
-
 }
 
 default_args = {
