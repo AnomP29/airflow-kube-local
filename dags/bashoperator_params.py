@@ -13,11 +13,15 @@ from datetime import datetime, timedelta
 default_args = {
     'owner': 'aprasetyo',
     'start_date': datetime(2024, 5, 10),
-    'catchup': False
+    "provide_context": True,
+    "retries": 1,
+    "retry_delay": datetime.timedelta(minutes=5),
+
 }
 
 with DAG(
     'bashop_param',
+    catchup=False,
     default_args=default_args,
     schedule=None
 ) as dag:
