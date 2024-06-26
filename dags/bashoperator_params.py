@@ -35,8 +35,6 @@ with DAG(
             orders_conf.append(order)
 
     listed_tasks = set([task for tasks in orders_conf for task in tasks])
-    start_task = DummyOperator(task_id='start_task')
-    end_task = DummyOperator(task_id='end_task')
     tasks = {}
     for task in listed_tasks:
         tasks[task] = BashOperator(
