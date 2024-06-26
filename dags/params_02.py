@@ -11,7 +11,7 @@ default_args = {
 }
 
 with DAG(
-        'bashop_param2',
+        'params_02',
         default_args=default_args,
         schedule_interval=None,
         catchup=False,
