@@ -7,9 +7,11 @@ table_name = 'rw_mis_lawsuit_termohon_levenshtein_score'
 
 # Your query. Make sure you are running on the biqquery console
 query = '''
-{prm}
-'''.format(prm={{ params.exec_date }})
+'{{ execution_date.strftime('%Y-%m-%dT%H:%M:%S') }}'
+'''
 """---------------------------------END--------------------------------"""
 
-if __name__ == "__main__":
-  main(query)
+print(query)
+
+# if __name__ == "__main__":
+#   main(query)
