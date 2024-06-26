@@ -13,6 +13,7 @@ def main(query):
     # Target dataset
 
     # Create the pandas DataFrame
+    print(query)
 
 
     return query
