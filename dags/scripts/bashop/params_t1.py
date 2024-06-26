@@ -10,7 +10,7 @@ query = '''
 {{ params.exec_date }}
 '''
 """---------------------------------END--------------------------------"""
-print('{{ ds }}')
+print('{{ mascros.ds }}')
 print(query)
 
 # if __name__ == "__main__":
