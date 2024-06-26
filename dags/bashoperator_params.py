@@ -50,5 +50,6 @@ with DAG(
             params={
                 'exec_date': "{{ ds }}"
             },
+            provide_context=True,
             
         )
