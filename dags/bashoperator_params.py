@@ -24,7 +24,7 @@ dag = DAG(
     # schedule = timedelta(days=1)
     schedule = None
 )
-BashOperator(
+params_t1 = BashOperator(
     task_id = 'params_t1',
     bash_command ='echo "params_t1_222222"',
     dag=dag,
