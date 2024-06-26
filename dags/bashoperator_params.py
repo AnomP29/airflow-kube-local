@@ -39,10 +39,10 @@ with DAG(
     for task in listed_tasks:
         tasks[task] = BashOperator(
             task_id=task,
+            params={
+                'exec_date': '{{ ds }}'
+            },
             bash_command="PYTHONPATH={dags} python {dags}/scripts/bashop/{task}.py".format(
                 dags=DAGS_FOLDER, task=task
             ),
-            params={
-                'exec_date': '{{ ds }}'
-            }
         )
