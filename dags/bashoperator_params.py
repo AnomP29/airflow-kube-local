@@ -39,7 +39,8 @@ with DAG(
     for task in listed_tasks:
         tasks[task] = BashOperator(
             task_id=task,
-            bash_command= 'echo "coba"'
+            bash_command= 'echo "coba"',
+            dag=dag
             )
             # params={
             #     'exec_date': '{{ ds }}'
@@ -47,4 +48,4 @@ with DAG(
             # bash_command='echo "PYTHONPATH={dags} python {dags}/scripts/bashop/{task}.py"'.format(
             #     dags=DAGS_FOLDER, task=task
             # ),
-        )
+        # )
