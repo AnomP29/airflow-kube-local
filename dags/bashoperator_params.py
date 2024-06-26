@@ -15,7 +15,7 @@ with DAG(
         default_args=default_args,
         schedule_interval=None,
         catchup=False,
-) as dag:
+) as param:
     
     start_task = DummyOperator(task_id='start_task', dag=dag)
     end_task = DummyOperator(task_id='end_task', dag=dag)
