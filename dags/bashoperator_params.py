@@ -24,8 +24,8 @@ with DAG(
     schedule=None
 ) as base:
 
-    # orders_path = pathlib.Path(DAGS_FOLDER).joinpath("scripts/bashop/orders.txt")
-    # orders_conf = []
+    orders_path = pathlib.Path(DAGS_FOLDER).joinpath("scripts/bashop/orders.txt")
+    orders_conf = []
 
     # for order in open(orders_path).read().splitlines():
     #     if order != "":
