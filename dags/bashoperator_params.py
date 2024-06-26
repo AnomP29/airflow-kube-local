@@ -42,7 +42,6 @@ with DAG(
         tasks[task] = BashOperator(
             task_id=task,
             bash_command= 'echo "coba"',
-            dag=dags,
             )
             # params={
             #     'exec_date': '{{ ds }}'
