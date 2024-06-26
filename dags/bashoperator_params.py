@@ -20,31 +20,25 @@ with DAG(
     start_task = DummyOperator(task_id='start_task')
     end_task = DummyOperator(task_id='end_task')
     
-    params_t1 = BashOperator(
-        task_id = 'params_t1',
-        bash_command ='echo "params_t1_222222"',
-    )
+    
+    # start_task >> params_t1 >> end_task
+    orders_path = pathlib.Path(DAGS_FOLDER).joinpath("scripts/bashop/orders.txt")
+    orders_conf = []
 
-    start_task >> params_t1 >> end_task
-    # orders_path = pathlib.Path(DAGS_FOLDER).joinpath("scripts/bashop/orders.txt")
-    # orders_conf = []
+    for order in open(orders_path).read().splitlines():
+        if order != "":
+            order = [o.strip() for o in order.split() if o != ">>"]
+            orders_conf.append(order)
 
-    # for order in open(orders_path).read().splitlines():
-    #     if order != "":
-    #         order = [o.strip() for o in order.split() if o != ">>"]
-    #         orders_conf.append(order)
-
-    # listed_tasks = set([task for tasks in orders_conf for task in tasks])
-    # tasks = {}
-    # for task in listed_tasks:
-    #     tasks[task] = BashOperator(
-    #         task_id=task,
-    #         bash_command= 'echo "coba"',
-    #         )
-    #         # params={
-    #         #     'exec_date': '{{ ds }}'
-    #         # },
-    #         # bash_command='echo "PYTHONPATH={dags} python {dags}/scripts/bashop/{task}.py"'.format(
-    #         #     dags=DAGS_FOLDER, task=task
-    #         # ),
-    #     # )
+    listed_tasks = set([task for tasks in orders_conf for task in tasks])
+    tasks = {}
+    for task in listed_tasks:
+        tasks[task] = BashOperator(
+            task_id=task,
+            params={
+                'exec_date': '{{ ds }}'
+            },
+            bash_command='echo "PYTHONPATH={dags} python {dags}/scripts/bashop/{task}.py"'.format(
+                dags=DAGS_FOLDER, task=task
+            ),
+        )
