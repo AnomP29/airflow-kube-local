@@ -23,7 +23,7 @@ with DAG(
     params_t1 = BashOperator(
         task_id = 'params_t1',
         bash_command ='echo "params_t1_222222"',
-        dag=dag,
+        dag=param,
     )
 
     start_task >> params_t1 >> end_task
