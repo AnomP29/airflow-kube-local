@@ -27,6 +27,7 @@ dag = DAG(
 BashOperator(
     task_id = 'params_t1',
     bash_command ='echo "params_t1_222222"',
+    dag=dag,
 )
     # orders_path = pathlib.Path(DAGS_FOLDER).joinpath("scripts/bashop/orders.txt")
     # orders_conf = []
