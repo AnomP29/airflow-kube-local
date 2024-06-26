@@ -18,6 +18,7 @@ default_args = {
     "provide_context": True,
     "retries": 1,
 }
+
 with DAG(
     'bashop_param',
     default_args=default_args,
