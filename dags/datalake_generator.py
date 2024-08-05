@@ -28,7 +28,7 @@ def create_dag(yml_conf):
     if "entity" in yml_conf:
         dag_id = "pipelines-datalake-{entity}-{db}-production-to-bq-{schedule}".format(entity=yml_conf["entity"], db=yml_conf["database"], schedule=yml_conf["schedule"].replace(" ","_").replace(" ","_").replace("*","0"))    
     else:
-        dag_id = "pipelines-datalake-{db}-production-to-bq-{schedule}".format(db=yml_conf["database"],schedule=yml_conf["schedule"].replace(" ","_").replace("*","0"))
+        dag_id = "pipelines-datalake-{db}-{schema}-production-to-bq".format(db=yml_conf["database"],schedule=yml_conf["schedule"].replace(" ","_").replace("*","0"),schema= yml_conf["schema"])
 
 
     default_args = {
