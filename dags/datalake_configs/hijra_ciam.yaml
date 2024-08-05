@@ -1,0 +1,17 @@
+database: hijra
+template: templates/pipeline-datalake-hijra_account-production-to-bq.py.tmpl
+dataset: hijra_lake
+type: postgresql
+schema: ciam
+schedule : 0 17 * * *
+tables:
+  - name: anl_user_register
+    encryption: false
+    status: on
+  - name: authorization_role
+    encryption: false
+    status: on
+  - name: blacklist_token
+    encryption: false
+    status: on
+

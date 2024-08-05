@@ -116,6 +116,7 @@ for db in config_dir_path.glob("*.y*ml"):
     db=yml_conf["database"]
     schedule = yml_conf["schedule"]
     table = yml_conf["tables"]
+    schema= yml_conf["schema"]
     # if "entity" in yml_conf:
     #     entity = yml_conf["entity"]
     # else:
