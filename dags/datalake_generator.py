@@ -47,7 +47,7 @@ def create_dag(yml_conf):
         schedule_interval=None,
         default_args=default_args,
         catchup=False,
-        is_paused_upon_creation=is_paused,
+        # is_paused_upon_creation=is_paused,
     )
 
     with dag:
