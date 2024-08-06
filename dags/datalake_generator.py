@@ -39,7 +39,7 @@ def create_dag(yml_conf):
     }
     # tbl_stat = yml_conf["tables"]
     # is_paused = tbl_stat["status"] != 'on'
-    is_paused = True
+    is_paused = False
     dag = DAG(
         dag_id,
         description="Data Lake from DB {db}___{schema} to BigQuery".format(
