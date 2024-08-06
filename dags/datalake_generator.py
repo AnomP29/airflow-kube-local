@@ -122,8 +122,7 @@ def create_dag(yml_conf):
                 # task #type: ignore
 
     dag_model = DagModel(dag_id=dag_id)
-    dag_model.set_is_paused(is_paused)
-
+    
     return dag
 
 
