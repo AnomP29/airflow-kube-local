@@ -42,8 +42,8 @@ def create_dag(yml_conf):
     is_paused = True
     dag = DAG(
         dag_id,
-        description="Data Lake from DB {db} to BigQuery".format(
-            db=yml_conf["database"]
+        description="Data Lake from DB {db}___{schema} to BigQuery".format(
+            db=yml_conf["database"], schema= yml_conf["schema"]
         ),
         # schedule_interval=schedule,
         schedule_interval=None,
@@ -56,7 +56,7 @@ def create_dag(yml_conf):
         for table in yml_conf["tables"]:
             task = BashOperator(
                 task_id = table["name"],
-                bash_command ='echo "Datalake {tables}"'.format(tables=table["name"]),
+                bash_command ='echo "Datalake {tables}"'.format(tables=table["name"],),
                 dag = dag
             )
             task
