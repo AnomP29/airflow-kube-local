@@ -37,7 +37,7 @@ def create_dag(yml_conf):
         "retries": 3,
         "retry_delay": timedelta(seconds=300),
     }
-    is_paused = True
+ 
     dag = DAG(
         dag_id,
         description="Data Lake from DB {db}___{schema} to BigQuery".format(
