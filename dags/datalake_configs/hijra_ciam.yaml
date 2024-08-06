@@ -17,4 +17,9 @@ tables:
   - name: ciam_failed_otp_phone
     encryption: true
     status: on
+  - name: ciam_failed_otp_email
+    encryption: true
+    status: on
+
+
 
