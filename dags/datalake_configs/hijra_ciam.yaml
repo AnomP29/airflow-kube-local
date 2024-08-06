@@ -14,4 +14,7 @@ tables:
   - name: blacklist_token
     encryption: false
     status: on
+  - name: ciam_failed_otp_phone
+    encryption: true
+    status: on
 
