@@ -59,7 +59,13 @@ def create_dag(yml_conf):
                 bash_command ='echo "Datalake {tables}"'.format(tables=table["name"],),
                 dag = dag
             )
-            task
+            if encryption_command != '':
+                encryption = DummyOperator(task_id = table + "_encryption")
+                task >> encryption
+            else:
+                task
+                
+            
             # bash_command = "PYTHONPATH={dags} python {dags}/{pipeline_script} --db={db} {schema} --dataset={dataset} --table={table} ".format(
             #     dags=DAGS_FOLDER,
             #     pipeline_script=pipeline_script,
