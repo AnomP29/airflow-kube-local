@@ -24,7 +24,7 @@ large_tables = [
 
 
 # def create_dag(dag_id, bash_command, encryption_command, queue_pool, db, table, schedule, is_paused):
-def create_dag(yml_conf):
+def create_dag(yml_conf, encryption_command):
     if "entity" in yml_conf:
         dag_id = "ppln-dl-{entity}-{db}-prod-to-bq-{schedule}".format(entity=yml_conf["entity"], db=yml_conf["database"], schedule=yml_conf["schedule"].replace(" ","_").replace(" ","_").replace("*","0"))    
     else:
@@ -122,17 +122,20 @@ for db in config_dir_path.glob("*.y*ml"):
     yml_conf = YAML().load(db.open("r"))
 
     queue_pool = "datalake"
-
     db=yml_conf["database"]
     schedule = yml_conf["schedule"]
     table = yml_conf["tables"]
     schema= yml_conf["schema"]
-    # if "entity" in yml_conf:
-    #     entity = yml_conf["entity"]
-    # else:
-    #     entity = ''
+    encryption_command = ''
+    if table.get("encryption", default=False):
+        if yml_conf["dataset"] == 'hijra_lake':
+            encryption_script = "scripts/encrypt_hijra.py"
+        else:
+            encryption_script = "scripts/encrypt_p2p.py"
+
+        encryption_command = encryption_script
     
-    create_dag(yml_conf)
+    create_dag(yml_conf, encryption_command)
     
 
 
