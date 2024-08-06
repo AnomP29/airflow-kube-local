@@ -72,7 +72,7 @@ def create_dag(yml_conf):
             
             if encryption_command != '':
                 encryption = BashOperator(
-                    task_id = table["name"],
+                    task_id = table["name"] + '_encryption',
                     bash_command ='echo "Datalake {tables} {encryption_command}"'.format(tables=table["name"],encryption_command=encryption_command),
                     dag = dag
                 )
