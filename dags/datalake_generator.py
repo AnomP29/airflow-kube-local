@@ -71,7 +71,7 @@ def create_dag(yml_conf):
 
             
             if encryption_command != '':
-                encryption = DummyOperator(task_id = table + "_encryption")
+                encryption = DummyOperator(table + "_encryption")
                 task >> encryption
             else:
                 task
