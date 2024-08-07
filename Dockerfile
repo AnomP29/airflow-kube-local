@@ -1,4 +1,4 @@
-FROM apache/airflow:2.6.3
+FROM localhost:5000/airflow:v1
 
 COPY requirements.txt /
 

@@ -1,12 +1,12 @@
-apache-airflow==2.6.3
+# apache-airflow==2.6.3
 apache-airflow-providers-google
 PyMySQL
 petl
 gspread
 ruamel.yaml==0.18.6
 sql-metadata==2.6.0
-mlflow-skinny==1.27.0
-scikit-learn==1.1.1
+# mlflow-skinny==1.27.0
+# scikit-learn==1.1.1
 imbalanced-learn==0.9.1
 pymssql==2.3.0
 pandas==2.2.2
