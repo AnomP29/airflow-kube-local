@@ -75,11 +75,12 @@ def create_dag(yml_conf, queue_pool):
             }
             
  
-            task = BashOperator(**bash_args
-                # task_id = table["name"],
+            task = BashOperator(
+                task_id = table["name"],
                 # bash_command ='echo "Datalake {tables}"'.format(tables=table["name"],),
                 # bash_command = 'echo "{bash}"'.format(bash=bash_command),
-                # dag = dag
+                bash_command = bash_command,
+                dag = dag
             )
             encryption_command = ''
             if table.get("encryption", default=False):
