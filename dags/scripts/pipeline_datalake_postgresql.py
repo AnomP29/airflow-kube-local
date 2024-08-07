@@ -66,12 +66,20 @@ def get_count(conn, schema, table, db_name):
 
 def main(db, dataset, schema, table):
     # DB connect
-    if db in ['p2p_realtime','p2p_prod']:
-        db_host  = db_config.db_p2p_realtime_host
-        db_username = db_config.db_p2p_realtime_username
-        db_password = db_config.db_p2p_realtime_password
-        db_name = db_config.db_p2p_realtime_name
-        db_port = db_config.db_p2p_realtime_port
+    # if db in ['p2p_realtime','p2p_prod']:
+    #     db_host  = db_config.db_p2p_realtime_host
+    #     db_username = db_config.db_p2p_realtime_username
+    #     db_password = db_config.db_p2p_realtime_password
+    #     db_name = db_config.db_p2p_realtime_name
+    #     db_port = db_config.db_p2p_realtime_port
+
+    if db == 'hijra':
+        db_host  = db_config.db_hijra_host
+        db_username = db_config.db_hijra_username
+        db_password = db_config.db_hijra_password
+        db_name = db_config.db_hijra_name
+        db_port = db_config.db_hijra_port
+
 
     conn = psycopg2.connect(
         host=db_host,
