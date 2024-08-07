@@ -73,7 +73,7 @@ def main(db, dataset, schema, table):
     #     db_name = db_config.db_p2p_realtime_name
     #     db_port = db_config.db_p2p_realtime_port
 
-    print(db_config.db_hijra_host)
+    print('host---- 'db_config.db_hijra_host)
     if db == 'hijra':
         db_host  = db_config.db_hijra_host
         db_username = db_config.db_hijra_username
@@ -81,7 +81,7 @@ def main(db, dataset, schema, table):
         db_name = db_config.db_hijra_name
         db_port = db_config.db_hijra_port
 
-
+    conn = 'psycopg2.connection'
     # conn = psycopg2.connect(
     #     host=db_host,
     #     user=db_username,
