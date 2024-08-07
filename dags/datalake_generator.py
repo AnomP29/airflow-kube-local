@@ -56,7 +56,16 @@ def create_dag(yml_conf):
 
     with dag:
         for table in yml_conf["tables"]:
-            
+    
+            bash_command = "PYTHONPATH={dags} python {dags}/{pipeline_script} --db={db} {schema} --dataset={dataset} --table={table} ".format(
+                dags=DAGS_FOLDER,
+                pipeline_script=pipeline_script,
+                db=yml_conf["database"],
+                schema=schema,
+                dataset=yml_conf["dataset"],
+                table=table["name"],
+            )
+ 
             task = BashOperator(
                 task_id = table["name"],
                 bash_command ='echo "Datalake {tables}"'.format(tables=table["name"],),
