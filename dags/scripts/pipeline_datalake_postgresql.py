@@ -81,14 +81,15 @@ def main(db, dataset, schema, table):
         db_name = db_config.db_hijra_name
         db_port = db_config.db_hijra_port
 
-    conn = 'psycopg2.connection'
-    # conn = psycopg2.connect(
-    #     host=db_host,
-    #     user=db_username,
-    #     password=db_password,
-    #     database=db_name,
-    #     port=db_port,
-    #     connect_timeout=5)
+    print('connecting to postgres DB')
+    # conn = 'psycopg2.connection'
+    conn = psycopg2.connect(
+        host=db_host,
+        user=db_username,
+        password=db_password,
+        database=db_name,
+        port=db_port,
+        connect_timeout=5)
 
     print("Processing: {}: {}.{}".format(db, schema, table))
 
