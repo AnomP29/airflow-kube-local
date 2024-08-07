@@ -68,7 +68,8 @@ def create_dag(yml_conf):
  
             task = BashOperator(
                 task_id = table["name"],
-                bash_command ='echo "Datalake {tables}"'.format(tables=table["name"],),
+                # bash_command ='echo "Datalake {tables}"'.format(tables=table["name"],),
+                bash_command = 'echo "{bash)"'.format(bash=bash_command),
                 dag = dag
             )
             encryption_command = ''
