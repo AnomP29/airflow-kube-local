@@ -64,6 +64,12 @@ def get_count(conn, schema, table, db_name):
 
     return count
 
+def get_data(conn, db, dataset, schema, table, db_name):
+    # Object client bigquery cursor
+    client = bigquery.Client()
+    client.query("""SELECT * FROM {dataset}.{table}_temp LIMIT 1""".format(dataset=dataset,table=table)).result()
+
+
 def main(db, dataset, schema, table):
     # DB connect
     # if db in ['p2p_realtime','p2p_prod']:
@@ -95,6 +101,10 @@ def main(db, dataset, schema, table):
 
     count = get_count(conn, schema, table, db_name)
     print(count)
+
+    if count != 0:
+        get_data(conn, db, dataset, schema, table, db_name)
+    
 
     return "SUCCESS"
 
