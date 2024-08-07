@@ -48,8 +48,8 @@ def get_count(conn, schema, table, db_name):
 #             sql = "SELECT COUNT(*) FROM {}.{} WHERE DATE(insert_date) >= (CURRENT_DATE - INTERVAL '1 DAY')".format(schema,table)
         if db_name == 'p2p_prod' and table in ['rdl_api_log']:
             sql = "SELECT COUNT(*) FROM {}.{} WHERE DATE(created_date) >= (CURRENT_DATE - INTERVAL '2 DAY')".format(schema,table)
-        # if db == 'hijra' and table in ['anl_user_register']:
-        #     sql = "SELECT COUNT(*) FROM {}.{} WHERE id != 7934".format(schema,table)
+        if db == 'hijra' and table in ['anl_user_register']:
+            sql = "SELECT COUNT(*) FROM {}.{} WHERE id != 7934".format(schema,table)
         # if db == 'hijra' and table in ['user_lounges']:
         #     sql = "SELECT COUNT(*) FROM {}.{} WHERE id != 7534".format(schema,table)
         # if db_name == 'p2p_prod' and table in ['log_login']:
