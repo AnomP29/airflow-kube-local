@@ -24,7 +24,7 @@ large_tables = [
 
 
 # def create_dag(dag_id, bash_command, encryption_command, queue_pool, db, table, schedule, is_paused):
-def create_dag(yml_conf):
+def create_dag(yml_conf, queue_pool):
     if "entity" in yml_conf:
         dag_id = "ppln-dl-{entity}-{db}-prod-to-bq-{schedule}".format(entity=yml_conf["entity"], db=yml_conf["database"], schedule=yml_conf["schedule"].replace(" ","_").replace(" ","_").replace("*","0"))    
     else:
@@ -65,12 +65,21 @@ def create_dag(yml_conf):
                 dataset=yml_conf["dataset"],
                 table=table["name"],
             )
+
+            bash_args = {
+                "task_id": table,
+                # "on_failure_callback": task_fail_slack_alert,
+                "pool": queue_pool,
+                "bash_command": bash_command,
+                "execution_timeout": timedelta(hours=2),
+            }
+            
  
-            task = BashOperator(
-                task_id = table["name"],
+            task = BashOperator(**bash_args
+                # task_id = table["name"],
                 # bash_command ='echo "Datalake {tables}"'.format(tables=table["name"],),
-                bash_command = 'echo "{bash}"'.format(bash=bash_command),
-                dag = dag
+                # bash_command = 'echo "{bash}"'.format(bash=bash_command),
+                # dag = dag
             )
             encryption_command = ''
             if table.get("encryption", default=False):
@@ -154,7 +163,7 @@ for db in config_dir_path.glob("*.y*ml"):
     table = yml_conf["tables"]
     schema= yml_conf["schema"]
     
-    create_dag(yml_conf)
+    create_dag(yml_conf, queue_pool)
     
 
 
