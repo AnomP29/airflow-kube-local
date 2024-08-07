@@ -52,6 +52,14 @@ def create_dag(yml_conf):
 
     with dag:
         for table in yml_conf["tables"]:
+
+            if yml_conf["type"] == "postgresql":
+                pipeline_script = "scripts/pipeline_datalake_postgresql.py"
+                try:
+                    schema = f"--schema={table['schema']}"
+                except:
+                    schema = f"--schema={yml_conf['schema']}"
+            
             task = BashOperator(
                 task_id = table["name"],
                 bash_command ='echo "Datalake {tables}"'.format(tables=table["name"],),
