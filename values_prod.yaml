@@ -65,10 +65,10 @@ containerLifecycleHooks: {}
 airflowHome: /opt/airflow
 
 # Default airflow repository -- overridden by all the specific images below
-defaultAirflowRepository: apache/airflow
+defaultAirflowRepository: localhost:5000/airflow
 
 # Default airflow tag to deploy
-defaultAirflowTag: "2.9.3"
+defaultAirflowTag: "v2"
 
 # Default airflow digest. If specified, it takes precedence over tag
 defaultAirflowDigest: ~
@@ -300,9 +300,9 @@ enableBuiltInSecretEnvVars:
   AIRFLOW__DATABASE__SQL_ALCHEMY_CONN: true
   AIRFLOW_CONN_AIRFLOW_DB: true
   AIRFLOW__WEBSERVER__SECRET_KEY: true
-  AIRFLOW__CELERY__CELERY_RESULT_BACKEND: false
-  AIRFLOW__CELERY__RESULT_BACKEND: false
-  AIRFLOW__CELERY__BROKER_URL: false
+  AIRFLOW__CELERY__CELERY_RESULT_BACKEND: true
+  AIRFLOW__CELERY__RESULT_BACKEND: true
+  AIRFLOW__CELERY__BROKER_URL: true
   AIRFLOW__ELASTICSEARCH__HOST: true
   AIRFLOW__ELASTICSEARCH__ELASTICSEARCH_HOST: true
 
@@ -375,13 +375,19 @@ extraEnv: ~
 
 # Extra envFrom 'items' that will be added to the definition of airflow containers
 # A string is expected (can be templated).
-extraEnvFrom: ~
+# extraEnvFrom: ~
 # eg:
+extraEnvFrom: |
+  - secretRef:
+      name: 'airflow-prod-db-config'
 # extraEnvFrom: |
 #   - secretRef:
 #       name: '{{ .Release.Name }}-airflow-connections'
 #   - configMapRef:
 #       name: '{{ .Release.Name }}-airflow-variables'
+# extraEnvFrom: |
+#   - name: GOOGLE_APPLICATION_CREDENTIALS
+#       value: /opt/account/secrets/sa_credentials.json
 
 # Airflow database & redis config
 data:
@@ -430,11 +436,11 @@ data:
 
 # Fernet key settings
 # Note: fernetKey can only be set during install, not upgrade
-fernetKey: cGNwVWJuSXFjTGJtTDFxaFI3azN4UXV1RlhQUXJKemk=
+fernetKey: M3JURkRDTW0yeXJPSzZMcndXRG9XOWcycGh6ejBpaFk=
 fernetKeySecretName: ~
 
 # Flask secret key for Airflow Webserver: `[webserver] secret_key` in airflow.cfg
-webserverSecretKey: 4d36deb749811692d69cd72c97fcff70
+webserverSecretKey: Yk51VjR4MWgwSmR6ejR5MmN1dnZuQzg1bzFiTXpuRE8=
 webserverSecretKeySecretName: ~
 
 # In order to use kerberos you need to create secret containing the keytab file
@@ -631,7 +637,7 @@ workers:
     #   whenDeleted: Delete
     #   whenScaled: Delete
     # Volume size for worker StatefulSet
-    size: 100Gi
+    size: 10Gi
     # If using a custom storageClass, pass name ref to all statefulSets here
     storageClassName:
     # Execute init container to chown log directory.
@@ -675,11 +681,6 @@ workers:
 
 
   resources: {}
-  # {
-  #   limits: {"cpu": "100m", "memory": "1Gi"},
-  #   requests: {"cpu": "100m", "memory": "512Mi"}
-  # }
-    
   #  limits:
   #   cpu: 100m
   #   memory: 128Mi
@@ -778,7 +779,6 @@ workers:
     # Detailed default security context for waitForMigrations for container level
     securityContexts:
       container: {}
-
   env: []
 
   volumeClaimTemplates: []
@@ -922,7 +922,17 @@ scheduler:
   #       mountPath: "{{ .Values.my_custom_path }}"
   #       readOnly: true
   extraVolumes: []
+  # extraVolumes:
+  #   - name: gcp-secret
+  #     secret:
+  #       secretName: airflow-gcp-test-3
+
   extraVolumeMounts: []
+  # extraVolumeMounts:
+  #   - name: gcp-secret
+  #     mountPath: /opt/account/secrets
+  #     readOnly: true
+
 
   # Select certain nodes for airflow scheduler pods.
   nodeSelector: {}
@@ -1400,7 +1410,7 @@ webserver:
     password: admin
 
   # Launch additional containers into webserver (templated).
-  extraContainers: []
+  extraContainers: 
   # Add additional init containers into webserver (templated).
   extraInitContainers: []
 
@@ -1417,8 +1427,20 @@ webserver:
   #       mountPath: "{{ .Values.my_custom_path }}"
   #       readOnly: true
   extraVolumes: []
-  extraVolumeMounts: []
+  # extraVolumes:
+  #   - name: gcp-secret
+  #     secret:
+  #       secretName: airflow-gcp-test-2
+  #       items: 
+  #         - key: service_account.json
+  #           path: service_account.json
 
+  # extraVolumeMounts: []
+  # extraVolumeMounts:
+  #   - name: gcp-secret
+  #     mountPath: /opt/account/secrets
+  #     readOnly: true
+      
   # This string (can be templated) will be mounted into the Airflow Webserver
   # as a custom webserver_config.py. You can bake a webserver_config.py in to
   # your image instead or specify a configmap containing the
@@ -1496,7 +1518,11 @@ webserver:
     securityContexts:
       container: {}
 
-  env: []
+  # env: []
+  env:
+    - name: GOOGLE_APPLICATION_CREDENTIALS
+      value: /opt/account/secrets/service_account.json
+
 
 # Airflow Triggerer Config
 triggerer:
@@ -2065,7 +2091,7 @@ statsd:
 # PgBouncer settings
 pgbouncer:
   # Enable PgBouncer
-  enabled: true
+  enabled: false
   # Number of PgBouncer replicas to run in Deployment
   replicas: 1
   # Max number of old replicasets to retain
@@ -2218,7 +2244,7 @@ pgbouncer:
     #  requests:
     #   cpu: 100m
     #   memory: 128Mi
-    sslmode: "require"
+    sslmode: "disable"
 
     # supply the name of existing secret with PGBouncer connection URI containing
     # stats user and password.
@@ -2556,25 +2582,176 @@ multiNamespaceMode: false
 # (e.g. `workers.resources`). As such, you normally won't need to override this directly, however,
 # you can still provide a completely custom `pod_template_file.yaml` if desired.
 # If not set, a default one is created using `files/pod-template-file.kubernetes-helm-yaml`.
-podTemplate: ~
+# podTemplate: ~
 # The following example is NOT functional, but meant to be illustrative of how you can provide a custom
 # `pod_template_file`. You're better off starting with the default in
 # `files/pod-template-file.kubernetes-helm-yaml` and modifying from there.
 # We will set `priorityClassName` in this example:
-# podTemplate: |
-#   apiVersion: v1
-#   kind: Pod
-#   metadata:
-#     name: placeholder-name
-#     labels:
-#       tier: airflow
-#       component: worker
-#       release: {{ .Release.Name }}
-#   spec:
-#     priorityClassName: high-priority
-#     containers:
-#       - name: base
-#         ...
+podTemplate: |
+  apiVersion: v1
+  kind: Pod
+  metadata:
+    name: placeholder-name
+    labels:
+      tier: airflow
+      component: worker
+      release: airflow
+    annotations:
+      cluster-autoscaler.kubernetes.io/safe-to-evict: "false"
+  spec:
+    initContainers:      
+      - name: git-sync-init
+        image: registry.k8s.io/git-sync/git-sync:v4.1.0
+        imagePullPolicy: IfNotPresent
+        securityContext:
+          runAsUser: 65533
+        envFrom:  
+          []
+        env:
+          - name: GIT_SYNC_REV
+            value: "HEAD"
+          - name: GITSYNC_REF
+            value: "v2-2-stable"
+          - name: GIT_SYNC_BRANCH
+            value: "main"
+          - name: GIT_SYNC_REPO
+            value: "https://github.com/AnomP29/airflow-kube-local.git"
+          - name: GITSYNC_REPO
+            value: "https://github.com/AnomP29/airflow-kube-local.git"
+          - name: GIT_SYNC_DEPTH
+            value: "1"
+          - name: GITSYNC_DEPTH
+            value: "1"
+          - name: GIT_SYNC_ROOT
+            value: "/git"
+          - name: GITSYNC_ROOT
+            value: "/git"
+          - name: GIT_SYNC_DEST
+            value: "repo"
+          - name: GITSYNC_LINK
+            value: "repo"
+          - name: GIT_SYNC_ADD_USER
+            value: "true"
+          - name: GITSYNC_ADD_USER
+            value: "true"
+          - name: GITSYNC_PERIOD
+            value: "5s"
+          - name: GIT_SYNC_MAX_SYNC_FAILURES
+            value: "0"
+          - name: GITSYNC_MAX_FAILURES
+            value: "0"
+          - name: GIT_SYNC_ONE_TIME
+            value: "true"
+          - name: GITSYNC_ONE_TIME
+            value: "true"
+        resources: 
+          {}
+        volumeMounts:
+        - name: dags
+          mountPath: /git
+    containers:
+      - envFrom:      
+          - secretRef:
+              name: 'airflow-prod-db-config'
+          
+        env:
+          - name: GOOGLE_APPLICATION_CREDENTIALS
+            value: /opt/account/secrets/service_account.json
+          - name: AIRFLOW__CORE__EXECUTOR
+            value: LocalExecutor      
+          # Hard Coded Airflow Envs
+          - name: AIRFLOW__CORE__FERNET_KEY
+            valueFrom:
+              secretKeyRef:
+                name: airflow-fernet-key
+                key: fernet-key
+          - name: AIRFLOW_HOME
+            value: /opt/airflow
+          # For Airflow <2.3, backward compatibility; moved to [database] in 2.3
+          - name: AIRFLOW__CORE__SQL_ALCHEMY_CONN
+            valueFrom:
+              secretKeyRef:
+                name: airflow-metadata
+                key: connection
+          - name: AIRFLOW__DATABASE__SQL_ALCHEMY_CONN
+            valueFrom:
+              secretKeyRef:
+                name: airflow-metadata
+                key: connection
+          - name: AIRFLOW_CONN_AIRFLOW_DB
+            valueFrom:
+              secretKeyRef:
+                name: airflow-metadata
+                key: connection
+          - name: AIRFLOW__WEBSERVER__SECRET_KEY
+            valueFrom:
+              secretKeyRef:
+                name: airflow-webserver-secret-key
+                key: webserver-secret-key      
+          # Dynamically created environment variables
+          # Dynamically created secret envs
+          
+          # Extra env      
+        image: localhost:5000/airflow:v2
+        imagePullPolicy: IfNotPresent
+        securityContext: 
+          allowPrivilegeEscalation: false
+          capabilities:
+            drop:
+              - ALL
+        name: base
+        resources:
+          {}
+        volumeMounts:
+          - mountPath: "/opt/airflow/logs"
+            name: logs
+          - name: config
+            mountPath: "/opt/airflow/airflow.cfg"
+            subPath: airflow.cfg
+            readOnly: true
+          - name: config
+            mountPath: "/opt/airflow/config/airflow_local_settings.py"
+            subPath: airflow_local_settings.py
+            readOnly: true
+          - name: dags
+            mountPath: /opt/airflow/dags
+            readOnly: True
+          - name: gcp-secret-2
+            mountPath: /opt/account/secrets
+            readOnly: true
+
+    restartPolicy: Never
+    securityContext: 
+      runAsUser: 50000
+      fsGroup: 0
+    nodeSelector:
+      {}
+    affinity:
+      {}
+    terminationGracePeriodSeconds: 600
+    tolerations:
+      []
+    topologySpreadConstraints:
+      []
+    serviceAccountName: composer-cluster-sa
+    volumes:
+    - name: dags
+      emptyDir:
+        {}
+    - name: logs
+      persistentVolumeClaim:
+        claimName: airflow-logs-01
+    - name: gcp-secret-2
+      secret:
+        secretName: airflow-gcp-test-2
+        items: 
+        - key: service_account.json
+          path: service_account.json
+    - configMap:
+        name: airflow-config
+      name: config
+
+
 
 # Git sync
 dags:
