@@ -1,6 +1,6 @@
 database: hijra
 template: templates/pipeline-datalake-hijra_account-production-to-bq.py.tmpl
-dataset: hijra_lake
+dataset: datalakes
 type: postgresql
 schema: ciam
 schedule: 0 17 * * *
