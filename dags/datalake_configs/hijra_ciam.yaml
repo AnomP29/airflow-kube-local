@@ -3,23 +3,28 @@ template: templates/pipeline-datalake-hijra_account-production-to-bq.py.tmpl
 dataset: hijra_lake
 type: postgresql
 schema: ciam
-schedule : 0 17 * * *
+schedule: 0 17 * * *
+interval: 2
+interval_unit: HOUR
 tables:
   - name: anl_user_register
     encryption: false
-    status: on
+    date_col: updated_datetime
   - name: authorization_role
     encryption: false
-    status: on
+    date_col: updated_date
   - name: blacklist_token
     encryption: false
-    status: on
-  - name: ciam_failed_otp_phone
-    encryption: true
-    status: on
+    date_col: created_datetime
   - name: ciam_failed_otp_email
     encryption: true
-    status: on
+    date_col: updated_date
+  - name: ciam_failed_otp_phone
+    encryption: true
+    date_col: updated_date
+  - name: ciam_user_backoffice_activity
+    encryption: true
+    date_col: created_at
 
 
 
