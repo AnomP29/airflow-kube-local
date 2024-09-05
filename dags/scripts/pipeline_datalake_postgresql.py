@@ -59,6 +59,7 @@ def get_count(conn, schema, table, db_name):
     else:
         sql = "SELECT COUNT(*) FROM {}.{} WHERE {} >= (CURRENT_DATE - INTERVAL '{} {}')".format(schema,table,data_col,interval,interval_unit)
 
+    print(sql)
     df = pd.read_sql_query(sql, conn)
     count = int(str(df['count'].values).replace('[','').replace(']',''))
 
