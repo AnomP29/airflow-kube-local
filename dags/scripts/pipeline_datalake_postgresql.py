@@ -49,6 +49,9 @@ table = options.table
 db = options.db
 schema = options.schema
 dataset = options.dataset
+date_col = options.date_col
+intval_unit = options.intval_unit
+intval = options.intval
 
 def get_count(conn, schema, table, db_name):
     # TODO: Ini juga perlu kita sederhanakan logic-nya.
