@@ -4,8 +4,8 @@ dataset: datalakes
 type: postgresql
 schema: ciam
 schedule: 0 17 * * *
-interval: 2
-interval_unit: HOUR
+intval: 2
+intval_unit: HOUR
 tables:
   - name: anl_user_register
     encryption: false
