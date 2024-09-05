@@ -57,15 +57,15 @@ def create_dag(yml_conf, queue_pool):
     with dag:
         for table in yml_conf["tables"]:
     
-            bash_command = "PYTHONPATH={dags} python {dags}/{pipeline_script} --db={db} {schema} --dataset={dataset} --table={table} --interval={interval} --interval_unit={interval_unit} --date_col={date_col}".format(
+            bash_command = "PYTHONPATH={dags} python {dags}/{pipeline_script} --db={db} {schema} --dataset={dataset} --table={table} --intval={intval} --intval_unit={intval_unit} --date_col={date_col}".format(
                 dags=DAGS_FOLDER,
                 pipeline_script=pipeline_script,
                 db=yml_conf["database"],
                 schema=schema,
                 dataset=yml_conf["dataset"],
                 table=table["name"],
-                interval=yml_conf["interval"],
-                interval_unit=yml_conf["interval_unit"],
+                intval=yml_conf["intval"],
+                intval_unit=yml_conf["intval_unit"],
                 date_col=table["date_col"],
             )
 
