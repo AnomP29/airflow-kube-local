@@ -66,7 +66,7 @@ def get_count(conn, schema, table, db_name):
 
 def get_data(conn, db, dataset, schema, table, db_name):
     # Object client bigquery cursor
-    client = bigquery.Client('alami-group-data')
+    client = bigquery.Client('hijra-data-dev')
     client.query("""SELECT * FROM {dataset}.{table} LIMIT 1""".format(dataset=dataset,table=table)).result()
 
 
