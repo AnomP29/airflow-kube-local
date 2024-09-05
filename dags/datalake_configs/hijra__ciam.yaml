@@ -15,7 +15,7 @@ tables:
     date_col: updated_date
   - name: blacklist_token
     encryption: false
-    date_col: created_datetime
+    date_col: created_date
   - name: ciam_failed_otp_email
     encryption: true
     date_col: updated_date
