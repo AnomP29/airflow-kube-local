@@ -47,7 +47,7 @@ def get_count(conn, schema, table, db_name):
 #         if db == 'hijra' and table in ['application_activity']:
 #             sql = "SELECT COUNT(*) FROM {}.{} WHERE DATE(insert_date) >= (CURRENT_DATE - INTERVAL '1 DAY')".format(schema,table)
         if db_name == 'p2p_prod' and table in ['rdl_api_log']:
-            sql = "SELECT COUNT(*) FROM {}.{} WHERE DATE(created_date) >= (CURRENT_DATE - INTERVAL '2 DAY')".format(schema,table)
+            sql = "SELECT COUNT(*) FROM {}.{} WHERE {} >= (CURRENT_DATE - INTERVAL '{} {}')".format(schema,table,data_col,interval,interval_unit)
         if db == 'hijra' and table in ['anl_user_register']:
             sql = "SELECT COUNT(*) FROM {}.{} WHERE id != 7934".format(schema,table)
         # if db == 'hijra' and table in ['user_lounges']:
@@ -57,7 +57,7 @@ def get_count(conn, schema, table, db_name):
         # if db_name == 'p2p_prod' and table in ['audit_trail','application_activity']:
         #     sql = "SELECT COUNT(*) FROM {}.{} WHERE DATE(activity_date) >= (CURRENT_DATE - INTERVAL '5 DAY')".format(schema,table)
     else:
-        sql = "SELECT COUNT(*) FROM {}.{}".format(schema,table)
+        sql = "SELECT COUNT(*) FROM {}.{} WHERE {} >= (CURRENT_DATE - INTERVAL '{} {}')".format(schema,table,data_col,interval,interval_unit)
 
     df = pd.read_sql_query(sql, conn)
     count = int(str(df['count'].values).replace('[','').replace(']',''))
