@@ -71,7 +71,7 @@ def get_data(conn, db, dataset, schema, table, db_name):
     client.query("""SELECT * FROM datalakes.{table} LIMIT 1""".format(table=table)).result()
 
 
-def main(db, dataset, schema, table):
+def main(db, dataset, schema, table, date_col, intval, intval_unit):
     # DB connect
     # if db in ['p2p_realtime','p2p_prod']:
     #     db_host  = db_config.db_p2p_realtime_host
@@ -100,7 +100,7 @@ def main(db, dataset, schema, table):
 
     print("Processing: {}: {}.{}".format(db, schema, table))
 
-    count = get_count(conn, schema, table, db_name)
+    count = get_count(conn, schema, table, db_name, date_col, intval, intval_unit)
     print(count)
 
     if count != 0:
@@ -111,7 +111,7 @@ def main(db, dataset, schema, table):
 
 
 if __name__ == "__main__":
-    main(db, dataset, schema, table)
+    main(db, dataset, schema, table, date_col, intval, intval_unit)
 
 
 
