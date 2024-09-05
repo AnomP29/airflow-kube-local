@@ -24,6 +24,8 @@ parser.add_option('--db', dest='db', help='specify database source')
 parser.add_option('--schema', dest='schema', help='specify schema source')
 parser.add_option('--dataset', dest='dataset', help='specify dataset source')
 parser.add_option('--intval', dest='intval', help='interval schedule')
+parser.add_option('--intval_unit', dest='intval_unit', help='interval unit hourly/daily/weekly/etc')
+parser.add_option('--date_col', dest='date_col', help='table column represent date')
 
 
 (options, args) = parser.parse_args()
@@ -38,6 +40,10 @@ if not options.dataset:
     parser.error('dataset is not given')
 if not options.intval:
     parser.error('intval is not given')
+if not options.intval_unit:
+    parser.error('intval_unit is not given')
+if not options.date_col:
+    parser.error('date_col is not given')
 
 table = options.table
 db = options.db
