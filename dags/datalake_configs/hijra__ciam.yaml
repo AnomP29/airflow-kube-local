@@ -23,7 +23,7 @@ tables:
     encryption: true
     date_col: updated_date
   - name: ciam_user_backoffice_activity
-    encryption: true
+    encryption: false
     date_col: created_at
 
 
