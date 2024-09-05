@@ -53,7 +53,7 @@ date_col = options.date_col
 intval_unit = options.intval_unit
 intval = options.intval
 
-def get_count(conn, schema, table, db_name):
+def get_count(conn, schema, table, db_name, date_col, intval, intval_unit):
     # TODO: Ini juga perlu kita sederhanakan logic-nya.
     # Di sini untuk p2p perlu pakai db_name juga.
     if (db != 'hijra_staging' and table in ['audit_trail','log_login','anl_user_register','user_lounges','rdl_api_log']) == True:
