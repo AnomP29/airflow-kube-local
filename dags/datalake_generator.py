@@ -26,9 +26,9 @@ large_tables = [
 # def create_dag(dag_id, bash_command, encryption_command, queue_pool, db, table, schedule, is_paused):
 def create_dag(yml_conf, queue_pool):
     if "entity" in yml_conf:
-        dag_id = "ppln-dl-{entity}-{db}-prod-to-bq-{schedule}".format(entity=yml_conf["entity"], db=yml_conf["database"], schedule=yml_conf["schedule"].replace(" ","_").replace(" ","_").replace("*","0"))    
+        dag_id = "datalake-{entity}-{db}-prod-{schedule}".format(entity=yml_conf["entity"], db=yml_conf["database"], schedule=yml_conf["schedule"].replace(" ","_").replace(" ","_").replace("*","0"))    
     else:
-        dag_id = "ppln-dl-{db}--{schema}-prod-to-bq".format(db=yml_conf["database"],schedule=yml_conf["schedule"].replace(" ","_").replace("*","0"),schema= yml_conf["schema"])
+        dag_id = "datalake-{db}--{schema}-prod".format(db=yml_conf["database"],schedule=yml_conf["schedule"].replace(" ","_").replace("*","0"),schema= yml_conf["schema"])
 
 
     default_args = {
