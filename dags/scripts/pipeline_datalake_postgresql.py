@@ -62,7 +62,7 @@ def get_count(conn, schema, table, db_name, date_col, intval, intval_unit):
         if db_name == 'p2p_prod' and table in ['rdl_api_log']:
             sql = "SELECT COUNT(*) FROM {}.{} WHERE {} >= (CURRENT_DATE - INTERVAL '{} {}')".format(schema,table,date_col,intval,intval_unit)
         if db == 'hijra' and table in ['anl_user_register']:
-            sql = "SELECT COUNT(*) FROM {}.{} WHERE id != 7934".format(schema,table)
+            sql = "SELECT COUNT(*) FROM {}.{} WHERE {} >= (CURRENT_DATE - INTERVAL '{} {}') AND id != 7934".format(schema,table,date_col,intval,intval_unit)
         # if db == 'hijra' and table in ['user_lounges']:
         #     sql = "SELECT COUNT(*) FROM {}.{} WHERE id != 7534".format(schema,table)
         # if db_name == 'p2p_prod' and table in ['log_login']:
