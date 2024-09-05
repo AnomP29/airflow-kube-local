@@ -23,6 +23,8 @@ parser.add_option('--table', dest='table', help='specify table source')
 parser.add_option('--db', dest='db', help='specify database source')
 parser.add_option('--schema', dest='schema', help='specify schema source')
 parser.add_option('--dataset', dest='dataset', help='specify dataset source')
+parser.add_option('--intval', dest='intval', help='interval schedule')
+
 
 (options, args) = parser.parse_args()
 
@@ -34,6 +36,8 @@ if not options.schema:
     parser.error('schema is not given')
 if not options.dataset:
     parser.error('dataset is not given')
+if not options.intval:
+    parser.error('intval is not given')
 
 table = options.table
 db = options.db
