@@ -26,6 +26,7 @@ parser.add_option('--dataset', dest='dataset', help='specify dataset source')
 parser.add_option('--intval', dest='intval', help='interval schedule')
 parser.add_option('--intval_unit', dest='intval_unit', help='interval unit hourly/daily/weekly/etc')
 parser.add_option('--date_col', dest='date_col', help='table column represent date')
+parser.add_option('--exc_date', dest='exc_date', help='execution date')
 
 
 (options, args) = parser.parse_args()
@@ -44,6 +45,8 @@ if not options.intval_unit:
     parser.error('intval_unit is not given')
 if not options.date_col:
     parser.error('date_col is not given')
+if not options.exc_date:
+    parser.error('exc_date is not given')
 
 table = options.table
 db = options.db
@@ -52,6 +55,7 @@ dataset = options.dataset
 date_col = options.date_col
 intval_unit = options.intval_unit
 intval = options.intval
+exc_date = options.exc_date
 
 def get_count(conn, schema, table, db_name, date_col, intval, intval_unit):
     # TODO: Ini juga perlu kita sederhanakan logic-nya.
