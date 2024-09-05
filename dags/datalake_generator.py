@@ -58,7 +58,7 @@ def create_dag(yml_conf, queue_pool):
         for table in yml_conf["tables"]:
     
             bash_command = """
-            PYTHONPATH={dags} python {dags}/{pipeline_script} --db={db} {schema} --dataset={dataset} --table={table} 
+            PYTHONPATH={dags} python {dags}/{pipeline_script} --db={db} {schema} --dataset={dataset} --table={table} \n
             --intval={intval} --intval_unit={intval_unit} --date_col={date_col} --exc_date={exc_date}
             """.format(
                 dags=DAGS_FOLDER,
