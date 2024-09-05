@@ -60,8 +60,7 @@ def create_dag(yml_conf, queue_pool):
             bash_command = '''
             PYTHONPATH={dags} python {dags}/{pipeline_script} --db={db} {schema} --dataset={dataset} 
             --table={table} --interval={interval} --interval_unit={interval_unit} --date_col={date_col}
-            '''
-            .format(
+            '''.format(
                 dags=DAGS_FOLDER,
                 pipeline_script=pipeline_script,
                 db=yml_conf["database"],
