@@ -95,8 +95,10 @@ def get_data(conn, db, dataset, schema, table, db_name, date_col, exc_date):
     # df = df.fillna(value='', inplace=True)
     df = df.replace('None', '')
     print(df)
-
-    pandas_gbq.to_gbq(df, dataset + '.' + table + '_temp', project_id='hijra-data-dev',if_exists='append',api_method='load_csv')
+    df = df.insert(0,'row_loaded_ts',pd.Timestamp.now())
+    print(df)
+    
+    # pandas_gbq.to_gbq(df, dataset + '.' + table + '_temp', project_id='hijra-data-dev',if_exists='append',api_method='load_csv')
     cursor.close()
 
 
