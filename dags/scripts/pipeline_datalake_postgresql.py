@@ -91,9 +91,9 @@ def get_data(conn, db, dataset, schema, table, db_name, date_col, exc_date):
     print(sys.getsizeof(results))
 
     df = pd.DataFrame(results)
-    df = df.fillna(value='', inplace=True)
     df = df.applymap(lambda x: " ".join(x.splitlines()) if isinstance(x, str) else x)
     df = df.astype('str')    
+    df = df.fillna(value='', inplace=True)
     df = df.replace('None', '')
     print(df)
 
