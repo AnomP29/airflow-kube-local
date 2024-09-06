@@ -68,6 +68,7 @@ def get_count(conn, schema, table, db_name, date_col, exc_date):
     else:
         sql = "SELECT COUNT(*) FROM {}.{} WHERE to_char({}, 'YYYY-MM-DD/HH:MM') >= '{}'".format(schema,table,date_col, exc_date)
 
+    print(sql)
     df = pd.read_sql_query(sql, conn)
     count = int(str(df['count'].values).replace('[','').replace(']',''))
 
