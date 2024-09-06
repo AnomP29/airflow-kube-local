@@ -82,7 +82,7 @@ def get_data(conn, db, dataset, schema, table, db_name, date_col, exc_date):
     cursor = conn.cursor(name='fetch_large_result')
     sql = "SELECT * FROM {}.{} WHERE to_char({}, 'YYYY-MM-DD/HH:MM') >= '{}'".format(schema,table,date_col, exc_date)
     cursor.execute(sql)
-    records = cursor.fetchall()
+    records = cursor.fetchmany(size=100000)
     columns = [column[0] for column in cursor.description]
     results = []
     for row in records:
