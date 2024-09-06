@@ -56,7 +56,7 @@ def create_dag(yml_conf, queue_pool):
 
     with dag:
         for table in yml_conf["tables"]:
-            date_exec = '{{ (execution_date + macros.timedelta(hours=5)) }}'
+            
             bash_command = """\
             PYTHONPATH={dags} python {dags}/{pipeline_script} --db={db} {schema} --dataset={dataset} --table={table} \
             --intval={intval} --intval_unit={intval_unit} --date_col={date_col} --exc_date={exc_date}\
@@ -70,7 +70,7 @@ def create_dag(yml_conf, queue_pool):
                 intval=yml_conf["intval"],
                 intval_unit=yml_conf["intval_unit"],
                 date_col=table["date_col"],
-                exc_date=date_exec.astype(str)
+                exc_date='{{ (execution_date + macros.timedelta(hours=5)) }}'
                 # UTC +5 => 2jam sebelum execution_date (UTC+0)
             )
 
