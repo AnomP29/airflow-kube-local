@@ -70,7 +70,7 @@ def create_dag(yml_conf, queue_pool):
                 intval=yml_conf["intval"],
                 intval_unit=yml_conf["intval_unit"],
                 date_col=table["date_col"],
-                exc_date='{{ (execution_date + macros.timedelta(hours=5)).strftime("%Y-%m-%d %H:%M:%s") }}'
+                exc_date='{{ (execution_date + macros.timedelta(hours=5)).strftime("%Y-%m-%d %H:%M") }}'
             )
 
             bash_args = {
