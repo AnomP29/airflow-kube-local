@@ -74,7 +74,7 @@ def get_count(conn, schema, table, db_name, date_col, exc_date):
         # if db_name == 'p2p_prod' and table in ['audit_trail','application_activity']:
         #     sql = "SELECT COUNT(*) FROM {}.{} WHERE DATE(activity_date) >= (CURRENT_DATE - INTERVAL '5 DAY')".format(schema,table)
     else:
-        sql = "SELECT COUNT(*) FROM {}.{} WHERE {} >= {}".format(schema,table,date_colexc_date)
+        sql = "SELECT COUNT(*) FROM {}.{} WHERE {} >= {}".format(schema,table,date_col, exc_date)
 
     print(sql)
     df = pd.read_sql_query(sql, conn)
