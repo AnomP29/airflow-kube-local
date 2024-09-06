@@ -74,10 +74,26 @@ def get_count(conn, schema, table, db_name, date_col, exc_date):
 
     return count
 
-def get_data(conn, db, dataset, schema, table, db_name):
+def get_data(conn, db, dataset, schema, table, db_name, exc_date):
     # Object client bigquery cursor
     client = bigquery.Client('hijra-data-dev')
-    client.query("""SELECT * FROM datalakes.{table} LIMIT 1""".format(table=table)).result()
+    # client.query("""SELECT * FROM datalakes.{table} LIMIT 1""".format(table=table)).result()
+
+    cursor = conn.cursor(name='fetch_large_result')
+    sql = "SELECT * FROM {}.{} WHERE to_char({}, 'YYYY-MM-DD/HH:MM') >= '{}'".format(schema,table,date_col, exc_date)
+    cursor.execute(sql)
+    records = cursor.fetchmany()
+    results = []
+    for row in records:
+        results.append(dict(zip(columns, row)))
+
+    print(sys.getsizeof(results))
+
+    df = pd.DataFrame(results)
+    df = df.applymap(lambda x: " ".join(x.splitlines()) if isinstance(x, str) else x)
+    df = df.astype('object')    
+    print(df)
+
 
 
 def main(db, dataset, schema, table, date_col, exc_date):
