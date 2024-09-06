@@ -95,6 +95,9 @@ def get_data(conn, db, dataset, schema, table, db_name, date_col, exc_date):
     df = df.astype('str')    
     print(df)
 
+    cursor.close()
+
+
 
 
 def main(db, dataset, schema, table, date_col, exc_date):
