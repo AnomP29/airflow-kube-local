@@ -95,15 +95,12 @@ def get_data(conn, db, dataset, schema, table, db_name, date_col, exc_date):
     df = df.astype('str')    
     # df = df.fillna(value='', inplace=True)
     df = df.replace('None', '')
-    print(df)
     df['row_loaded_ts'] = pd.Timestamp.now().strftime('%Y-%m-%d %H:%M:%S.%s')
-    # df = df.insert(0,'row_loaded_ts',pd.Timestamp.now().strftime('%Y-%m-%d %H:%M:%S.%s'))
-    # df = df.insert(0,'row_loaded_ts','2024-09-06 17:10:29.1725617429')
     print(df)
     df = df[['row_loaded_ts'] + [x for x in df.columns if x != 'row_loaded_ts']]
     print(df)
     
-    # pandas_gbq.to_gbq(df, dataset + '.' + table + '_temp', project_id='hijra-data-dev',if_exists='append',api_method='load_csv')
+    pandas_gbq.to_gbq(df, dataset + '.' + table + '_temp', project_id='hijra-data-dev',if_exists='append',api_method='load_csv')
     cursor.close()
 
 
