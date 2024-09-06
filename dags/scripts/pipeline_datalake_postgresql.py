@@ -68,7 +68,6 @@ def get_count(conn, schema, table, db_name, date_col, exc_date):
     else:
         sql = "SELECT COUNT(*) FROM {}.{} WHERE to_char({}, 'YYYY-MM-DD/HH:MM') >= '{}'".format(schema,table,date_col, exc_date)
 
-    print(sql)
     df = pd.read_sql_query(sql, conn)
     count = int(str(df['count'].values).replace('[','').replace(']',''))
 
@@ -94,7 +93,7 @@ def get_data(conn, db, dataset, schema, table, db_name, date_col, exc_date):
     df = df.applymap(lambda x: " ".join(x.splitlines()) if isinstance(x, str) else x)
     df = df.astype('str')    
     df = df.fillna(value='', inplace=True)
-    df = df.replace('None', '')
+    # df = df.replace('None', '')
     print(df)
 
     cursor.close()
@@ -111,7 +110,7 @@ def main(db, dataset, schema, table, date_col, exc_date):
     #     db_name = db_config.db_p2p_realtime_name
     #     db_port = db_config.db_p2p_realtime_port
 
-    print('host---- ' + db_config.db_hijra_host)
+    # print('host---- ' + db_config.db_hijra_host)
     if db == 'hijra':
         db_host  = db_config.db_hijra_host
         db_username = db_config.db_hijra_username
