@@ -48,7 +48,9 @@ if not options.date_col:
 if not options.exc_date:
     parser.error('exc_date is not given')
 
-print('option' + options.exc_date)
+date_exec = '{{ (execution_date + macros.timedelta(hours=5)) }}'
+
+print(date_exec)
 
 table = options.table
 db = options.db
@@ -60,6 +62,7 @@ intval = options.intval
 exc_date = options.exc_date
 
 print('normal' + exc_date)
+
 
 def get_count(conn, schema, table, db_name, date_col, exc_date):
     # TODO: Ini juga perlu kita sederhanakan logic-nya.
