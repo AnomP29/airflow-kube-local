@@ -83,6 +83,7 @@ def get_data(conn, db, dataset, schema, table, db_name, date_col, exc_date):
     sql = "SELECT * FROM {}.{} WHERE to_char({}, 'YYYY-MM-DD/HH:MM') >= '{}'".format(schema,table,date_col, exc_date)
     cursor.execute(sql)
     records = cursor.fetchmany()
+    columns = [column[0] for column in cursor.description]
     results = []
     for row in records:
         results.append(dict(zip(columns, row)))
