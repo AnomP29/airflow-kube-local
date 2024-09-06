@@ -74,7 +74,7 @@ def get_count(conn, schema, table, db_name, date_col, exc_date):
 
     return count
 
-def get_data(conn, db, dataset, schema, table, db_name, exc_date):
+def get_data(conn, db, dataset, schema, table, db_name, date_col, exc_date):
     # Object client bigquery cursor
     client = bigquery.Client('hijra-data-dev')
     # client.query("""SELECT * FROM datalakes.{table} LIMIT 1""".format(table=table)).result()
@@ -129,7 +129,7 @@ def main(db, dataset, schema, table, date_col, exc_date):
     print(count)
 
     if count != 0:
-        get_data(conn, db, dataset, schema, table, db_name)
+        get_data(conn, db, dataset, schema, table, db_name, date_col, exc_date)
     
 
     return "SUCCESS"
