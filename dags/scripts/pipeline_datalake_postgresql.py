@@ -92,7 +92,7 @@ def get_data(conn, db, dataset, schema, table, db_name, date_col, exc_date):
 
     df = pd.DataFrame(results)
     df = df.applymap(lambda x: " ".join(x.splitlines()) if isinstance(x, str) else x)
-    df = df.astype('object')    
+    df = df.astype('str')    
     print(df)
 
 
