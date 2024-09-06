@@ -68,7 +68,7 @@ def get_count(conn, schema, table, db_name, date_col, exc_date):
     else:
         sql = "SELECT COUNT(*) FROM {}.{} WHERE to_char({}, 'YYYY-MM-DD/HH:MM') >= '{}'".format(schema,table,date_col, exc_date)
 
-    print(sql)
+    # print(sql)
     df = pd.read_sql_query(sql, conn)
     count = int(str(df['count'].values).replace('[','').replace(']',''))
 
@@ -86,7 +86,6 @@ def get_data(conn, db, dataset, schema, table, db_name, date_col, exc_date):
     columns = [column[0] for column in cursor.description]
     results = []
     for row in records:
-        print(row)
         results.append(dict(zip(columns, row)))
 
     print(sys.getsizeof(results))
@@ -100,6 +99,8 @@ def get_data(conn, db, dataset, schema, table, db_name, date_col, exc_date):
     df['row_loaded_ts'] = pd.Timestamp.now().strftime('%Y-%m-%d %H:%M:%S.%s')
     # df = df.insert(0,'row_loaded_ts',pd.Timestamp.now().strftime('%Y-%m-%d %H:%M:%S.%s'))
     # df = df.insert(0,'row_loaded_ts','2024-09-06 17:10:29.1725617429')
+    print(df)
+    df = df[['row_loaded_ts'] + [x for x in df.columns if x != 'row_loaded_ts']]
     print(df)
     
     # pandas_gbq.to_gbq(df, dataset + '.' + table + '_temp', project_id='hijra-data-dev',if_exists='append',api_method='load_csv')
