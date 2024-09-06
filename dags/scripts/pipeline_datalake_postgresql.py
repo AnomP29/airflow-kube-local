@@ -23,8 +23,6 @@ parser.add_option('--table', dest='table', help='specify table source')
 parser.add_option('--db', dest='db', help='specify database source')
 parser.add_option('--schema', dest='schema', help='specify schema source')
 parser.add_option('--dataset', dest='dataset', help='specify dataset source')
-parser.add_option('--intval', dest='intval', help='interval schedule')
-parser.add_option('--intval_unit', dest='intval_unit', help='interval unit hourly/daily/weekly/etc')
 parser.add_option('--date_col', dest='date_col', help='table column represent date')
 parser.add_option('--exc_date', dest='exc_date', help='execution date')
 
@@ -39,30 +37,17 @@ if not options.schema:
     parser.error('schema is not given')
 if not options.dataset:
     parser.error('dataset is not given')
-if not options.intval:
-    parser.error('intval is not given')
-if not options.intval_unit:
-    parser.error('intval_unit is not given')
 if not options.date_col:
     parser.error('date_col is not given')
 if not options.exc_date:
     parser.error('exc_date is not given')
-
-date_exec = '{{ (execution_date + macros.timedelta(hours=5)) }}'
-
-print(date_exec)
 
 table = options.table
 db = options.db
 schema = options.schema
 dataset = options.dataset
 date_col = options.date_col
-intval_unit = options.intval_unit
-intval = options.intval
 exc_date = options.exc_date
-
-print('normal' + exc_date)
-
 
 def get_count(conn, schema, table, db_name, date_col, exc_date):
     # TODO: Ini juga perlu kita sederhanakan logic-nya.
