@@ -96,6 +96,7 @@ def get_data(conn, db, dataset, schema, table, db_name, date_col, exc_date):
     df = df.replace('None', '')
     print(df)
 
+    pandas_gbq.to_gbq(df, dataset + '.' + table + '_temp', project_id='hijra-data-dev',if_exists='append',api_method='load_csv')
     cursor.close()
 
 
