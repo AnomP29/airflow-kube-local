@@ -57,16 +57,16 @@ intval_unit = options.intval_unit
 intval = options.intval
 exc_date = options.exc_date
 
-def get_count(conn, schema, table, db_name, date_col, intval, intval_unit):
+def get_count(conn, schema, table, db_name, date_col, exc_date):
     # TODO: Ini juga perlu kita sederhanakan logic-nya.
     # Di sini untuk p2p perlu pakai db_name juga.
     if (db != 'hijra_staging' and table in ['audit_trail','log_login','anl_user_register','user_lounges','rdl_api_log']) == True:
 #         if db == 'hijra' and table in ['application_activity']:
 #             sql = "SELECT COUNT(*) FROM {}.{} WHERE DATE(insert_date) >= (CURRENT_DATE - INTERVAL '1 DAY')".format(schema,table)
         if db_name == 'p2p_prod' and table in ['rdl_api_log']:
-            sql = "SELECT COUNT(*) FROM {}.{} WHERE {} >= (CURRENT_DATE - INTERVAL '{} {}')".format(schema,table,date_col,intval,intval_unit)
+            sql = "SELECT COUNT(*) FROM {}.{} WHERE {} >= {}".format(schema,table,date_col,exc_date)
         if db == 'hijra' and table in ['anl_user_register']:
-            sql = "SELECT COUNT(*) FROM {}.{} WHERE {} >= (CURRENT_DATE - INTERVAL '{} {}') AND id != 7934".format(schema,table,date_col,intval,intval_unit)
+            sql = "SELECT COUNT(*) FROM {}.{} WHERE {} >= {} AND id != 7934".format(schema,table,date_col,exc_date)
         # if db == 'hijra' and table in ['user_lounges']:
         #     sql = "SELECT COUNT(*) FROM {}.{} WHERE id != 7534".format(schema,table)
         # if db_name == 'p2p_prod' and table in ['log_login']:
@@ -74,7 +74,7 @@ def get_count(conn, schema, table, db_name, date_col, intval, intval_unit):
         # if db_name == 'p2p_prod' and table in ['audit_trail','application_activity']:
         #     sql = "SELECT COUNT(*) FROM {}.{} WHERE DATE(activity_date) >= (CURRENT_DATE - INTERVAL '5 DAY')".format(schema,table)
     else:
-        sql = "SELECT COUNT(*) FROM {}.{} WHERE {} >= (CURRENT_DATE - INTERVAL '{} {}')".format(schema,table,date_col,intval,intval_unit)
+        sql = "SELECT COUNT(*) FROM {}.{} WHERE {} >= {}".format(schema,table,date_colexc_date)
 
     print(sql)
     df = pd.read_sql_query(sql, conn)
@@ -88,7 +88,7 @@ def get_data(conn, db, dataset, schema, table, db_name):
     client.query("""SELECT * FROM datalakes.{table} LIMIT 1""".format(table=table)).result()
 
 
-def main(db, dataset, schema, table, date_col, intval, intval_unit):
+def main(db, dataset, schema, table, date_col, exc_date):
     # DB connect
     # if db in ['p2p_realtime','p2p_prod']:
     #     db_host  = db_config.db_p2p_realtime_host
@@ -117,7 +117,7 @@ def main(db, dataset, schema, table, date_col, intval, intval_unit):
 
     print("Processing: {}: {}.{}".format(db, schema, table))
 
-    count = get_count(conn, schema, table, db_name, date_col, intval, intval_unit)
+    count = get_count(conn, schema, table, db_name, date_col, exc_date)
     print(count)
 
     if count != 0:
@@ -128,7 +128,7 @@ def main(db, dataset, schema, table, date_col, intval, intval_unit):
 
 
 if __name__ == "__main__":
-    main(db, dataset, schema, table, date_col, intval, intval_unit)
+    main(db, dataset, schema, table, date_col, exc_date)
 
 
 
