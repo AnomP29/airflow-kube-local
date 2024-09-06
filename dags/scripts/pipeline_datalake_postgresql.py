@@ -86,6 +86,7 @@ def get_data(conn, db, dataset, schema, table, db_name, date_col, exc_date):
     columns = [column[0] for column in cursor.description]
     results = []
     for row in records:
+        print(row)
         results.append(dict(zip(columns, row)))
 
     print(sys.getsizeof(results))
