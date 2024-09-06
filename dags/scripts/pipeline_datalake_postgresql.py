@@ -48,7 +48,7 @@ if not options.date_col:
 if not options.exc_date:
     parser.error('exc_date is not given')
 
-print(options.exc_date)
+print('option' + options.exc_date)
 
 table = options.table
 db = options.db
@@ -59,7 +59,7 @@ intval_unit = options.intval_unit
 intval = options.intval
 exc_date = options.exc_date
 
-print(exc_date)
+print('normal' + exc_date)
 
 def get_count(conn, schema, table, db_name, date_col, exc_date):
     # TODO: Ini juga perlu kita sederhanakan logic-nya.
