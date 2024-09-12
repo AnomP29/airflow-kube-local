@@ -95,12 +95,12 @@ def get_data(conn, db, dataset, schema, table, db_name, date_col, exc_date):
     df = df.astype('str')    
     # df = df.fillna(value='', inplace=True)
     df = df.replace('None', '')
-    df['row_loaded_ts'] = pd.Timestamp.now().strftime('%Y-%m-%d %H:%M:%S.%s')
+    # df['row_loaded_ts'] = pd.Timestamp.now().strftime('%Y-%m-%d %H:%M:%S.%s')
     # print(df)
-    df = df[['row_loaded_ts'] + [x for x in df.columns if x != 'row_loaded_ts']]
+    # df = df[['row_loaded_ts'] + [x for x in df.columns if x != 'row_loaded_ts']]
     # print(df)
 
-    tables___ = '{dataset}.{db}__{schema}__{table}__dev__temp'.format(dataset=dataset, db=db, schema=schema, table=table)
+    tables___ = '{dataset}.dl__{db}__{schema}__{table}__dev__temp'.format(dataset=dataset, db=db, schema=schema, table=table)
     print(tables___)
     pandas_gbq.to_gbq(df, tables___ , project_id='hijra-data-dev',if_exists='replace',api_method='load_csv')
     cursor.close()
