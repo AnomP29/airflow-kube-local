@@ -100,11 +100,9 @@ def get_data(conn, db, dataset, schema, table, db_name, date_col, exc_date):
     df = df[['row_loaded_ts'] + [x for x in df.columns if x != 'row_loaded_ts']]
     # print(df)
 
-    tables___ = '''
-    {db}__{schema}__{table}__dev__temp
-    '''.format(dataset=dataset, db=db, schema=schema, table=table)
+    tables___ = '{dataset}.{db}__{schema}__{table}__dev__temp'.format(dataset=dataset, db=db, schema=schema, table=table)
     print(tables___)
-    pandas_gbq.to_gbq(df, dataset + '.' + tables___ , project_id='hijra-data-dev',if_exists='append',api_method='load_csv')
+    pandas_gbq.to_gbq(df, tables___ , project_id='hijra-data-dev',if_exists='append',api_method='load_csv')
     cursor.close()
 
 
