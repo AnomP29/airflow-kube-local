@@ -35,7 +35,7 @@ def create_dag(yml_conf, queue_pool):
     default_args = {
         "owner": "data_engineer",
         # "start_date": airflow.utils.dates.days_ago(1),
-        "start_date": days_ago(1), 
+        "start_date": days_ago(0), 
         "retries": 3,
         "retry_delay": timedelta(seconds=300),
     }
@@ -48,7 +48,7 @@ def create_dag(yml_conf, queue_pool):
         schedule_interval="0 * * * *",
         # schedule_interval=None,
         default_args=default_args,
-        catchup=False,
+        catchup=True,
         # is_paused_upon_creation=is_paused,
     )
     
