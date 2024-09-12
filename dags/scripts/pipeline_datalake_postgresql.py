@@ -71,7 +71,7 @@ def get_count(conn, schema, table, db_name, date_col, exc_date):
         WHERE 9=9 /
         AND to_char({}, 'YYYY-MM-DD/HH:MM') >= TO_CHAR((to_timestamp('{}', 'YYYY-MM-DD/HH24:MI') - INTERVAL '2 HOUR'),'YYYY-MM-DD/HH24:MI')/
         AND to_char({}, 'YYYY-MM-DD/HH:MM') <= '{}'
-        """.format(schema,table,date_col, exc_date, exc_date)
+        """.format(schema,table,date_col, exc_date, date_col, exc_date)
 
     print(sql)
     df = pd.read_sql_query(sql, conn)
