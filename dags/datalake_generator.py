@@ -48,7 +48,7 @@ def create_dag(yml_conf, queue_pool):
         schedule_interval="0 3 * * *",
         # schedule_interval=None,
         default_args=default_args,
-        catchup=False,
+        catchup=True,
         # is_paused_upon_creation=is_paused,
     )
     
