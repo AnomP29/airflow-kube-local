@@ -99,8 +99,11 @@ def get_data(conn, db, dataset, schema, table, db_name, date_col, exc_date):
     print(df)
     df = df[['row_loaded_ts'] + [x for x in df.columns if x != 'row_loaded_ts']]
     print(df)
-    
-    pandas_gbq.to_gbq(df, dataset + '.' + table + '_temp', project_id='hijra-data-dev',if_exists='append',api_method='load_csv')
+
+    tables___ = '''
+    {dataset}.{db}__{schema}__{table}__dev
+    '''.format(dataset=dataset, db=db, schema=schema, table=table)
+    pandas_gbq.to_gbq(df, tables___ + '__temp', project_id='hijra-data-dev',if_exists='append',api_method='load_csv')
     cursor.close()
 
 
