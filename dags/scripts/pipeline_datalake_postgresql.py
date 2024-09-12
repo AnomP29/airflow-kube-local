@@ -58,7 +58,15 @@ def get_count(conn, schema, table, db_name, date_col, exc_date):
         if db_name == 'p2p_prod' and table in ['rdl_api_log']:
             sql = "SELECT COUNT(*) FROM {}.{} WHERE to_char({}, 'YYYY-MM-DD/HH:MM') >= '{}'".format(schema,table,date_col,exc_date)
         if db == 'hijra' and table in ['anl_user_register']:
-            sql = "SELECT COUNT(*) FROM {}.{} WHERE to_char({}, 'YYYY-MM-DD/HH:MM') >= '{}' AND id != 7934".format(schema,table,date_col,exc_date)
+            sql = """
+            SELECT COUNT(*) FROM {}.{}
+            WHERE 9=9
+            AND id != 7934
+            AND to_char({}, 'YYYY-MM-DD/HH:MM') >= TO_CHAR((to_timestamp('{}', 'YYYY-MM-DD/HH24:MI') - INTERVAL '2 HOUR'),'YYYY-MM-DD/HH24:MI')
+            AND to_char({}, 'YYYY-MM-DD/HH:MM') <= '{}'
+            """.format(schema,table,date_col, exc_date, date_col, exc_date)
+
+            # sql = "SELECT COUNT(*) FROM {}.{} WHERE to_char({}, 'YYYY-MM-DD/HH:MM') >= '{}' AND id != 7934".format(schema,table,date_col,exc_date)
         # if db == 'hijra' and table in ['user_lounges']:
         #     sql = "SELECT COUNT(*) FROM {}.{} WHERE id != 7534".format(schema,table)
         # if db_name == 'p2p_prod' and table in ['log_login']:
