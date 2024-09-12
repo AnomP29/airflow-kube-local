@@ -33,7 +33,8 @@ def create_dag(yml_conf, queue_pool):
 
     default_args = {
         "owner": "data_engineer",
-        "start_date": airflow.utils.dates.days_ago(1),
+        # "start_date": airflow.utils.dates.days_ago(1),
+        "start_date": datetime(2024,09,11, 09 ,0),
         "retries": 3,
         "retry_delay": timedelta(seconds=300),
     }
@@ -43,8 +44,8 @@ def create_dag(yml_conf, queue_pool):
         description="Data Lake from DB {db}___{schema} to BigQuery".format(
             db=yml_conf["database"], schema= yml_conf["schema"]
         ),
-        # schedule_interval=schedule,
-        schedule_interval=None,
+        schedule_interval="0 10 * * *",
+        # schedule_interval=None,
         default_args=default_args,
         catchup=False,
         # is_paused_upon_creation=is_paused,
@@ -68,7 +69,7 @@ def create_dag(yml_conf, queue_pool):
                 dataset=yml_conf["dataset"],
                 table=table["name"],
                 date_col=table["date_col"],
-                exc_date='{{ (execution_date + macros.timedelta(hours=2)).strftime("%Y-%m-%d/%H:00") }}'
+                exc_date='{{ (execution_date + macros.timedelta(hours=5)).strftime("%Y-%m-%d/%H:00") }}'
                 # UTC +5 => 2jam sebelum execution_date (UTC+0)
             )
 
