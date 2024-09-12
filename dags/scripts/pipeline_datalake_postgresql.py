@@ -101,10 +101,10 @@ def get_data(conn, db, dataset, schema, table, db_name, date_col, exc_date):
     # print(df)
 
     tables___ = '''
-    {db}__{schema}__{table}__dev
+    {db}__{schema}__{table}__dev__temp
     '''.format(dataset=dataset, db=db, schema=schema, table=table)
     print(tables___)
-    pandas_gbq.to_gbq(df, dataset + '.' + tables___ + '__temp', project_id='hijra-data-dev',if_exists='append',api_method='load_csv')
+    pandas_gbq.to_gbq(df, dataset + '.' + tables___ , project_id='hijra-data-dev',if_exists='append',api_method='load_csv')
     cursor.close()
 
 
