@@ -7,7 +7,6 @@ from airflow.models.dag import DagModel
 from airflow.operators.bash import BashOperator
 # from dependencies.slack_notification import task_fail_slack_alert
 from ruamel.yaml import YAML
-import datetime
 from datetime import timedelta
 from dependencies.utils import DAGS_FOLDER
 from airflow.operators.dummy import DummyOperator
@@ -35,7 +34,7 @@ def create_dag(yml_conf, queue_pool):
     default_args = {
         "owner": "data_engineer",
         # "start_date": airflow.utils.dates.days_ago(1),
-        "start_date": datetime(2024,9,11, 9 ,0), 
+        "start_date": days_ago(1), 
         "retries": 3,
         "retry_delay": timedelta(seconds=300),
     }
