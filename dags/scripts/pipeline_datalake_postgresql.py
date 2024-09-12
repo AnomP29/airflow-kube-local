@@ -87,6 +87,24 @@ def get_count(conn, schema, table, db_name, date_col, exc_date):
 
     return count
 
+def check_bq_tables(dataset, bqtable):
+    client = bigquery.Client('hijra-data-dev')
+    sql = '''
+    select
+    COUNT(DISTINCT
+    table_name) counts
+    from
+    `hijra-data-dev.{dataset}.INFORMATION_SCHEMA.COLUMNS`
+    WHERE 9=9
+    AND table_name = '{bqtable}'
+    '''.format(dataset=dataset, bqtable=bqtable)
+
+    bq_results = client.query(sql)
+    df = bq_results.to_dataframe()
+
+    return df.iloc[0]['counts']
+
+
 def get_data(conn, db, dataset, schema, table, db_name, date_col, exc_date):
     # Object client bigquery cursor
     client = bigquery.Client('hijra-data-dev')
@@ -109,14 +127,16 @@ def get_data(conn, db, dataset, schema, table, db_name, date_col, exc_date):
     # df = df.fillna(value='', inplace=True)
     df = df.replace('None', '')
     # df['row_loaded_ts'] = pd.Timestamp.now().strftime('%Y-%m-%d %H:%M:%S.%s')
-    # print(df)
     # df = df[['row_loaded_ts'] + [x for x in df.columns if x != 'row_loaded_ts']]
-    # print(df)
 
-    tables___ = '{dataset}.dl__{db}__{schema}__{table}__dev__temp'.format(dataset=dataset, db=db, schema=schema, table=table)
-    print(tables___)
-    pandas_gbq.to_gbq(df, tables___ , project_id='hijra-data-dev',if_exists='replace',api_method='load_csv')
+    tables___ = 'dl__{db}__{schema}__{table}__dev'.format(db=db, schema=schema, table=table)
+    pandas_gbq.to_gbq(df, dataset + '.' + tables___ + '__temp' , project_id='hijra-data-dev',if_exists='replace',api_method='load_csv')
     cursor.close()
+
+    if check_bq_tables(dataset, tables___) != 1:
+        print('ga ada')
+    else:
+        print('ada')
 
 
 
