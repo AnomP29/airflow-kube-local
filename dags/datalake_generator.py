@@ -10,6 +10,7 @@ from ruamel.yaml import YAML
 from datetime import timedelta
 from dependencies.utils import DAGS_FOLDER
 from airflow.operators.dummy import DummyOperator
+from airflow.utils.dates import days_ago
 
 large_tables = [
     'partner_ekyc_integration_record',
