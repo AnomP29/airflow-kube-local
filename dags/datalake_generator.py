@@ -35,7 +35,7 @@ def create_dag(yml_conf, queue_pool):
     default_args = {
         "owner": "data_engineer",
         # "start_date": airflow.utils.dates.days_ago(1),
-        "start_date": days_ago(1), 
+        "start_date": days_ago(5), 
         "retries": 3,
         "retry_delay": timedelta(seconds=300),
     }
@@ -45,7 +45,7 @@ def create_dag(yml_conf, queue_pool):
         description="Data Lake from DB {db}___{schema} to BigQuery".format(
             db=yml_conf["database"], schema= yml_conf["schema"]
         ),
-        schedule_interval="0 10 * * *",
+        schedule_interval="0 3 * * *",
         # schedule_interval=None,
         default_args=default_args,
         catchup=False,
