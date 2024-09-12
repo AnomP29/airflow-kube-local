@@ -7,6 +7,7 @@ from airflow.models.dag import DagModel
 from airflow.operators.bash import BashOperator
 # from dependencies.slack_notification import task_fail_slack_alert
 from ruamel.yaml import YAML
+import datetime
 from datetime import timedelta
 from dependencies.utils import DAGS_FOLDER
 from airflow.operators.dummy import DummyOperator
