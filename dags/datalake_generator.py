@@ -48,7 +48,7 @@ def create_dag(yml_conf, queue_pool):
         schedule_interval="0 * * * *",
         # schedule_interval=None,
         default_args=default_args,
-        catchup=True,
+        catchup=False,
         # is_paused_upon_creation=is_paused,
     )
     
@@ -70,7 +70,7 @@ def create_dag(yml_conf, queue_pool):
                 dataset=yml_conf["dataset"],
                 table=table["name"],
                 date_col=table["date_col"],
-                exc_date='{{ (execution_date + macros.timedelta(hours=5)).strftime("%Y-%m-%d/%H:00") }}'
+                exc_date='{{ (execution_date + macros.timedelta(hours=7)).strftime("%Y-%m-%d/%H:00") }}'
                 # UTC +5 => 2jam sebelum execution_date (UTC+0)
             )
 
