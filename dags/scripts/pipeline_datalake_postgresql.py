@@ -243,6 +243,9 @@ def main(db, dataset, schema, table, date_col, exc_date):
 
     if count != 0:
         get_data(conn, db, dataset, schema, table, db_name, date_col, exc_date)
+    else:
+        tables___ = 'dl__{db}__{schema}__{table}__dev__temp'.format(db=db, schema=schema, table=table)
+        drop_tables(dataset, tables___)
     
 
     return "SUCCESS"
