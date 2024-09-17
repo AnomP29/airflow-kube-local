@@ -111,10 +111,15 @@ def check_bq_tables(dataset, bqtable):
             print(e)
         else:
             drop_tables(dataset, bqtable)
-            
     else:
         print('create table')
-        create_tables(dataset, bqtable)
+        try:
+            create_tables(dataset, bqtable)
+        except Exception as e:
+            print(e)
+        else:
+            drop_tables(dataset, bqtable)
+
 
     return df.iloc[0]['counts']
 
