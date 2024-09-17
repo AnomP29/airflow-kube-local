@@ -110,6 +110,36 @@ def check_bq_tables(dataset, bqtable):
 
     return df.iloc[0]['counts']
 
+def create_tables(dataset, bqtable):
+    print('creating table : ' + bqtable)
+    client = bigquery.Client('hijra-data-dev')
+    try:
+        query = """
+        CREATE OR REPLACE TABLE {dataset}.{bqtable}
+        PARTITION BY DATE(row_loaded_ts)
+        AS
+        SELECT
+        CURRENT_TIMESTAMP() row_loaded_ts
+        ,*
+        FROM
+        `{dataset}.{bqtable}__temp`
+        """.format(dataset=dataset, bqtable=bqtable)
+
+        print(query)
+        client.query(query).result()
+
+        try:
+            query = """
+            DROP TABLE `{dataset}.{bqtable}__temp`
+            """.format(dataset=dataset, bqtable=bqtable)
+            client.query(query).result()
+        except Exception as d:
+            print(d)
+            
+
+    except Exception as e:
+        print(e)
+
 
 def get_data(conn, db, dataset, schema, table, db_name, date_col, exc_date):
     # Object client bigquery cursor
@@ -147,26 +177,6 @@ def get_data(conn, db, dataset, schema, table, db_name, date_col, exc_date):
         print('ga ada')
     else:
         print('ada')
-
-def create_tables(dataset, bqtable):
-    print('creating table : ' + bqtable)
-    client = bigquery.Client('hijra-data-dev')
-    try:
-        query = """
-        CREATE OR REPLACE TABLE {dataset}.{bqtable}
-        PARTITION BY DATE(row_loaded_ts)
-        AS
-        SELECT
-        CURRENT_TIMESTAMP() row_loaded_ts
-        ,*
-        FROM
-        `{dataset}.{bqtable}__temp`
-        """.format(dataset=dataset, bqtable=bqtable)
-
-        print(query)
-        client.query(query).result()
-    except Exception as e:
-        print(e)
 
 
 def main(db, dataset, schema, table, date_col, exc_date):
