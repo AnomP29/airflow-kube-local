@@ -102,6 +102,11 @@ def check_bq_tables(dataset, bqtable):
     bq_results = client.query(sql)
     df = bq_results.to_dataframe()
 
+    if df.iloc[0]['counts'] == 1:
+        create_tables(dataset, bqtable)
+    else:
+        print('create table')
+
     return df.iloc[0]['counts']
 
 
@@ -138,7 +143,21 @@ def get_data(conn, db, dataset, schema, table, db_name, date_col, exc_date):
     else:
         print('ada')
 
-
+def create_tables(dataset, bqtable):
+    print('creating table : {}').format(bqtable)
+    try:
+        query = """
+        CREATE OR REPLACE TABLE {dataset}.{bqtable}
+        PARTITION BY DATE(row_loaded_ts)
+        AS
+        SELECT
+        CURRENT_TIMESTAMP() row_loaded_ts
+        ,*
+        FROM
+        `{dataset}.{bqtable}__temp`
+        """.format(dataset=dataset, bqtable=bqtable)
+    except Exception as e:
+        print(e)
 
 
 def main(db, dataset, schema, table, date_col, exc_date):
