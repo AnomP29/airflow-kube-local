@@ -145,7 +145,7 @@ def get_data(conn, db, dataset, schema, table, db_name, date_col, exc_date):
         print('ada')
 
 def create_tables(dataset, bqtable):
-    print('creating table : {}').format(bqtable)
+    print('creating table : ' + bqtable)
     client = bigquery.Client('hijra-data-dev')
     try:
         query = """
