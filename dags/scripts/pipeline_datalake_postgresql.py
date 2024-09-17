@@ -103,9 +103,10 @@ def check_bq_tables(dataset, bqtable):
     df = bq_results.to_dataframe()
 
     if df.iloc[0]['counts'] == 1:
-        create_tables(dataset, bqtable)
+        ('check schema')
     else:
         print('create table')
+        create_tables(dataset, bqtable)
 
     return df.iloc[0]['counts']
 
