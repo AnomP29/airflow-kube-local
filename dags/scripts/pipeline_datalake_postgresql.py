@@ -59,12 +59,12 @@ def get_count(conn, schema, table, db_name, date_col, exc_date):
             sql = "SELECT COUNT(*) FROM {}.{} WHERE to_char({}, 'YYYY-MM-DD/HH:MM') >= '{}'".format(schema,table,date_col,exc_date)
         if db == 'hijra' and table in ['anl_user_register']:
             sql = """
-            SELECT COUNT(*) FROM {}.{}
+            SELECT COUNT(*) FROM {schema}.{table}
             WHERE 9=9
             AND id != 7934
-            AND to_char({}, 'YYYY-MM-DD/HH:MM') >= TO_CHAR((to_timestamp('{}', 'YYYY-MM-DD/HH24:MI') - INTERVAL '2 HOUR'),'YYYY-MM-DD/HH24:MI')
-            AND to_char({}, 'YYYY-MM-DD/HH:MM') <= '{}'
-            """.format(schema,table,date_col, exc_date, date_col, exc_date)
+            # AND to_char({date_col}, 'YYYY-MM-DD/HH:MM') >= TO_CHAR((to_timestamp('{exc_date}', 'YYYY-MM-DD/HH24:MI') - INTERVAL '2 HOUR'),'YYYY-MM-DD/HH24:MI')
+            # AND to_char({date_col}, 'YYYY-MM-DD/HH:MM') <= '{exc_date}'
+            """.format(schema=schema,table=table,date_col=date_col, exc_date=exc_date)
 
             # sql = "SELECT COUNT(*) FROM {}.{} WHERE to_char({}, 'YYYY-MM-DD/HH:MM') >= '{}' AND id != 7934".format(schema,table,date_col,exc_date)
         # if db == 'hijra' and table in ['user_lounges']:
@@ -75,11 +75,11 @@ def get_count(conn, schema, table, db_name, date_col, exc_date):
         #     sql = "SELECT COUNT(*) FROM {}.{} WHERE DATE(activity_date) >= (CURRENT_DATE - INTERVAL '5 DAY')".format(schema,table)
     else:
         sql = """
-        SELECT COUNT(*) FROM {}.{}
+        SELECT COUNT(*) FROM {schema}.{table}
         WHERE 9=9
-        AND to_char({}, 'YYYY-MM-DD/HH:MM') >= TO_CHAR((to_timestamp('{}', 'YYYY-MM-DD/HH24:MI') - INTERVAL '2 HOUR'),'YYYY-MM-DD/HH24:MI')
-        AND to_char({}, 'YYYY-MM-DD/HH:MM') <= '{}'
-        """.format(schema,table,date_col, exc_date, date_col, exc_date)
+        # AND to_char({date_col}, 'YYYY-MM-DD/HH:MM') >= TO_CHAR((to_timestamp('{exc_date}', 'YYYY-MM-DD/HH24:MI') - INTERVAL '2 HOUR'),'YYYY-MM-DD/HH24:MI')
+        # AND to_char({date_col}, 'YYYY-MM-DD/HH:MM') <= '{exc_date}'
+        """.format(schema=schema,table=table,date_col=date_col, exc_date=exc_date)
 
     print(sql)
     df = pd.read_sql_query(sql, conn)
@@ -117,7 +117,11 @@ def get_data(conn, db, dataset, schema, table, db_name, date_col, exc_date):
     # client.query("""SELECT * FROM datalakes.{table} LIMIT 1""".format(table=table)).result()
 
     cursor = conn.cursor(name='fetch_large_result')
-    sql = "SELECT * FROM {}.{} WHERE to_char({}, 'YYYY-MM-DD/HH:MM') >= '{}'".format(schema,table,date_col, exc_date)
+    sql = """
+    SELECT * FROM {schema}.{table} 
+    WHERE 9=9
+    # AND to_char({date_col}, 'YYYY-MM-DD/HH:MM') >= '{exc_date}'
+    """.format(schema=schema,table=table,date_col=date_col, exc_dateexc_date)
     cursor.execute(sql)
     records = cursor.fetchmany(size=100000)
     columns = [column[0] for column in cursor.description]
