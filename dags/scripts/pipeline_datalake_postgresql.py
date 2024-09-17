@@ -245,7 +245,7 @@ def main(db, dataset, schema, table, date_col, exc_date):
         get_data(conn, db, dataset, schema, table, db_name, date_col, exc_date)
     else:
         tables___ = 'dl__{db}__{schema}__{table}__dev'.format(db=db, schema=schema, table=table)
-        drop_tables(dataset, tables___)
+        # drop_tables(dataset, tables___)
     
 
     return "SUCCESS"
