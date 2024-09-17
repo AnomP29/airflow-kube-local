@@ -132,6 +132,7 @@ def create_tables(dataset, bqtable):
             query2 = """
             DROP TABLE `{dataset}.{bqtable}__temp`
             """.format(dataset=dataset, bqtable=bqtable)
+            print(query2)
             client.query(query2).result()
         except Exception as d:
             print(d)
