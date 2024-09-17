@@ -146,6 +146,7 @@ def get_data(conn, db, dataset, schema, table, db_name, date_col, exc_date):
 
 def create_tables(dataset, bqtable):
     print('creating table : {}').format(bqtable)
+    client = bigquery.Client('hijra-data-dev')
     try:
         query = """
         CREATE OR REPLACE TABLE {dataset}.{bqtable}
@@ -157,6 +158,7 @@ def create_tables(dataset, bqtable):
         FROM
         `{dataset}.{bqtable}__temp`
         """.format(dataset=dataset, bqtable=bqtable)
+        client.query(query).result()
     except Exception as e:
         print(e)
 
