@@ -103,7 +103,15 @@ def check_bq_tables(dataset, bqtable):
     df = bq_results.to_dataframe()
 
     if df.iloc[0]['counts'] == 1:
-        ('check schema')
+        print('check schema')
+        print('inserting row to MAIN TABLE')
+        try:
+            insert_tables(dataset, bqtable)
+        except Exception as e:
+            print(e)
+        else:
+            drop_tables(dataset, bqtable)
+            
     else:
         print('create table')
         create_tables(dataset, bqtable)
@@ -126,20 +134,35 @@ def create_tables(dataset, bqtable):
         """.format(dataset=dataset, bqtable=bqtable)
 
         print(query)
-        client.query(query).result()
-
-        try:
-            query2 = """
-            DROP TABLE `{dataset}.{bqtable}__temp`
-            """.format(dataset=dataset, bqtable=bqtable)
-            print(query2)
-            client.query(query2).result()
-        except Exception as d:
-            print(d)
-            
+        client.query(query).result()            
 
     except Exception as e:
         print(e)
+
+
+def insert_tables(dataset, bqtable):
+    client = bigquery.Client('hijra-data-dev')
+    sql = """
+    INSERT INTO `{dataset}.{bqtable}`
+    SELECT 
+    CURRENT_TIMESTAMP() row_loaded_ts
+    ,*
+    FROM `{dataset}.{bqtable}__temp`
+    """
+    print(sql)
+    client.query(sql).result()
+
+
+def drop_tables(dataset, bqtable):
+    client = bigquery.Client('hijra-data-dev')
+    try:
+        sql = """
+        DROP TABLE `{dataset}.{bqtable}__temp`
+        """.format(dataset=dataset, bqtable=bqtable)
+        print(sql)
+        client.query(sql).result()
+    except Exception as d:
+        print(d)
 
 
 def get_data(conn, db, dataset, schema, table, db_name, date_col, exc_date):
