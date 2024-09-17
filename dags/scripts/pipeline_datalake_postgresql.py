@@ -121,7 +121,7 @@ def get_data(conn, db, dataset, schema, table, db_name, date_col, exc_date):
     SELECT * FROM {schema}.{table} 
     WHERE 9=9
     # AND to_char({date_col}, 'YYYY-MM-DD/HH:MM') >= '{exc_date}'
-    """.format(schema=schema,table=table,date_col=date_col, exc_dateexc_date)
+    """.format(schema=schema,table=table,date_col=date_col, exc_date=exc_date)
     cursor.execute(sql)
     records = cursor.fetchmany(size=100000)
     columns = [column[0] for column in cursor.description]
