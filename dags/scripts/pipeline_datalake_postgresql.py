@@ -148,7 +148,7 @@ def insert_tables(dataset, bqtable):
     CURRENT_TIMESTAMP() row_loaded_ts
     ,*
     FROM `{dataset}.{bqtable}__temp`
-    """
+    """.format(dataset=dataset, bqtable=bqtable)
     print(sql)
     client.query(sql).result()
 
