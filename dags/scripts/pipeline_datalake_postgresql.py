@@ -158,6 +158,8 @@ def create_tables(dataset, bqtable):
         FROM
         `{dataset}.{bqtable}__temp`
         """.format(dataset=dataset, bqtable=bqtable)
+
+        print(query)
         client.query(query).result()
     except Exception as e:
         print(e)
