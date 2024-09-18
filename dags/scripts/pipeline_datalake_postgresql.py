@@ -196,6 +196,7 @@ def get_data(conn, db, dataset, schema, table, db_name, date_col, exc_date):
     df = df.astype('str')    
     # df = df.fillna(value='', inplace=True)
     df = df.replace('None', '')
+    df = df.replace('NaT', '')
     # df['row_loaded_ts'] = pd.Timestamp.now().strftime('%Y-%m-%d %H:%M:%S.%s')
     # df = df[['row_loaded_ts'] + [x for x in df.columns if x != 'row_loaded_ts']]
 
