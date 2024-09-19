@@ -227,7 +227,7 @@ def main(db, dataset, schema, table, date_col, exc_date):
         db_name = db_config.db_hijra_name
         db_port = db_config.db_hijra_port
 
-    print('connecting to postgres DB')
+    # print('connecting to postgres DB')
     # conn = 'psycopg2.connection'
     conn = psycopg2.connect(
         host=db_host,
@@ -254,7 +254,3 @@ def main(db, dataset, schema, table, date_col, exc_date):
 
 if __name__ == "__main__":
     main(db, dataset, schema, table, date_col, exc_date)
-
-
-
-
