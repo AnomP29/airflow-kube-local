@@ -88,7 +88,8 @@ def create_dag(yml_conf, queue_pool):
                 bash_command = bash_command,
                 dag = dag
             )
-
+            
+            encryption_command = ''
             if table.get("encryption", default=False):
                 encryption_script = "scripts/encrypt.py"
                 encryption_command = encryption_script
