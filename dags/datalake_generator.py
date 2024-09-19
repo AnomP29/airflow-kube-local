@@ -85,26 +85,33 @@ def create_dag(yml_conf, queue_pool):
  
             task = BashOperator(
                 task_id = table["name"],
-                # bash_command ='echo "Datalake {tables}"'.format(tables=table["name"],),
-                # bash_command = 'echo "{bash}"'.format(bash=bash_command),
                 bash_command = bash_command,
                 dag = dag
             )
-            encryption_command = ''
+
             if table.get("encryption", default=False):
-                if yml_conf["dataset"] == 'hijra_lake':
-                    encryption_script = "scripts/encrypt_hijra.py"
-                else:
-                    encryption_script = "scripts/encrypt_p2p.py"
-        
+                encryption_script = "scripts/encrypt.py"
                 encryption_command = encryption_script
+
+                encryption_command = """\
+                PYTHONPATH={dags} python {dags}/{encryption_script} --db={db} {schema} --dataset={dataset} --table={table} \
+                --date_col={date_col}\
+                """.format(
+                    dags=DAGS_FOLDER,
+                    encryption_script=encryption_script,
+                    db=yml_conf["database"],
+                    schema=schema,
+                    dataset=yml_conf["dataset"],
+                    table=table["name"],
+                    date_col=table["date_col"],
+                )
 
             cleanup = DummyOperator(task_id= table["name"] + '_cleanup', dag=dag)
             
             if encryption_command != '':
                 encryption = BashOperator(
                     task_id = table["name"] + '_encryption',
-                    bash_command ='echo "Datalake {tables} {encryption_command}"'.format(tables=table["name"],encryption_command=encryption_command),
+                    bash_command = encryption_command
                     dag = dag
                 )
                 task >> encryption >> cleanup
