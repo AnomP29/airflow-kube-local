@@ -8,7 +8,7 @@ intval: 2
 intval_unit: HOUR
 tables:
   - name: anl_user_register
-    encryption: false
+    encryption: true
     date_col: updated_datetime
   - name: authorization_role
     encryption: false
