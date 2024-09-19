@@ -13,7 +13,7 @@ import os
 from pipeline_datalake_postgresql import check_bq_tables
 
 # Object client bigquery cursor
-client = bigquery.Client()
+client = bigquery.Client('hijra-data-dev')
 
 # Tabulate
 pd.options.display.max_colwidth = 100000
