@@ -60,10 +60,11 @@ def main(db, dataset, schema, table, date_col):
 
     # Attach credential file from developer google (API)
     print('connect to gsheet')
-    scope = ['https://www.googleapis.com/auth/spreadsheets.readonly']
-    credentials = service_account.Credentials.from_service_account_file('/opt/account/secrets/dwh_hijra_lake.json', scopes=scope)
-    gc = gspread.Client(auth=credentials)
-    gc.session = AuthorizedSession(credentials)
+    # scope = ['https://www.googleapis.com/auth/spreadsheets.readonly']
+    # credentials = service_account.Credentials.from_service_account_file('/opt/account/secrets/dwh_hijra_lake.json', scopes=scope)
+    # gc = gspread.Client(auth=credentials)
+    # gc.session = AuthorizedSession(credentials)
+    gc = gspread.service_account()
 
     # Target dataset
     dataset = 'hijra_lake'
