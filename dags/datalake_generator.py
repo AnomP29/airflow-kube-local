@@ -99,7 +99,7 @@ def create_dag(yml_conf, queue_pool):
         
                 encryption_command = encryption_script
 
-
+            cleanup = DummyOperator(task_id='table["name"] + '_cleanup'', dag=dag)
             
             if encryption_command != '':
                 encryption = BashOperator(
@@ -107,9 +107,9 @@ def create_dag(yml_conf, queue_pool):
                     bash_command ='echo "Datalake {tables} {encryption_command}"'.format(tables=table["name"],encryption_command=encryption_command),
                     dag = dag
                 )
-                task >> encryption
+                task >> encryption >> cleanup
             else:
-                task
+                task >> cleanup
                 
             
             # bash_command = "PYTHONPATH={dags} python {dags}/{pipeline_script} --db={db} {schema} --dataset={dataset} --table={table} ".format(
