@@ -76,7 +76,7 @@ def main(db, dataset, schema, table, date_col):
         worksheet = sheet.worksheet(table)
         list_of_lists = worksheet.get_all_values()
         df = pd.DataFrame()
-        df = df.append(list_of_lists)
+        df = df.concat(list_of_lists)
         df.columns = df.iloc[0]
         df = df.reindex(df.index.drop([0]))
 
