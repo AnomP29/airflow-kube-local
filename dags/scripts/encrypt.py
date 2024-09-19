@@ -75,10 +75,8 @@ def main(db, dataset, schema, table, date_col):
     try:
         worksheet = sheet.worksheet(table)
         list_of_lists = worksheet.get_all_values()
-        df = pd.DataFrame()
-        df = df.concat(list_of_lists)
-        df.columns = df.iloc[0]
-        df = df.reindex(df.index.drop([0]))
+        df = pd.DataFrame(worksheet.get_all_records())
+        print(df)
 
     except gspread.exceptions.WorksheetNotFound as e:
         print("Trying to open non-existent sheet. Verify that the sheet name exists (%s)." % table)
