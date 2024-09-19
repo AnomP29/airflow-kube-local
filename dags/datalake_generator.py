@@ -112,7 +112,7 @@ def create_dag(yml_conf, queue_pool):
             if encryption_command != '':
                 encryption = BashOperator(
                     task_id = table["name"] + '_encryption',
-                    bash_command = encryption_command
+                    bash_command = encryption_command,
                     dag = dag
                 )
                 task >> encryption >> cleanup
