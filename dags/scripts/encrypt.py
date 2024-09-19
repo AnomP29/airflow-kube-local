@@ -10,7 +10,7 @@ from google.auth.transport.requests import AuthorizedSession
 
 import os
 
-# from pipeline_datalake_postgresql import check_bq_tables
+from pipeline_datalake_postgresql import check_bq_tables
 
 # Object client bigquery cursor
 client = bigquery.Client()
@@ -24,7 +24,7 @@ parser.add_option('--db', dest='db', help='specify database source')
 parser.add_option('--schema', dest='schema', help='specify schema source')
 parser.add_option('--dataset', dest='dataset', help='specify dataset source')
 parser.add_option('--date_col', dest='date_col', help='table column represent date')
-
+parser.add_option('--exc_date', dest='exc_date', help='execution date')
 
 (options, args) = parser.parse_args()
 
@@ -38,12 +38,15 @@ if not options.dataset:
     parser.error('dataset is not given')
 if not options.date_col:
     parser.error('date_col is not given')
+if not options.exc_date:
+    parser.error('exc_date is not given')
 
 table = options.table
 db = options.db
 schema = options.schema
 dataset = options.dataset
 date_col = options.date_col
+exc_date = options.exc_date
 
 
 
