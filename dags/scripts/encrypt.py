@@ -66,12 +66,22 @@ def main(db, dataset, schema, table, date_col):
     gc.session = AuthorizedSession(credentials)
 
     # Target dataset
-    dataset = 'hijra_lake'
+    dataset = dataset
 
     # Create the pandas DataFrame
     google_sheet_id = '1z-1SD-6rP0fukR_5HbtlZW2Wg9nbM1kOVQv8I6EBFMA'
     sheet = gc.open_by_key(google_sheet_id)
 
+    try:
+        worksheet = sheet.worksheet(table_name)
+        list_of_lists = worksheet.get_all_values()
+        df = pd.DataFrame()
+        df = df.append(list_of_lists)
+        df.columns = df.iloc[0]
+        df = df.reindex(df.index.drop([0]))
+
+    except gspread.exceptions.WorksheetNotFound as e:
+        print("Trying to open non-existent sheet. Verify that the sheet name exists (%s)." % table_name)
 
 
 
