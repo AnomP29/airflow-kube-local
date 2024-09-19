@@ -73,7 +73,7 @@ def main(db, dataset, schema, table, date_col):
     sheet = gc.open_by_key(google_sheet_id)
 
     try:
-        worksheet = sheet.worksheet(table_name)
+        worksheet = sheet.worksheet(table)
         list_of_lists = worksheet.get_all_values()
         df = pd.DataFrame()
         df = df.append(list_of_lists)
@@ -81,7 +81,7 @@ def main(db, dataset, schema, table, date_col):
         df = df.reindex(df.index.drop([0]))
 
     except gspread.exceptions.WorksheetNotFound as e:
-        print("Trying to open non-existent sheet. Verify that the sheet name exists (%s)." % table_name)
+        print("Trying to open non-existent sheet. Verify that the sheet name exists (%s)." % table)
 
 
 
