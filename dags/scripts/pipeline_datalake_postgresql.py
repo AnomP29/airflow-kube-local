@@ -14,7 +14,7 @@ from datetime import datetime
 from google.cloud import bigquery
 from google.api_core.exceptions import NotFound
 from dependencies import db_config
-
+from dependencies import rdbms_operator
 
 pd.options.display.max_colwidth = 100000
 
@@ -84,6 +84,8 @@ def get_count(conn, schema, table, db_name, date_col, exc_date):
     print(sql)
     df = pd.read_sql_query(sql, conn)
     count = int(str(df['count'].values).replace('[','').replace(']',''))
+    
+    rdbms_operator('postgres', 'hijra').rdbms_type()
 
     return count
 
