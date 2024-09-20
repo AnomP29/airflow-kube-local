@@ -14,9 +14,10 @@ from dependencies import db_config
 
 class rdbms_operator():
     # def __init__(self, db_type, schema, table, db_name, date_col, exc_date, *args, **kwargs) -> None:
-    def __init__(self, db_type, db, *args, **kwargs) -> None:
+    def __init__(self, db_type, db, query, *args, **kwargs) -> None:
         self.db_type = db_type
         self.db = db
+        self.query = query
         # self.schema = schema
         # self.table = table
         # self.db_name = db_name
@@ -46,6 +47,14 @@ class rdbms_operator():
         
         return conn
 
+    def execute_with_pandas(self):
+        self.conn = self.conn_postgres_()
+        dfc = pd.read_sql_query(self.query, self.conn)
+        
+        return dfc
+        
+        
+    
     def rdbms_type(self):
         if self.db_type == 'postgres':
             print('postgres connections')
