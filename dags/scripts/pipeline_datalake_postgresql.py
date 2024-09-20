@@ -91,7 +91,7 @@ def get_count(conn, schema, table, db_name, date_col, exc_date):
     print(counts)
     print('-----------------END CLASS BARU------------------------------')
 
-    return count
+    return counts
 
 def check_bq_tables(dataset, bqtable):
     client = bigquery.Client('hijra-data-dev')
