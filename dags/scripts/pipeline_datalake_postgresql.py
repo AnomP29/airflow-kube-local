@@ -14,7 +14,7 @@ from datetime import datetime
 from google.cloud import bigquery
 from google.api_core.exceptions import NotFound
 from dependencies import db_config
-from dependencies import rdbms_operator
+from dependencies.rdbms_operator import rdbms_operator
 
 pd.options.display.max_colwidth = 100000
 
