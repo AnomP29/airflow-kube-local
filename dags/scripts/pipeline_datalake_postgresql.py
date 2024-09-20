@@ -84,7 +84,8 @@ def get_count(conn, schema, table, db_name, date_col, exc_date):
     print(sql)
     df = pd.read_sql_query(sql, conn)
     count = int(str(df['count'].values).replace('[','').replace(']',''))
-    
+
+    print('CLASS BARU')
     rdbms_operator('postgres', 'hijra').rdbms_type()
 
     return count
