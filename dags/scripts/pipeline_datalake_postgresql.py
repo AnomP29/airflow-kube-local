@@ -82,16 +82,13 @@ def get_count(conn, schema, table, db_name, date_col, exc_date):
         """.format(schema=schema,table=table,date_col=date_col, exc_date=exc_date)
 
     print(sql)
-    df = pd.read_sql_query(sql, conn)
-    count = int(str(df['count'].values).replace('[','').replace(']',''))
-
     print('-----------------START CLASS BARU----------------------------')
-    dfc = rdbms_operator('postgres', 'hijra', sql).execute_with_pandas()
-    counts = int(str(dfc['count'].values).replace('[','').replace(']',''))
-    print(counts)
+    df = rdbms_operator('postgres', 'hijra', sql).execute_with_pandas()
+    count = int(str(dfc['count'].values).replace('[','').replace(']',''))
+    print(count)
     print('-----------------END CLASS BARU------------------------------')
 
-    return counts
+    return count
 
 def check_bq_tables(dataset, bqtable):
     client = bigquery.Client('hijra-data-dev')
