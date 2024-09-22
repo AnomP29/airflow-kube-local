@@ -84,7 +84,7 @@ def get_count(conn, schema, table, db_name, date_col, exc_date):
     print(sql)
     print('-----------------START CLASS BARU----------------------------')
     df = rdbms_operator('postgres', 'hijra', sql).execute('Y')
-    count = int(str(dfc['count'].values).replace('[','').replace(']',''))
+    count = int(str(df['count'].values).replace('[','').replace(']',''))
     print(count)
     print('-----------------END CLASS BARU------------------------------')
 
