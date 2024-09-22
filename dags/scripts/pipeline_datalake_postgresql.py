@@ -25,6 +25,7 @@ parser.add_option('--schema', dest='schema', help='specify schema source')
 parser.add_option('--dataset', dest='dataset', help='specify dataset source')
 parser.add_option('--date_col', dest='date_col', help='table column represent date')
 parser.add_option('--exc_date', dest='exc_date', help='execution date')
+parser.add_option('--encr', dest='encr', help='encryption table or not')
 
 
 (options, args) = parser.parse_args()
@@ -41,6 +42,9 @@ if not options.date_col:
     parser.error('date_col is not given')
 if not options.exc_date:
     parser.error('exc_date is not given')
+if not options.encr:
+    parser.error('encr is not given')
+
 
 table = options.table
 db = options.db
@@ -48,8 +52,9 @@ schema = options.schema
 dataset = options.dataset
 date_col = options.date_col
 exc_date = options.exc_date
+encr = options.encr
 
-def get_count(conn, schema, table, db_name, date_col, exc_date):
+def get_count(schema, table, db_name, date_col, exc_date):
     # TODO: Ini juga perlu kita sederhanakan logic-nya.
     # Di sini untuk p2p perlu pakai db_name juga.
     if (db != 'hijra_staging' and table in ['audit_trail','log_login','anl_user_register','user_lounges','rdl_api_log']) == True:
@@ -82,6 +87,7 @@ def get_count(conn, schema, table, db_name, date_col, exc_date):
         """.format(schema=schema,table=table,date_col=date_col, exc_date=exc_date)
 
     print(sql)
+    print(encr)
     print('-----------------START CLASS BARU----------------------------')
     df = rdbms_operator('postgres', 'hijra', sql).execute('Y')
     count = int(str(df['count'].values).replace('[','').replace(']',''))
@@ -147,7 +153,6 @@ def create_tables(dataset, bqtable):
     except Exception as e:
         print(e)
 
-
 def insert_tables(dataset, bqtable):
     client = bigquery.Client('hijra-data-dev')
     sql = """
@@ -159,7 +164,6 @@ def insert_tables(dataset, bqtable):
     """.format(dataset=dataset, bqtable=bqtable)
     print(sql)
     client.query(sql).result()
-
 
 def drop_tables(dataset, bqtable):
     client = bigquery.Client('hijra-data-dev')
@@ -173,7 +177,7 @@ def drop_tables(dataset, bqtable):
         print(d)
 
 
-def get_data(conn, db, dataset, schema, table, db_name, date_col, exc_date):
+def get_data(db, dataset, schema, table, db_name, date_col, exc_date):
     # Object client bigquery cursor
     client = bigquery.Client('hijra-data-dev')
     # client.query("""SELECT * FROM datalakes.{table} LIMIT 1""".format(table=table)).result()
@@ -228,21 +232,21 @@ def main(db, dataset, schema, table, date_col, exc_date):
 
     # print('connecting to postgres DB')
     # conn = 'psycopg2.connection'
-    conn = psycopg2.connect(
-        host=db_host,
-        user=db_username,
-        password=db_password,
-        database=db_name,
-        port=db_port,
-        connect_timeout=5)
+    # conn = psycopg2.connect(
+    #     host=db_host,
+    #     user=db_username,
+    #     password=db_password,
+    #     database=db_name,
+    #     port=db_port,
+    #     connect_timeout=5)
 
     print("Processing: {}: {}.{}".format(db, schema, table))
 
-    count = get_count(conn, schema, table, db_name, date_col, exc_date)
+    count = get_count(schema, table, db_name, date_col, exc_date)
     print(count)
 
     if count != 0:
-        get_data(conn, db, dataset, schema, table, db_name, date_col, exc_date)
+        get_data(db, dataset, schema, table, db_name, date_col, exc_date)
     else:
         tables___ = 'dl__{db}__{schema}__{table}__dev'.format(db=db, schema=schema, table=table)
         # drop_tables(dataset, tables___)
