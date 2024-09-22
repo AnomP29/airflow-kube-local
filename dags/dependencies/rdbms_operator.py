@@ -60,6 +60,9 @@ class rdbms_operator():
             for row in records:
                 results.append(dict(zip(columns, row)))
 
+            cursor.close()
+
+
         
         return results
         
