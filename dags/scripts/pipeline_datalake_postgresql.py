@@ -86,14 +86,12 @@ def get_count(schema, table, db_name, date_col, exc_date):
         AND to_char({date_col}, 'YYYY-MM-DD/HH:MM') <= '{exc_date}'
         """.format(schema=schema,table=table,date_col=date_col, exc_date=exc_date)
 
-    print(sql)
-    print(encr)
-    print('-----------------START CLASS BARU----------------------------')
+    # print(sql)
+    # print(encr)
     df = rdbms_operator('postgres', 'hijra', sql).execute('Y')
     count = int(str(df['count'].values).replace('[','').replace(']',''))
     print(count)
-    print('-----------------END CLASS BARU------------------------------')
-
+    
     return count
 
 def check_bq_tables(dataset, bqtable):
@@ -189,10 +187,8 @@ def get_data(db, dataset, schema, table, db_name, date_col, exc_date):
     AND to_char({date_col}, 'YYYY-MM-DD/HH:MM') <= '{exc_date}'
     """.format(schema=schema,table=table,date_col=date_col, exc_date=exc_date)
     
-    print('-----------------START CLASS BARU----------------------------')
     results = rdbms_operator('postgres', 'hijra', sql).execute('N')
-    print('-----------------END CLASS BARU------------------------------')
-
+    
     print(sys.getsizeof(results))
 
     df = pd.DataFrame(results)
