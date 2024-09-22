@@ -202,7 +202,6 @@ def get_data(conn, db, dataset, schema, table, db_name, date_col, exc_date):
 
     tables___ = 'dl__{db}__{schema}__{table}__dev'.format(db=db, schema=schema, table=table)
     pandas_gbq.to_gbq(df, dataset + '.' + tables___ + '__temp' , project_id='hijra-data-dev',if_exists='append',api_method='load_csv', chunksize=100000)
-    cursor.close()
 
     if check_bq_tables(dataset, tables___) != 1:
         print('ga ada')
