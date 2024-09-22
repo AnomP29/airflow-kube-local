@@ -43,7 +43,8 @@ class rdbms_operator():
         except Exception as e:
             print(e)
         else:
-            print('connection success')
+            pass
+            # print('connection success')
         
         return conn
 
