@@ -47,11 +47,21 @@ class rdbms_operator():
         
         return conn
 
-    def execute_with_pandas(self):
+    def execute(self, dframe='N'):
         self.conn = self.conn_postgres_()
-        dfc = pd.read_sql_query(self.query, self.conn)
+        if dframe == 'Y':            
+            results = pd.read_sql_query(self.query, self.conn)
+        else:
+            cursor = self.conn.cursor(name='fetch_large_result')
+            cursor.execute(self.query)
+            records = cursor.fetchmany(size=1000000)
+            columns = [column[0] for column in cursor.description]
+            results = []
+            for row in records:
+                results.append(dict(zip(columns, row)))
+
         
-        return dfc
+        return results
         
         
     

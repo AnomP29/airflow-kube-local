@@ -83,7 +83,7 @@ def get_count(conn, schema, table, db_name, date_col, exc_date):
 
     print(sql)
     print('-----------------START CLASS BARU----------------------------')
-    df = rdbms_operator('postgres', 'hijra', sql).execute_with_pandas()
+    df = rdbms_operator('postgres', 'hijra', sql).execute('Y')
     count = int(str(dfc['count'].values).replace('[','').replace(']',''))
     print(count)
     print('-----------------END CLASS BARU------------------------------')
@@ -178,19 +178,16 @@ def get_data(conn, db, dataset, schema, table, db_name, date_col, exc_date):
     client = bigquery.Client('hijra-data-dev')
     # client.query("""SELECT * FROM datalakes.{table} LIMIT 1""".format(table=table)).result()
 
-    cursor = conn.cursor(name='fetch_large_result')
     sql = """
     SELECT * FROM {schema}.{table} 
     WHERE 9=9
     AND to_char({date_col}, 'YYYY-MM-DD/HH:MM') >= TO_CHAR((to_timestamp('{exc_date}', 'YYYY-MM-DD/HH24:MI') - INTERVAL '2 HOUR'),'YYYY-MM-DD/HH24:MI')
     AND to_char({date_col}, 'YYYY-MM-DD/HH:MM') <= '{exc_date}'
     """.format(schema=schema,table=table,date_col=date_col, exc_date=exc_date)
-    cursor.execute(sql)
-    records = cursor.fetchmany(size=1000000)
-    columns = [column[0] for column in cursor.description]
-    results = []
-    for row in records:
-        results.append(dict(zip(columns, row)))
+    
+    print('-----------------START CLASS BARU----------------------------')
+    results = rdbms_operator('postgres', 'hijra', sql).execute('N')
+    print('-----------------END CLASS BARU------------------------------')
 
     print(sys.getsizeof(results))
 
