@@ -197,11 +197,21 @@ def get_data(db, dataset, schema, table, db_name, date_col, exc_date):
     # df = df.fillna(value='', inplace=True)
     df = df.replace('None', '')
     df = df.replace('NaT', '')
-    df['row_loaded_ts'] = pd.Timestamp.now().strftime('%Y-%m-%d %H:%M:%S.%s')
-    df = df[['row_loaded_ts'] + [x for x in df.columns if x != 'row_loaded_ts']]
+    # df['row_loaded_ts'] = pd.Timestamp.now().strftime('%Y-%m-%d %H:%M:%S.%s')
+    # df = df[['row_loaded_ts'] + [x for x in df.columns if x != 'row_loaded_ts']]
 
     tables___ = 'dl__{db}__{schema}__{table}__dev'.format(db=db, schema=schema, table=table)
-    pandas_gbq.to_gbq(df, dataset + '.' + tables___ + '__temp' , project_id='hijra-data-dev',if_exists='append',api_method='load_csv', chunksize=100000)
+    try:
+        pandas_gbq.to_gbq(df, dataset + '.' + tables___ + '__temp' , project_id='hijra-data-dev',if_exists='append',api_method='load_csv', chunksize=100000)
+    except Exception as e:
+        print(e)
+    else:
+        sql = '''
+        CREATE OR REPLACE TABLE {tables___}
+        AS
+        SELECT CURRENT_TIMESTAMP() row_loaded_ts, * FROM {tables___}
+        '''.format(tables___ = tables___)
+        client.query(sql).result()
 
     if check_bq_tables(dataset, tables___) != 1:
         print('ga ada')
