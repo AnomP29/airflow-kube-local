@@ -207,22 +207,20 @@ def get_data(db, dataset, schema, table, db_name, date_col, exc_date):
     except Exception as e:
         print(e)
     else:
+        sql = '''
+        CREATE OR REPLACE TABLE {dataset}.{tables___}__temp
+        AS
+        SELECT CURRENT_TIMESTAMP() row_loaded_ts, * FROM {dataset}.{tables___}__temp
+        '''.format(tables___ = tables___, dataset=dataset)
+        client.query(sql).result()
         if encr == True:
             print(encr)
-            sql = '''
-            CREATE OR REPLACE TABLE {dataset}.{tables___}__temp
-            '''.format(tables___ = tables___, dataset=dataset)
-            print(sql)
+            drop_tables(dataset, bqtable=tables___ + '__temp')
         else:
+            check_bq_tables(dataset, tables___)
             print(encr)
-            sql = '''
-            CREATE OR REPLACE TABLE {dataset}.{tables___}__temp
-            AS
-            SELECT CURRENT_TIMESTAMP() row_loaded_ts, * FROM {dataset}.{tables___}__temp
-            '''.format(tables___ = tables___, dataset=dataset)
-            print(sql)
-
-        client.query(sql).result()
+            
+        
 
 def main(db, dataset, schema, table, date_col, exc_date):
     # DB connect
@@ -249,7 +247,7 @@ def main(db, dataset, schema, table, date_col, exc_date):
     tables___ = 'dl__{db}__{schema}__{table}__dev'.format(db=db, schema=schema, table=table)
     if count != 0:
         get_data(db, dataset, schema, table, db_name, date_col, exc_date)
-        check_bq_tables(dataset, tables___)
+        # check_bq_tables(dataset, tables___)
     else:
         tables___ = 'dl__{db}__{schema}__{table}__dev'.format(db=db, schema=schema, table=table)
         # drop_tables(dataset, tables___)
