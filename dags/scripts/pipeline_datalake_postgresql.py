@@ -207,7 +207,7 @@ def get_data(db, dataset, schema, table, db_name, date_col, exc_date):
         print(e)
     else:
         sql = '''
-        CREATE OR REPLACE TABLE {tables___}
+        CREATE OR REPLACE TABLE {dataset}.{tables___}__temp
         AS
         SELECT CURRENT_TIMESTAMP() row_loaded_ts, * FROM {dataset}.{tables___}__temp
         '''.format(tables___ = tables___, dataset=dataset)
