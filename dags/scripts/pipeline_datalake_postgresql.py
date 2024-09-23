@@ -209,8 +209,8 @@ def get_data(db, dataset, schema, table, db_name, date_col, exc_date):
         sql = '''
         CREATE OR REPLACE TABLE {tables___}
         AS
-        SELECT CURRENT_TIMESTAMP() row_loaded_ts, * FROM {tables___}
-        '''.format(tables___ = tables___)
+        SELECT CURRENT_TIMESTAMP() row_loaded_ts, * FROM {dataset}.{tables___}__temp
+        '''.format(tables___ = tables___, dataset=dataset)
         client.query(sql).result()
 
     if check_bq_tables(dataset, tables___) != 1:
