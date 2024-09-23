@@ -213,9 +213,9 @@ def get_data(db, dataset, schema, table, db_name, date_col, exc_date):
         SELECT CURRENT_TIMESTAMP() row_loaded_ts, * FROM {dataset}.{tables___}__temp
         '''.format(tables___ = tables___, dataset=dataset)
         client.query(sql).result()
-        if encr == True:
+        if encr == 'True':
             print(encr)
-            drop_tables(dataset, bqtable=tables___ + '__temp')
+            drop_tables(dataset, tables___)
         else:
             check_bq_tables(dataset, tables___)
             print(encr)
