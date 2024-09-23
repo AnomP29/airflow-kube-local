@@ -242,8 +242,10 @@ def main(db, dataset, schema, table, date_col, exc_date):
     count = get_count(schema, table, db_name, date_col, exc_date)
     print(count)
 
+    tables___ = 'dl__{db}__{schema}__{table}__dev'.format(db=db, schema=schema, table=table)
     if count != 0:
         get_data(db, dataset, schema, table, db_name, date_col, exc_date)
+        check_bq_tables(dataset, tables___)
     else:
         tables___ = 'dl__{db}__{schema}__{table}__dev'.format(db=db, schema=schema, table=table)
         # drop_tables(dataset, tables___)
