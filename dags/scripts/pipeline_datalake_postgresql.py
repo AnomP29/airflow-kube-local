@@ -156,8 +156,8 @@ def insert_tables(dataset, bqtable):
     sql = """
     INSERT INTO `{dataset}.{bqtable}`
     SELECT 
-    -- CURRENT_TIMESTAMP() row_loaded_ts
-    ,*
+    -- CURRENT_TIMESTAMP() row_loaded_ts,
+    *
     FROM `{dataset}.{bqtable}__temp`
     """.format(dataset=dataset, bqtable=bqtable)
     # print(sql)
