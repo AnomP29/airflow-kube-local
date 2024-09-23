@@ -207,19 +207,17 @@ def get_data(db, dataset, schema, table, db_name, date_col, exc_date):
     except Exception as e:
         print(e)
     else:
-        sql = '''
-        CREATE OR REPLACE TABLE {dataset}.{tables___}__temp
-        AS
-        SELECT CURRENT_TIMESTAMP() row_loaded_ts, * FROM {dataset}.{tables___}__temp
-        '''.format(tables___ = tables___, dataset=dataset)
-        # print(sql)
+        if encr == True:
+            print('get encryption process')
+        else:            
+            sql = '''
+            CREATE OR REPLACE TABLE {dataset}.{tables___}__temp
+            AS
+            SELECT CURRENT_TIMESTAMP() row_loaded_ts, * FROM {dataset}.{tables___}__temp
+            '''.format(tables___ = tables___, dataset=dataset)
+            # print(sql)
+
         client.query(sql).result()
-
-    # if check_bq_tables(dataset, tables___) != 1:
-    #     print('ga ada')
-    # else:
-    #     print('ada')
-
 
 def main(db, dataset, schema, table, date_col, exc_date):
     # DB connect
