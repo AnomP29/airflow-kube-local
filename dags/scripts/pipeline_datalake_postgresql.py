@@ -156,11 +156,11 @@ def insert_tables(dataset, bqtable):
     sql = """
     INSERT INTO `{dataset}.{bqtable}`
     SELECT 
-    CURRENT_TIMESTAMP() row_loaded_ts
+    -- CURRENT_TIMESTAMP() row_loaded_ts
     ,*
     FROM `{dataset}.{bqtable}__temp`
     """.format(dataset=dataset, bqtable=bqtable)
-    print(sql)
+    # print(sql)
     client.query(sql).result()
 
 def drop_tables(dataset, bqtable):
@@ -211,13 +211,13 @@ def get_data(db, dataset, schema, table, db_name, date_col, exc_date):
         AS
         SELECT CURRENT_TIMESTAMP() row_loaded_ts, * FROM {dataset}.{tables___}__temp
         '''.format(tables___ = tables___, dataset=dataset)
-        print(sql)
+        # print(sql)
         client.query(sql).result()
 
-    if check_bq_tables(dataset, tables___) != 1:
-        print('ga ada')
-    else:
-        print('ada')
+    # if check_bq_tables(dataset, tables___) != 1:
+    #     print('ga ada')
+    # else:
+    #     print('ada')
 
 
 def main(db, dataset, schema, table, date_col, exc_date):
@@ -236,16 +236,6 @@ def main(db, dataset, schema, table, date_col, exc_date):
         db_password = db_config.db_hijra_password
         db_name = db_config.db_hijra_name
         db_port = db_config.db_hijra_port
-
-    # print('connecting to postgres DB')
-    # conn = 'psycopg2.connection'
-    # conn = psycopg2.connect(
-    #     host=db_host,
-    #     user=db_username,
-    #     password=db_password,
-    #     database=db_name,
-    #     port=db_port,
-    #     connect_timeout=5)
 
     print("Processing: {}: {}.{}".format(db, schema, table))
 
