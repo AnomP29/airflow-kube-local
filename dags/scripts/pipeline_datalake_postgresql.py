@@ -201,6 +201,7 @@ def get_data(db, dataset, schema, table, db_name, date_col, exc_date):
     # df = df[['row_loaded_ts'] + [x for x in df.columns if x != 'row_loaded_ts']]
 
     tables___ = 'dl__{db}__{schema}__{table}__dev'.format(db=db, schema=schema, table=table)
+    print('create TEMP tables')
     try:
         pandas_gbq.to_gbq(df, dataset + '.' + tables___ + '__temp' , project_id='hijra-data-dev',if_exists='append',api_method='load_csv', chunksize=100000)
     except Exception as e:
