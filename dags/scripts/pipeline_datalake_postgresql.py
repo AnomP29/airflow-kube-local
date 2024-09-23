@@ -209,7 +209,10 @@ def get_data(db, dataset, schema, table, db_name, date_col, exc_date):
     else:
         if encr == True:
             print(encr)
-            print('get encryption process')
+            sql = '''
+            CREATE OR REPLACE TABLE {dataset}.{tables___}__temp
+            '''.format(tables___ = tables___, dataset=dataset)
+            print(sql)
         else:
             print(encr)
             sql = '''
@@ -217,7 +220,7 @@ def get_data(db, dataset, schema, table, db_name, date_col, exc_date):
             AS
             SELECT CURRENT_TIMESTAMP() row_loaded_ts, * FROM {dataset}.{tables___}__temp
             '''.format(tables___ = tables___, dataset=dataset)
-            # print(sql)
+            print(sql)
 
         client.query(sql).result()
 
