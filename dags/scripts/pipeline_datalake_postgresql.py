@@ -208,8 +208,10 @@ def get_data(db, dataset, schema, table, db_name, date_col, exc_date):
         print(e)
     else:
         if encr == True:
+            print(encr)
             print('get encryption process')
-        else:            
+        else:
+            print(encr)
             sql = '''
             CREATE OR REPLACE TABLE {dataset}.{tables___}__temp
             AS
