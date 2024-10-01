@@ -110,7 +110,22 @@ def create_dag(yml_conf, queue_pool):
                     exc_date='{{ (logical_date + macros.timedelta(hours=7)).strftime("%Y-%m-%d/%H:00") }}'
                 )
 
-            cleanup = DummyOperator(task_id= table["name"] + '_cleanup', dag=dag)
+            cleanup_command ="""\
+            PYTHONPATH={dags} python {dags}/{pipeline_script} --db={db} {schema} --dataset={dataset} --table={table} \
+            """.format(
+                dags=DAGS_FOLDER,
+                cleanup_script="scripts/cleanup_pipeline.py",
+                db=yml_conf["database"],
+                schema=schema,
+                dataset=yml_conf["dataset"],
+                table=table["name"]
+            )
+            
+            cleanup = BashOperator(
+                task_id = table["name"] + '_cleanup',
+                bash_command = cleanup_command,
+                dag = dag
+            )
             
             if encryption_command != '':
                 encryption = BashOperator(
