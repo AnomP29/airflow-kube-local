@@ -68,6 +68,8 @@ def __cleanup__(dataset, table):
         client.query(q_string)
     except Exception as e:
         print(e)
+    else:
+        print('Success DROP temp table')
     
 def main(db, dataset, schema, table):
     tables___ = 'dl__{db}__{schema}__{table}__dev'.format(db=db, schema=schema, table=table)
