@@ -31,7 +31,13 @@ class bq_operator():
             pass
         else:
             print(self.encr)
-            self.check_bq_tables(self.dataset)
+            if self.check_bq_tables(self.dataset) == 1:
+                self.rsql = self.__insert_tables__(self.dataset, self.column_select)
+                print(self.rsql)
+            else:
+                self.rsql = self.__create_tables__(self.dataset, self.column_select)
+                print(self.rsql)
+
         # if self.check_bq_tables(self.dataset) == 1:
         #     self.rsql = self.__insert_tables__(self.dataset, self.sql2)
         #     print(self.rsql)
@@ -57,7 +63,7 @@ class bq_operator():
         WHERE 9=9
         AND table_name = '{bqtable}'
         '''.format(dataset=self.dset, bqtable=self.tables__)
-        print(self.sql)
+        # print(self.sql)
 
         bq_results = self.client.query(self.sql)
         self.df = bq_results.to_dataframe()
