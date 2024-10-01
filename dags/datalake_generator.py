@@ -110,11 +110,12 @@ def create_dag(yml_conf, queue_pool):
                     exc_date='{{ (logical_date + macros.timedelta(hours=7)).strftime("%Y-%m-%d/%H:00") }}'
                 )
 
+            cleanup_script = "scripts/cleanup_pipeline.py"
             cleanup_command ="""\
             PYTHONPATH={dags} python {dags}/{pipeline_script} --db={db} {schema} --dataset={dataset} --table={table} \
             """.format(
                 dags=DAGS_FOLDER,
-                cleanup_script="scripts/cleanup_pipeline.py",
+                cleanup_script=cleanup_script,
                 db=yml_conf["database"],
                 schema=schema,
                 dataset=yml_conf["dataset"],
