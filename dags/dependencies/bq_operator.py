@@ -22,8 +22,16 @@ class bq_operator():
 
         if self.encr == 'True':
             print(self.encr)
+            if self.check_bq_tables(self.dataset) == 1:
+                self.rsql = self.__insert_tables__(self.dataset, self.column_select)
+                print(self.rsql)
+            else:
+                self.rsql = self.__create_tables__(self.dataset, self.column_select)
+                print(self.rsql)
+            pass
         else:
             print(self.encr)
+            self.check_bq_tables(self.dataset)
         # if self.check_bq_tables(self.dataset) == 1:
         #     self.rsql = self.__insert_tables__(self.dataset, self.sql2)
         #     print(self.rsql)
