@@ -11,6 +11,7 @@ from google.auth.transport.requests import AuthorizedSession
 import os
 
 from pipeline_datalake_postgresql import check_bq_tables
+from dependencies.bq_operator import bq_operator
 
 # Object client bigquery cursor
 client = bigquery.Client('hijra-data-dev')
@@ -55,7 +56,7 @@ encr = options.encr
 print('encrypt_file.py')
 
 
-def main(db, dataset, schema, table, date_col):
+def read_gsheet_file(db, dataset, schema, table):
     # Tabulate
     pd.options.display.max_colwidth = 100000
 
@@ -77,12 +78,28 @@ def main(db, dataset, schema, table, date_col):
         worksheet = sheet.worksheet(table)
         list_of_lists = worksheet.get_all_values()
         df = pd.DataFrame(worksheet.get_all_records())
-        print(df)
+        # print(df)
 
     except gspread.exceptions.WorksheetNotFound as e:
-        print("Trying to open non-existent sheet. Verify that the sheet name exists (%s)." % table)
+        print("Trying to open non-existent sheet. Verify that the sheet name exists (%s)." % table)  
+        
+    return df  
 
 
+def transform_gsheet(dframe):
+    df = dframe
+    if "PII" in df:
+        if (any(df['PII'] == 'TRUE') == True) == True:
+            df_selected = df[df['PII'] == 'TRUE']
+            df_selected['data_type'] = 'BYTES'
+            df_selected = df_selected.rename(columns={'Column Name':'target_column'})
+            df_init = df_selected[['target_column','data_type','Supported Key']]
+            df_inits = list(df_selected['target_column'])
+            encrypted_key = df_selected.head(1)['Encrypted Key'].to_string(index=False)
+
+def main(db, dataset, schema, table, date_col):
+    dframe = read_gsheet_file(db, dataset, schema, table)
+    transform_gsheet(dframe)
 
 if __name__ == "__main__":
     main(db, dataset, schema, table, date_col)

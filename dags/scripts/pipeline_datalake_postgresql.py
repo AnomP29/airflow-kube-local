@@ -207,15 +207,18 @@ def get_data(db, dataset, schema, table, db_name, date_col, exc_date):
     except Exception as e:
         print(e)
     else:
+        # override temp_table_01
         sql = '''
         CREATE OR REPLACE TABLE {dataset}.{tables___}__temp
         AS
         SELECT CURRENT_TIMESTAMP() row_loaded_ts, * FROM {dataset}.{tables___}__temp
         '''.format(tables___ = tables___, dataset=dataset)
+
         client.query(sql).result()
+
         if encr == 'True':
             print(encr)
-            drop_tables(dataset, tables___)
+            pass
         else:
             check_bq_tables(dataset, tables___)
             print(encr)
