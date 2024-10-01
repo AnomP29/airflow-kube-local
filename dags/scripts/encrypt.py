@@ -10,7 +10,7 @@ from google.auth.transport.requests import AuthorizedSession
 
 import os
 
-from pipeline_datalake_postgresql import check_bq_tables
+# from pipeline_datalake_postgresql import check_bq_tables
 from dependencies.bq_operator import bq_operator
 
 # Object client bigquery cursor
