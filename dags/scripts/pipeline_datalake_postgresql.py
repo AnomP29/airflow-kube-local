@@ -205,7 +205,7 @@ def transform_gsheet(dframe, table):
             FROM
                 {dataset}.INFORMATION_SCHEMA.COLUMNS
             WHERE
-                table_name='{table_name}'""".format(dataset=dataset,table_name=table_name)
+                table_name='{table_name}'""".format(dataset=dataset,table_name=table)
             original_schema = client.query(query_string).to_dataframe()
 
             # Check table is partition or not
