@@ -7,15 +7,32 @@ import pandas_gbq
 
 
 class bq_operator():
-    def __init__(self, projid, dataset, tables, query, *args, **kwargs) -> None:
+    def __init__(self, projid, dataset, tables, query, column_list_enc=None, encrypted_key=None, *args, **kwargs) -> None:
         self.projid = projid
         self.dataset = dataset
         self.tables = tables
-        self.query = query       
+        self.query = query
+        self.column_list_enc = column_list_enc
+        self.encrypted_key = encrypted_key       
         self.client = bigquery.Client(self.projid)
+        if self.check_bq_tables() == 1:
+            print('check schema')
+            self.__insert_enc_tables__()
+        else:
+            print('create table')
         
     def check_bq_tables(self): 
-        bq_results = self.client.query(self.query)
+        sql = '''
+        select
+        COUNT(DISTINCT
+        table_name) counts
+        from
+        `hijra-data-dev.{dataset}.INFORMATION_SCHEMA.COLUMNS`
+        WHERE 9=9
+        AND table_name = '{bqtable}'
+        '''.format(dataset=self.dataset, bqtable=self.tables)
+
+        bq_results = self.client.query(sql)
         df = bq_results.to_dataframe()
 
         return df.iloc[0]['f0_']
@@ -32,20 +49,3 @@ class bq_operator():
         
         return self.original_schema
     
-    if check_bq_tables() == 1:
-        print('check schema')
-        print('inserting row to MAIN TABLE')
-        # try:
-        #     insert_tables(dataset, bqtable)
-        # except Exception as e:
-        #     print(e)
-        # else:
-        #     drop_tables(dataset, bqtable)
-    else:
-        print('create table')
-        # try:
-        #     create_tables(dataset, bqtable)
-        # except Exception as e:
-        #     print(e)
-        # else:
-        #     drop_tables(dataset, bqtable)
