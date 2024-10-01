@@ -111,7 +111,7 @@ def create_dag(yml_conf, queue_pool):
                 )
 
             cleanup_script = "scripts/cleanup_pipeline.py"
-            cleanup_command ="PYTHONPATH={dags} python {dags}/{pipeline_script} --db={db} {schema} --dataset={dataset} --table={table}".format(
+            cleanup_command ="PYTHONPATH={dags} python {dags}/{cleanup_script} --db={db} {schema} --dataset={dataset} --table={table}".format(
                 dags=DAGS_FOLDER,
                 cleanup_script=cleanup_script,
                 db=yml_conf["database"],
