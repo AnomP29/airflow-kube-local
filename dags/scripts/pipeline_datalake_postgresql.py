@@ -174,7 +174,7 @@ def read_gsheet_file(db, dataset, schema, table):
     except gspread.exceptions.WorksheetNotFound as e:
         print("Trying to open non-existent sheet. Verify that the sheet name exists (%s)." % table)  
 
-    print(df)
+    # print(df)
     return df  
 
 def transform_gsheet(dframe, table):

@@ -124,7 +124,9 @@ class bq_operator():
             self.tables__ = self.tables
             
         self.sql_str = """
-        INSERT INTO {dataset}.{table_name} {sql}
+        INSERT INTO {dataset}.{table_name} 
+        SELECT {sql}
+        FROM {dataset}.{table_name}__temp
         """.format(
             dataset=self.dset,
             table_name=self.tables__, 
