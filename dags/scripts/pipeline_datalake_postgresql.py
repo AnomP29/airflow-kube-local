@@ -269,7 +269,6 @@ def transform_gsheet(dframe, table):
             
             return column_select, encrypted_key, column_list
 
-
 def main(db, dataset, schema, table, date_col, exc_date):
     # DB connect
     if db == 'hijra':
@@ -289,7 +288,7 @@ def main(db, dataset, schema, table, date_col, exc_date):
         get_data(db, dataset, schema, table, db_name, date_col, exc_date)
         dframe = read_gsheet_file(db, dataset, schema, table)
         column_select, encrypted_key, column_list = transform_gsheet(dframe, tables___)
-        bq_operator('hijra-data-dev', dataset, tables___, '', column_select, encrypted_key, column_list)
+        bq_operator('hijra-data-dev', dataset, tables___, '', encr, column_select, encrypted_key, column_list)
 
     else:
         tables___ = 'dl__{db}__{schema}__{table}__dev'.format(db=db, schema=schema, table=table)
@@ -297,7 +296,6 @@ def main(db, dataset, schema, table, date_col, exc_date):
     
 
     return "SUCCESS"
-
 
 if __name__ == "__main__":
     main(db, dataset, schema, table, date_col, exc_date)

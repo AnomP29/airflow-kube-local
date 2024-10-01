@@ -7,26 +7,31 @@ import pandas_gbq
 
 
 class bq_operator():
-    def __init__(self, projid, dataset, tables, query, 
+    def __init__(self, projid, dataset, tables, query, encr='False',
                  column_select=None, encrypted_key=None, column_list=None, 
                  *args, **kwargs) -> None:
         self.projid = projid
         self.dataset = dataset
         self.tables = tables
         self.query = query
+        self.encr = encr
         self.column_select = column_select
         self.encrypted_key = encrypted_key    
         self.column_list = column_list   
         self.client = bigquery.Client(self.projid)
 
-        if self.check_bq_tables(self.dataset) == 1:
-            self.rsql = self.__insert_tables__(self.dataset, self.sql2)
-            # print(self.rsql)
-            self.__execute__()
+        if self.encr == 'True':
+            print(self.encr)
         else:
-            self.rsql = self.__create_tables__(self.dataset, self.sql2)
-            # print(self.rsql)
-            self.__execute__()
+            print(self.encr)
+        # if self.check_bq_tables(self.dataset) == 1:
+        #     self.rsql = self.__insert_tables__(self.dataset, self.sql2)
+        #     print(self.rsql)
+        #     self.__execute__()
+        # else:
+        #     self.rsql = self.__create_tables__(self.dataset, self.sql2)
+        #     print(self.rsql)
+        #     self.__execute__()
 
     def check_bq_tables(self, dataset=None):
         self.dset = dataset 
