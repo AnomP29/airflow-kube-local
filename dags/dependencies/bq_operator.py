@@ -7,35 +7,114 @@ import pandas_gbq
 
 
 class bq_operator():
-    def __init__(self, projid, dataset, tables, query, column_list_enc=None, encrypted_key=None, *args, **kwargs) -> None:
+    def __init__(self, projid, dataset, tables, query, 
+                 column_select=None, encrypted_key=None, column_list=None, 
+                 *args, **kwargs) -> None:
         self.projid = projid
         self.dataset = dataset
         self.tables = tables
         self.query = query
-        self.column_list_enc = column_list_enc
-        self.encrypted_key = encrypted_key       
+        self.column_select = column_select
+        self.encrypted_key = encrypted_key    
+        self.column_list = column_list   
         self.client = bigquery.Client(self.projid)
-        if self.check_bq_tables() == 1:
-            print('check schema')
-            self.__insert_enc_tables__()
+
+        if self.check_bq_tables(self.dataset) == 1:
+            self.rsql = self.__insert_tables__(self.dataset, self.sql2)
+            # print(self.rsql)
+            self.__execute__()
         else:
-            print('create table')
-        
-    def check_bq_tables(self): 
-        sql = '''
+            self.rsql = self.__create_tables__(self.dataset, self.sql2)
+            # print(self.rsql)
+            self.__execute__()
+
+    def check_bq_tables(self, dataset=None):
+        self.dset = dataset 
+        if self.dset == 'enigma':
+            self.tables__ = self.tables + '_keys'
+        else:
+            self.tables__ = self.tables
+            
+        self.sql = '''
         select
         COUNT(DISTINCT
-        table_name) counts
+        table_name) f0_
         from
         `hijra-data-dev.{dataset}.INFORMATION_SCHEMA.COLUMNS`
         WHERE 9=9
         AND table_name = '{bqtable}'
-        '''.format(dataset=self.dataset, bqtable=self.tables)
+        '''.format(dataset=self.dset, bqtable=self.tables__)
+        print(self.sql)
 
-        bq_results = self.client.query(sql)
-        df = bq_results.to_dataframe()
+        bq_results = self.client.query(self.sql)
+        self.df = bq_results.to_dataframe()
 
-        return df.iloc[0]['f0_']
+        return self.df.iloc[0]['f0_']
+    
+        # self.sql2 = '''
+        #     SELECT 
+        #     CONCAT({encrypted_key}, row_loaded_ts) {encrypted_key},
+        #     KEYS.NEW_KEYSET('AEAD_AES_GCM_256') AS keyset
+        #     FROM {dataset}.{table_name}__temp
+        #     '''.format(
+        #         column_select=self.column_select, 
+        #         encrypted_key=self.encrypted_key, 
+        #         table_name=self.tables, 
+        #         dataset=self.dataset
+        #         )
+        # print(self.query)
+            
+    # def __execute__(self):
+    #     try:
+    #         print('start execution')
+    #         self.client.query(self.rsql)
+    #     except Exception as e:
+    #         print('failed execution')
+    #     else:
+    #         print('next step')
+    #         mtables = '''
+    #         SELECT {column_select}
+    #         FROM {dataset}.{tables}__temp
+    #         '''.format(column_select=self.column_select, dataset=self.dataset, tables=self.tables)
+    #         rsql = self.__insert_tables__('datalakes', mtables)
+    #         print(rsql)
+            
+    def __create_tables__(self, dataset=None, sql=None):
+        self.dset = dataset 
+        self.sql = sql
+        if self.dset == 'enigma':
+            self.tables__ = self.tables + '_keys'
+        else:
+            self.tables__ = self.tables
+            
+        self.sql_str = """
+        CREATE TABLE {dataset}.{table_name} AS {sql}
+        """.format(
+            table_name=self.tables__,
+            dataset=self.dset, 
+            sql = self.sql
+            )
+        return self.sql_str
+        
+    def __insert_tables__(self, dataset=None, sql=None):
+        self.dset = dataset 
+        self.sql = sql
+        if self.dset == 'enigma':
+            self.tables__ = self.tables + '_keys'
+        else:
+            self.tables__ = self.tables
+            
+        self.sql_str = """
+        INSERT INTO {dataset}.{table_name} {sql}
+        """.format(
+            dataset=self.dset,
+            table_name=self.tables__, 
+            sql = self.sql
+            )
+        # print(self.sql)
+        return self.sql_str
+        
+
     
     def generate_schema(self):
         sql = '''
@@ -48,4 +127,3 @@ class bq_operator():
         self.original_schema = self.client.query(sql).to_dataframe()
         
         return self.original_schema
-    

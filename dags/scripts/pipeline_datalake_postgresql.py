@@ -8,13 +8,18 @@ import datetime as dt
 import os
 import pytz
 import sys
+import gspread
+
 
 from pathlib import Path
 from datetime import datetime
 from google.cloud import bigquery
+from google.oauth2 import service_account
+from google.auth.transport.requests import AuthorizedSession
 from google.api_core.exceptions import NotFound
 from dependencies import db_config
 from dependencies.rdbms_operator import rdbms_operator
+from dependencies.bq_operator import bq_operator
 
 pd.options.display.max_colwidth = 100000
 
@@ -53,6 +58,7 @@ dataset = options.dataset
 date_col = options.date_col
 exc_date = options.exc_date
 encr = options.encr
+client = bigquery.Client('hijra-data-dev')
 
 def get_count(schema, table, db_name, date_col, exc_date):
     # TODO: Ini juga perlu kita sederhanakan logic-nya.
@@ -93,87 +99,6 @@ def get_count(schema, table, db_name, date_col, exc_date):
     print(count)
     
     return count
-
-def check_bq_tables(dataset, bqtable):
-    client = bigquery.Client('hijra-data-dev')
-    sql = '''
-    select
-    COUNT(DISTINCT
-    table_name) counts
-    from
-    `hijra-data-dev.{dataset}.INFORMATION_SCHEMA.COLUMNS`
-    WHERE 9=9
-    AND table_name = '{bqtable}'
-    '''.format(dataset=dataset, bqtable=bqtable)
-
-    bq_results = client.query(sql)
-    df = bq_results.to_dataframe()
-
-    if df.iloc[0]['counts'] == 1:
-        print('check schema')
-        print('inserting row to MAIN TABLE')
-        try:
-            insert_tables(dataset, bqtable)
-        except Exception as e:
-            print(e)
-        else:
-            drop_tables(dataset, bqtable)
-    else:
-        print('create table')
-        try:
-            create_tables(dataset, bqtable)
-        except Exception as e:
-            print(e)
-        else:
-            drop_tables(dataset, bqtable)
-
-
-    return df.iloc[0]['counts']
-
-def create_tables(dataset, bqtable):
-    print('creating table : ' + bqtable)
-    client = bigquery.Client('hijra-data-dev')
-    try:
-        query = """
-        CREATE OR REPLACE TABLE {dataset}.{bqtable}
-        PARTITION BY DATE(row_loaded_ts)
-        AS
-        SELECT
-        CURRENT_TIMESTAMP() row_loaded_ts
-        ,*
-        FROM
-        `{dataset}.{bqtable}__temp`
-        """.format(dataset=dataset, bqtable=bqtable)
-
-        print(query)
-        client.query(query).result()            
-
-    except Exception as e:
-        print(e)
-
-def insert_tables(dataset, bqtable):
-    client = bigquery.Client('hijra-data-dev')
-    sql = """
-    INSERT INTO `{dataset}.{bqtable}`
-    SELECT 
-    -- CURRENT_TIMESTAMP() row_loaded_ts,
-    *
-    FROM `{dataset}.{bqtable}__temp`
-    """.format(dataset=dataset, bqtable=bqtable)
-    # print(sql)
-    client.query(sql).result()
-
-def drop_tables(dataset, bqtable):
-    client = bigquery.Client('hijra-data-dev')
-    try:
-        sql = """
-        DROP TABLE `{dataset}.{bqtable}__temp`
-        """.format(dataset=dataset, bqtable=bqtable)
-        print(sql)
-        client.query(sql).result()
-    except Exception as d:
-        print(d)
-
 
 def get_data(db, dataset, schema, table, db_name, date_col, exc_date):
     # Object client bigquery cursor
@@ -219,22 +144,134 @@ def get_data(db, dataset, schema, table, db_name, date_col, exc_date):
         if encr == 'True':
             print(encr)
             pass
-        else:
-            check_bq_tables(dataset, tables___)
-            print(encr)
-            
+        # else:
+        #     check_bq_tables(dataset, tables___)
+        #     print(encr)
+
+def read_gsheet_file(db, dataset, schema, table):
+    # Tabulate
+    pd.options.display.max_colwidth = 100000
+
+    # Attach credential file from developer google (API)
+    print('connect to gsheet')
+    scope = ['https://www.googleapis.com/auth/spreadsheets.readonly']
+    credentials = service_account.Credentials.from_service_account_file('/opt/account/secrets/service_account2.json', scopes=scope)
+    gc = gspread.Client(auth=credentials)
+    gc.session = AuthorizedSession(credentials)
+
+    # Target dataset
+    dataset = dataset
+
+    # Create the pandas DataFrame
+    google_sheet_id = '1z-1SD-6rP0fukR_5HbtlZW2Wg9nbM1kOVQv8I6EBFMA'
+    sheet = gc.open_by_key(google_sheet_id)
+
+    try:
+        worksheet = sheet.worksheet(table)
+        df = pd.DataFrame(worksheet.get_all_records())
+        # print(df)
+
+    except gspread.exceptions.WorksheetNotFound as e:
+        print("Trying to open non-existent sheet. Verify that the sheet name exists (%s)." % table)  
         
+    return df  
+
+def transform_gsheet(dframe, table):
+    df = dframe
+    if "PII" in df:
+        if (any(df['PII'] == 'TRUE') == True) == True:
+            df_selected = df[df['PII'] == 'TRUE']
+            df_selected['data_type'] = 'BYTES'
+            df_selected = df_selected.rename(columns={'Column Name':'target_column'})
+            df_init = df_selected[['target_column','data_type','Supported Key']]
+            df_inits = list(df_selected['target_column'])
+            
+            encrypted_key = df_selected.head(1)['Encrypted Key'].to_string(index=False)
+            
+            df_raw = df_selected.reset_index(drop=True)
+            df_raw = df_raw.rename(
+                columns={
+                    'Data Type':'type'
+                    ,'Required':'mode'
+                    ,'target_column':'name'
+                    ,'Description':'description'
+                    }
+                )
+            # Get original schema
+            query_string = """
+            SELECT 
+                column_name as target_column, 
+                data_type
+            FROM
+                {dataset}.INFORMATION_SCHEMA.COLUMNS
+            WHERE
+                table_name='{table_name}'""".format(dataset=dataset,table_name=table_name)
+            original_schema = client.query(query_string).to_dataframe()
+
+            # Check table is partition or not
+            query_string = """
+            SELECT 
+                *
+            FROM
+                {dataset}.INFORMATION_SCHEMA.COLUMNS
+            WHERE
+                table_name='{table_name}' AND is_partitioning_column = 'YES'
+            """.format(dataset=dataset,table_name=table_name)
+            is_partition = client.query(query_string).to_dataframe()
+            partition = is_partition
+            
+            result = pd.merge(original_schema, df_init, on=["target_column"], how="left")
+            result.replace(to_replace=[None], value=np.nan, inplace=True)
+            result.fillna(value='', inplace=True)
+            result["data_type_x"] = np.where((result["data_type_y"]==''), result["data_type_x"], result["data_type_y"])
+            result["enc"] = np.where(
+                (result["data_type_y"]=='BYTES'), 
+                '''\
+                AEAD.ENCRYPT(\
+                    (\
+                        SELECT keyset FROM enigma.{table_name}_keys keys \
+                        WHERE keys.{key} = CONCAT(tmptbl.{key}, tmptbl.row_loaded_ts) \
+                    ),CAST(tmptbl. \
+                '''.lstrip().format(
+                        dataset=dataset, 
+                        table_name=table_name, 
+                        key=encrypted_key, 
+                        target_column=result["target_column"],
+                        supported_key=result["Supported Key"]
+                        ) + result["target_column"] + ' ' +
+                ''' \
+                    AS STRING), CAST( tmptbl.\
+                '''.strip() + result["Supported Key"] + ' ' +
+                ''' \
+                    AS STRING) \
+                ) AS 
+                '''.strip() + ' ' + result['target_column']
+                ,result["target_column"]
+                )
+            
+            enc = df_selected.drop_duplicates(subset='Encrypted Key', keep="first")
+            enc = pd.merge(enc['Encrypted Key'], original_schema, left_on="Encrypted Key", right_on='target_column', how="outer")
+            enc = enc.dropna()
+            columns_enc = enc.target_column + ' ' + enc.data_type
+            column_list_enc = pd.DataFrame(columns_enc).sort_index()
+            column_list_enc = column_list_enc.to_string(header=False,index=False)
+            
+            
+            # List column to select
+            column_select = result.enc + ','.strip()
+            column_select = column_select.to_string(header=False,index=False)
+            column_select = " ".join(column_select.split())
+            
+            columns = result.target_column + ' ' + result.data_type_x + ','.strip()
+            column_list = pd.DataFrame(columns).sort_index()
+            column_list = column_list.to_string(header=False,index=False)
+            column_list = " ".join(column_list.split())
+            
+            return column_select, encrypted_key, column_list
+
 
 def main(db, dataset, schema, table, date_col, exc_date):
     # DB connect
-    # if db in ['p2p_realtime','p2p_prod']:
-    #     db_host  = db_config.db_p2p_realtime_host
-    #     db_username = db_config.db_p2p_realtime_username
-    #     db_password = db_config.db_p2p_realtime_password
-    #     db_name = db_config.db_p2p_realtime_name
-    #     db_port = db_config.db_p2p_realtime_port
-
-    # print('host---- ' + db_config.db_hijra_host)
     if db == 'hijra':
         db_host  = db_config.db_hijra_host
         db_username = db_config.db_hijra_username
@@ -250,7 +287,10 @@ def main(db, dataset, schema, table, date_col, exc_date):
     tables___ = 'dl__{db}__{schema}__{table}__dev'.format(db=db, schema=schema, table=table)
     if count != 0:
         get_data(db, dataset, schema, table, db_name, date_col, exc_date)
-        # check_bq_tables(dataset, tables___)
+        dframe = read_gsheet_file(db, dataset, schema, table)
+        column_select, encrypted_key, column_list = transform_gsheet(dframe, tables___)
+        bq_operator('hijra-data-dev', dataset, tables___, '', column_select, encrypted_key, column_list)
+
     else:
         tables___ = 'dl__{db}__{schema}__{table}__dev'.format(db=db, schema=schema, table=table)
         # drop_tables(dataset, tables___)
