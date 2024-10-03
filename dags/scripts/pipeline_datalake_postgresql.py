@@ -74,7 +74,7 @@ def get_count(schema, table, db_name, date_col, exc_date):
             WHERE 9=9
             AND id != 7934
             AND to_char({date_col}, 'YYYY-MM-DD') >= TO_CHAR((to_timestamp('{exc_date}', 'YYYY-MM-DD') - INTERVAL '1 DAY'),'YYYY-MM-DD')
-            AND to_char({date_col}, 'YYYY-MM-DD') <= TO_CHAR(to_timestamp('{exc_date}', 'YYYY-MM-DD')
+            AND to_char({date_col}, 'YYYY-MM-DD') <= TO_CHAR(to_timestamp('{exc_date}', 'YYYY-MM-DD'))
             """.format(schema=schema,table=table,date_col=date_col, exc_date=exc_date)
 
             # sql = "SELECT COUNT(*) FROM {}.{} WHERE to_char({}, 'YYYY-MM-DD/HH:MM') >= '{}' AND id != 7934".format(schema,table,date_col,exc_date)
@@ -89,7 +89,7 @@ def get_count(schema, table, db_name, date_col, exc_date):
         SELECT COUNT(*) FROM {schema}.{table}
         WHERE 9=9
         AND to_char({date_col}, 'YYYY-MM-DD') >= TO_CHAR((to_timestamp('{exc_date}', 'YYYY-MM-DD') - INTERVAL '1 DAY'),'YYYY-MM-DD')
-        AND to_char({date_col}, 'YYYY-MM-DD') <= TO_CHAR(to_timestamp('{exc_date}', 'YYYY-MM-DD')
+        AND to_char({date_col}, 'YYYY-MM-DD') <= TO_CHAR(to_timestamp('{exc_date}', 'YYYY-MM-DD'))
         """.format(schema=schema,table=table,date_col=date_col, exc_date=exc_date)
 
     # print(sql)
