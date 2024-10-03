@@ -24,9 +24,6 @@ parser.add_option('--table', dest='table', help='specify table source')
 parser.add_option('--db', dest='db', help='specify database source')
 parser.add_option('--schema', dest='schema', help='specify schema source')
 parser.add_option('--dataset', dest='dataset', help='specify dataset source')
-parser.add_option('--date_col', dest='date_col', help='table column represent date')
-parser.add_option('--exc_date', dest='exc_date', help='execution date')
-parser.add_option('--encr', dest='encr', help='encryption table or not')
 
 (options, args) = parser.parse_args()
 
@@ -38,20 +35,11 @@ if not options.schema:
     parser.error('schema is not given')
 if not options.dataset:
     parser.error('dataset is not given')
-if not options.date_col:
-    parser.error('date_col is not given')
-if not options.exc_date:
-    parser.error('exc_date is not given')
-if not options.encr:
-    parser.error('encr is not given')
 
 table = options.table
 db = options.db
 schema = options.schema
 dataset = options.dataset
-date_col = options.date_col
-exc_date = options.exc_date
-encr = options.encr
 
 print('encrypt_file.py')
 
