@@ -32,7 +32,7 @@ class bq_operator():
         else:
             print(self.encr)
             if self.check_bq_tables(self.dataset) == 1:
-                self.rsql = self.__insert_tables__(self.dataset, self.column_select)
+                self.rsql = self.__insert_tables__(self.dataset, self.column_select, '')
                 self.__execute__(self.rsql)
                 print(self.rsql)
             else:
@@ -51,7 +51,7 @@ class bq_operator():
             CONCAT({encrypted_key},row_loaded_ts) AS {encrypted_key},\
             KEYS.NEW_KEYSET('AEAD_AES_GCM_256') AS keyset \
             '''.lstrip().format(encrypted_key=self.encrypted_key)
-            sql_insert = self.__insert_tables__('enigma', sql)
+            sql_insert = self.__insert_tables__('enigma', sql, '')
             
             if self.__execute__(sql_insert) == 'SUCCESS':
                 self.__to_main_table__()                
@@ -60,7 +60,7 @@ class bq_operator():
             print('table NOT exist')
 
     def __to_main_table__(self):
-        sql_insert = self.__insert_tables__(self.dataset, self.column_select)
+        sql_insert = self.__insert_tables__(self.dataset, self.column_select, 'tmptbl')
         self.__execute__(sql_insert)
         
     def check_bq_tables(self, dataset=None):
@@ -129,7 +129,7 @@ class bq_operator():
             )
         return self.sql_str
         
-    def __insert_tables__(self, dataset=None, sql=None):
+    def __insert_tables__(self, dataset=None, sql=None, alias=None):
         self.dset = dataset 
         self.sql = sql
         if self.dset == 'enigma':
@@ -140,12 +140,13 @@ class bq_operator():
         self.sql_str = """
         INSERT INTO {dataset}.{table_name} 
         SELECT {sql}
-        FROM datalakes.{tables}__temp
+        FROM datalakes.{tables}__temp {alias}
         """.format(
             dataset=self.dset,
             table_name=self.tables__, 
             sql = self.sql,
-            tables = self.tables
+            tables = self.tables,
+            alias = alias
             )
         # print(self.sql)
         return self.sql_str
