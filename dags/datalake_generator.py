@@ -19,11 +19,6 @@ large_tables = [
     'ciam_user_backoffice_activity',
 ]
 
-
-
-
-
-
 # def create_dag(dag_id, bash_command, encryption_command, queue_pool, db, table, schedule, is_paused):
 def create_dag(yml_conf, queue_pool):
     if "entity" in yml_conf:
@@ -71,7 +66,8 @@ def create_dag(yml_conf, queue_pool):
                 table=table["name"],
                 date_col=table["date_col"],
                 encr=table["encryption"],
-                exc_date='{{ (logical_date + macros.timedelta(hours=7)).strftime("%Y-%m-%d/%H:00") }}'
+                # exc_date='{{ (logical_date + macros.timedelta(hours=7)).strftime("%Y-%m-%d/%H:00") }}'
+                exc_date='{{ (logical_date + macros.timedelta(hours=7)).strftime("%Y-%m-%d") }}'
                 # UTC +5 => 2jam sebelum execution_date (UTC+0)
             )
 
@@ -107,7 +103,8 @@ def create_dag(yml_conf, queue_pool):
                     table=table["name"],
                     date_col=table["date_col"],
                     encr=table["encryption"],
-                    exc_date='{{ (logical_date + macros.timedelta(hours=7)).strftime("%Y-%m-%d/%H:00") }}'
+                    # exc_date='{{ (logical_date + macros.timedelta(hours=7)).strftime("%Y-%m-%d/%H:00") }}'
+                    exc_date='{{ (logical_date + macros.timedelta(hours=7)).strftime("%Y-%m-%d") }}'
                 )
 
             cleanup_script = "scripts/cleanup_pipeline.py"
