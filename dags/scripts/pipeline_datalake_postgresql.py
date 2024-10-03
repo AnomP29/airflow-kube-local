@@ -108,8 +108,8 @@ def get_data(db, dataset, schema, table, db_name, date_col, exc_date):
     sql = """
     SELECT * FROM {schema}.{table} 
     WHERE 9=9
-    AND to_char({date_col}, 'YYYY-MM-DD/HH:MM') >= TO_CHAR((to_timestamp('{exc_date}', 'YYYY-MM-DD/HH24:MI') - INTERVAL '2 HOUR'),'YYYY-MM-DD/HH24:MI')
-    AND to_char({date_col}, 'YYYY-MM-DD/HH:MM') <= '{exc_date}'
+    AND to_char({date_col}, 'YYYY-MM-DD') >= TO_CHAR((to_timestamp('{exc_date}', 'YYYY-MM-DD/HH24:MI') - INTERVAL '1 DAY'),'YYYY-MM-DD')
+    AND to_char({date_col}, 'YYYY-MM-DD') <= TO_CHAR(TO_TIMESTAMP('{exc_date}', 'YYYY-MM-DD/HH24:MI'), 'YYYY-MM-DD')
     """.format(schema=schema,table=table,date_col=date_col, exc_date=exc_date)
     
     results = rdbms_operator('postgres', 'hijra', sql).execute('N')
