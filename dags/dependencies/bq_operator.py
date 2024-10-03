@@ -102,7 +102,7 @@ class bq_operator():
             self.client.query(sql)
             self.client.query(sql).result()
         except Exception as e:
-            print('failed execution')
+            print(f'The error is {e}')
         else:
             print('success execution')
         #     mtables = '''
