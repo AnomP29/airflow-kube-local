@@ -47,8 +47,7 @@ class bq_operator():
         
         if self.check_bq_tables('enigma') == 1:
             print('table exist')
-            sql = '''\
-            SELECT 
+            sql = '''\ 
             CONCAT({encrypted_key},row_loaded_ts) AS {encrypted_key},\
             KEYS.NEW_KEYSET('AEAD_AES_GCM_256') AS keyset \
             '''.lstrip().format(encrypted_key=self.encrypted_key)
@@ -102,7 +101,6 @@ class bq_operator():
         try:
             print('start execution')
             print(self.exsql)
-            self.client.query(sql)
             self.client.query(sql).result()
             
         except Exception as e:
@@ -143,7 +141,7 @@ class bq_operator():
             
         self.sql_str = """
         INSERT INTO {dataset}.{table_name} 
-        {sql}
+        SELECT {sql}
         FROM datalakes.{tables}__temp
         """.format(
             dataset=self.dset,
