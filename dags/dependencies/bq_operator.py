@@ -51,14 +51,17 @@ class bq_operator():
             CONCAT({encrypted_key},row_loaded_ts) AS {encrypted_key},\
             KEYS.NEW_KEYSET('AEAD_AES_GCM_256') AS keyset \
             '''.lstrip().format(encrypted_key=self.encrypted_key)
-            sql_insert = self.__insert_tables__('enigma', sql=sql)
-            self.__execute__(sql_insert)
-            # print(sql_insert)
+            sql_insert = self.__insert_tables__('enigma', sql)
+            
+            if self.__execute__(sql_insert) == 'SUCCESS':
+                self.__to_main_table__()                
+
         else:
             print('table NOT exist')
 
-        pass
-        
+    def __to_main_table__(self):
+        sql_insert = self.__insert_tables__(self.dataset, self.encrypted_key)
+        self.__execute__(sql_insert)
         
     def check_bq_tables(self, dataset=None):
         self.dset = dataset 
@@ -107,12 +110,7 @@ class bq_operator():
             print(f'The error is {e}')
         else:
             print('success execution')
-        #     mtables = '''
-        #     SELECT {column_select}
-        #     FROM {dataset}.{tables}__temp
-        #     '''.format(column_select=self.column_select, dataset=self.dataset, tables=self.tables)
-        #     rsql = self.__insert_tables__('datalakes', mtables)
-        #     print(rsql)
+            return 'SUCCESS'
             
     def __create_tables__(self, dataset=None, sql=None):
         self.dset = dataset 
