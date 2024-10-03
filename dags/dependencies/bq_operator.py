@@ -33,9 +33,11 @@ class bq_operator():
             print(self.encr)
             if self.check_bq_tables(self.dataset) == 1:
                 self.rsql = self.__insert_tables__(self.dataset, self.column_select)
+                self.__execute__(self.rsql)
                 print(self.rsql)
             else:
                 self.rsql = self.__create_tables__(self.dataset, self.column_select)
+                self.__execute__(self.rsql)
                 print(self.rsql)
 
         # if self.check_bq_tables(self.dataset) == 1:
@@ -83,20 +85,20 @@ class bq_operator():
         #         )
         # print(self.query)
             
-    # def __execute__(self):
-    #     try:
-    #         print('start execution')
-    #         self.client.query(self.rsql)
-    #     except Exception as e:
-    #         print('failed execution')
-    #     else:
-    #         print('next step')
-    #         mtables = '''
-    #         SELECT {column_select}
-    #         FROM {dataset}.{tables}__temp
-    #         '''.format(column_select=self.column_select, dataset=self.dataset, tables=self.tables)
-    #         rsql = self.__insert_tables__('datalakes', mtables)
-    #         print(rsql)
+    def __execute__(self, sql):
+        try:
+            print('start execution')
+            self.client.query(sql)
+        except Exception as e:
+            print('failed execution')
+        else:
+            print('success execution')
+        #     mtables = '''
+        #     SELECT {column_select}
+        #     FROM {dataset}.{tables}__temp
+        #     '''.format(column_select=self.column_select, dataset=self.dataset, tables=self.tables)
+        #     rsql = self.__insert_tables__('datalakes', mtables)
+        #     print(rsql)
             
     def __create_tables__(self, dataset=None, sql=None):
         self.dset = dataset 
