@@ -348,7 +348,7 @@ def main(db, dataset, schema, table, date_col, exc_date):
             column_select, encrypted_key, column_list = transform_gsheet(dframe, tables___)
             bq_operator('hijra-data-dev', dataset, tables___, '', encr, column_select, encrypted_key, column_list)
         else:
-            raise ValueError('File not parsed completely/correctly')
+            raise ValueError('Trying to open non-existent sheet. Verify that the sheet name exists (%s).' % table)
 
     else:
         tables___ = 'dl__{db}__{schema}__{table}__dev'.format(db=db, schema=schema, table=table)
