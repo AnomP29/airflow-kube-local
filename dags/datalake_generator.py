@@ -45,8 +45,8 @@ def create_dag(yml_conf, queue_pool):
         description="Data Lake from DB {db}___{schema} to BigQuery".format(
             db=yml_conf["database"], schema= yml_conf["schema"]
         ),
-        schedule_interval="0 * * * *",
-        # schedule_interval=None,
+        # schedule_interval="0 * * * *",
+        schedule_interval=@daily,
         default_args=default_args,
         catchup=True,
         # is_paused_upon_creation=is_paused,
