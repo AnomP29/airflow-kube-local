@@ -227,7 +227,7 @@ def main(db, dataset, schema, table):
     tables___ = 'dl__{db}__{schema}__{table}__dev'.format(db=db, schema=schema, table=table)
     dframe = read_gsheet_file(db, dataset, schema, table)
     column_select, encrypted_key, column_list = transform_gsheet(dframe, tables___)
-    bq_operator('hijra-data-dev', dataset, tables___, '', '', column_select, encrypted_key, column_list)
+    bq_operator('hijra-data-dev', dataset, tables___, '', '', column_select, encrypted_key, column_list).__encryption__()
 
 if __name__ == "__main__":
     main(db, dataset, schema, table)
