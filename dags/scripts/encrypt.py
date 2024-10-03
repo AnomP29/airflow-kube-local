@@ -85,9 +85,9 @@ def transform_gsheet(dframe):
             df_inits = list(df_selected['target_column'])
             encrypted_key = df_selected.head(1)['Encrypted Key'].to_string(index=False)
 
-def main(db, dataset, schema, table, date_col):
+def main(db, dataset, schema, table):
     dframe = read_gsheet_file(db, dataset, schema, table)
     transform_gsheet(dframe)
 
 if __name__ == "__main__":
-    main(db, dataset, schema, table, date_col)
+    main(db, dataset, schema, table)
