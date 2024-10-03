@@ -49,7 +49,7 @@ class bq_operator():
             print('table exist')
             sql = '''\
             SELECT 
-            CONCAT({encrypted_key},row_loaded_ts) {encrypted_key},\
+            CONCAT({encrypted_key},row_loaded_ts) AS {encrypted_key},\
             KEYS.NEW_KEYSET('AEAD_AES_GCM_256') AS keyset \
             '''.lstrip().format(encrypted_key=self.encrypted_key)
             sql_insert = self.__insert_tables__('enigma', sql=sql)
