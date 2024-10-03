@@ -92,7 +92,7 @@ def create_dag(yml_conf, queue_pool):
                 encryption_command = encryption_script
 
                 encryption_command = """\
-                PYTHONPATH={dags} python {dags}/{encryption_script} --db={db} {schema} --dataset={dataset} \
+                PYTHONPATH={dags} python {dags}/{encryption_script} --db={db} {schema} --dataset={dataset} --table={table} \
                 """.format(
                     dags=DAGS_FOLDER,
                     encryption_script=encryption_script,
