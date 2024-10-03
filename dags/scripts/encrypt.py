@@ -129,17 +129,14 @@ def transform_gsheet(dframe, table):
                     (\
                         SELECT keyset FROM enigma.{table_name}_keys keys \
                         WHERE keys.{key} = CONCAT(tmptbl.{key}, tmptbl.row_loaded_ts) \
-                    ),CAST(tmptbl.\
-                '''.lstrip().format(
+                    ),CAST(tmptbl.'''.lstrip().format(
                         dataset=dataset, 
                         table_name=table, 
                         key=encrypted_key, 
                         target_column=result["target_column"],
                         supported_key=result["Supported Key"]
                         ) + result["target_column"] + ' ' +
-                ''' \
-                    AS STRING), CAST( tmptbl.\
-                '''.lstrip() + result["Supported Key"] + ' ' +
+                '''AS STRING), CAST( tmptbl.'''.lstrip() + result["Supported Key"] + ' ' +
                 ''' \
                     AS STRING) \
                 ) AS 
