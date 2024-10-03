@@ -47,7 +47,7 @@ class bq_operator():
         
         if self.check_bq_tables('enigma') == 1:
             print('table exist')
-            sql = ''' \ 
+            sql = ''' 
             CONCAT({encrypted_key},row_loaded_ts) AS {encrypted_key},\
             KEYS.NEW_KEYSET('AEAD_AES_GCM_256') AS keyset \
             '''.lstrip().format(encrypted_key=self.encrypted_key)
