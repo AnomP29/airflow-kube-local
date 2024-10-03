@@ -47,9 +47,9 @@ class bq_operator():
         
         if self.check_bq_tables('enigma') == 1:
             print('table exist')
-            sql = '''
-            CONCAT({encrypted_key},row_loaded_ts) {encrypted_key},
-            KEYS.NEW_KEYSET('AEAD_AES_GCM_256') AS keyset
+            sql = '''\
+            CONCAT({encrypted_key},row_loaded_ts) {encrypted_key},\
+            KEYS.NEW_KEYSET('AEAD_AES_GCM_256') AS keyset \
             '''.format(encrypted_key=self.encrypted_key)
             sql_insert = self.__insert_tables__('enigma', sql=sql)
             self.__execute__(sql)
