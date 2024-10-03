@@ -136,7 +136,7 @@ def transform_gsheet(dframe, table):
                         key=encrypted_key, 
                         target_column=result["target_column"],
                         supported_key=result["Supported Key"]
-                        ) + result["target_column"] + ' ' +
+                        ) + result["target_column"]
                 ''' \
                     AS STRING), CAST( tmptbl.\
                 '''.strip() + result["Supported Key"] + ' ' +
