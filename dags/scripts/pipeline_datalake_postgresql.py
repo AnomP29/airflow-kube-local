@@ -162,7 +162,7 @@ def read_gsheet_file(db, dataset, schema, table):
     dataset = dataset
 
     # Create the pandas DataFrame
-    google_sheet_id = '1z-1SD-6rP0fukR_5HbtlZW2Wg9nbM1kOVQv8I6EBFMA'
+    google_sheet_id = '1HSyAlLe7mWWOPKeNWE7H0dSO-xRysdCbZqb8RjtJ_g0'
     sheet = gc.open_by_key(google_sheet_id)
 
     try:
