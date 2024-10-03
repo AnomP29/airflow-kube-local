@@ -54,7 +54,7 @@ class bq_operator():
             '''.lstrip().format(encrypted_key=self.encrypted_key)
             sql_insert = self.__insert_tables__('enigma', sql=sql)
             self.__execute__(sql)
-            print(sql_insert)
+            # print(sql_insert)
         else:
             print('table NOT exist')
 
@@ -98,10 +98,13 @@ class bq_operator():
         # print(self.query)
             
     def __execute__(self, sql):
+        self.exsql = sql
         try:
             print('start execution')
+            print(self.exsql)
             self.client.query(sql)
             self.client.query(sql).result()
+            
         except Exception as e:
             print(f'The error is {e}')
         else:
