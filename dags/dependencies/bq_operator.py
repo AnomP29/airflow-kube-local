@@ -7,7 +7,7 @@ import pandas_gbq
 
 
 class bq_operator():
-    def __init__(self, projid, dataset, tables, query, encr='False',
+    def __init__(self, projid, dataset, tables, query, encr='True',
                  column_select=None, encrypted_key=None, column_list=None, 
                  *args, **kwargs) -> None:
         self.projid = projid
@@ -21,13 +21,13 @@ class bq_operator():
         self.client = bigquery.Client(self.projid)
 
         if self.encr == 'True':
-            print(self.encr)
-            if self.check_bq_tables(self.dataset) == 1:
-                self.rsql = self.__insert_tables__(self.dataset, self.column_select)
-                print(self.rsql)
-            else:
-                self.rsql = self.__create_tables__(self.dataset, self.column_select)
-                print(self.rsql)
+            # print(self.encr)
+            # if self.check_bq_tables(self.dataset) == 1:
+            #     self.rsql = self.__insert_tables__(self.dataset, self.column_select)
+            #     print(self.rsql)
+            # else:
+            #     self.rsql = self.__create_tables__(self.dataset, self.column_select)
+            #     print(self.rsql)
             pass
         else:
             print(self.encr)
@@ -40,15 +40,13 @@ class bq_operator():
                 self.__execute__(self.rsql)
                 print(self.rsql)
 
-        # if self.check_bq_tables(self.dataset) == 1:
-        #     self.rsql = self.__insert_tables__(self.dataset, self.sql2)
-        #     print(self.rsql)
-        #     self.__execute__()
-        # else:
-        #     self.rsql = self.__create_tables__(self.dataset, self.sql2)
-        #     print(self.rsql)
-        #     self.__execute__()
-
+    def __encryption__(self):
+        print(self.column_select)
+        print(self.encrypted_key)
+        print(self.column_list)
+        pass
+        
+        
     def check_bq_tables(self, dataset=None):
         self.dset = dataset 
         if self.dset == 'enigma':
