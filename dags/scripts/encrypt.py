@@ -136,7 +136,7 @@ def transform_gsheet(dframe, table):
                         target_column=result["target_column"],
                         supported_key=result["Supported Key"]
                         ) + result["target_column"] + ' ' +
-                '''AS STRING), CAST( tmptbl.'''.lstrip() + result["Supported Key"] + ' ' +
+                '''AS STRING), CAST(tmptbl.'''.lstrip() + result["Supported Key"] + ' ' +
                 ''' \
                     AS STRING) \
                 ) AS 
