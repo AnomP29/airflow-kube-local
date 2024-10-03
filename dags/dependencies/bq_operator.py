@@ -100,6 +100,7 @@ class bq_operator():
         try:
             print('start execution')
             self.client.query(sql)
+            self.client.query(sql).result()
         except Exception as e:
             print('failed execution')
         else:
