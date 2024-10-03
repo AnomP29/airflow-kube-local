@@ -67,7 +67,7 @@ def create_dag(yml_conf, queue_pool):
                 date_col=table["date_col"],
                 encr=table["encryption"],
                 # exc_date='{{ (logical_date + macros.timedelta(hours=7)).strftime("%Y-%m-%d/%H:00") }}'
-                exc_date='{{ (logical_date + macros.timedelta(hours=7)).strftime("%Y-%m-%d") }}'
+                exc_date='{{ (logical_date + macros.timedelta(hours=7)).strftime("%Y-%m-%d/%H:00") }}'
                 # UTC +5 => 2jam sebelum execution_date (UTC+0)
             )
 
@@ -104,7 +104,7 @@ def create_dag(yml_conf, queue_pool):
                     date_col=table["date_col"],
                     encr=table["encryption"],
                     # exc_date='{{ (logical_date + macros.timedelta(hours=7)).strftime("%Y-%m-%d/%H:00") }}'
-                    exc_date='{{ (logical_date + macros.timedelta(hours=7)).strftime("%Y-%m-%d") }}'
+                    exc_date='{{ (logical_date + macros.timedelta(hours=7)).strftime("%Y-%m-%d/%H:00") }}'
                 )
 
             cleanup_script = "scripts/cleanup_pipeline.py"
