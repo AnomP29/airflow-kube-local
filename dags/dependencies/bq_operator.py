@@ -139,11 +139,12 @@ class bq_operator():
         self.sql_str = """
         INSERT INTO {dataset}.{table_name} 
         SELECT {sql}
-        FROM datalakes.{table_name}__temp
+        FROM datalakes.{tables}__temp
         """.format(
             dataset=self.dset,
             table_name=self.tables__, 
-            sql = self.sql
+            sql = self.sql,
+            tables = self.tables
             )
         # print(self.sql)
         return self.sql_str
