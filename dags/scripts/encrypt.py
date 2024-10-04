@@ -70,6 +70,7 @@ def read_gsheet_file(db, dataset, schema, table):
 
     except gspread.exceptions.WorksheetNotFound as e:
         print("Trying to open non-existent sheet. Verify that the sheet name exists (%s)." % table)  
+        df = ''
         
     return df  
 
@@ -223,8 +224,11 @@ def transform_gsheet(dframe, table):
 def main(db, dataset, schema, table):
     tables___ = 'dl__{db}__{schema}__{table}__dev'.format(db=db, schema=schema, table=table)
     dframe = read_gsheet_file(db, dataset, schema, table)
-    column_select, encrypted_key, column_list = transform_gsheet(dframe, tables___)
-    bq_operator('hijra-data-dev', dataset, tables___, '', '', column_select, encrypted_key, column_list).__encryption__()
+    if not dframe.empty:
+        column_select, encrypted_key, column_list = transform_gsheet(dframe, tables___)
+        bq_operator('hijra-data-dev', dataset, tables___, '', '', column_select, encrypted_key, column_list).__encryption__()
+    else:
+        raise ValueError('Trying to open non-existent sheet. Verify that the sheet name exists ' + table + '.')
 
 if __name__ == "__main__":
     main(db, dataset, schema, table)
