@@ -61,6 +61,7 @@ class bq_operator():
 
     def __to_main_table__(self):
         sql_insert = self.__insert_tables__(self.dataset, self.column_select, 'tmptbl')
+        print(sql_insert)
         self.__execute__(sql_insert)
         
     def check_bq_tables(self, dataset=None):
