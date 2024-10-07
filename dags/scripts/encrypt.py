@@ -10,7 +10,7 @@ from google.auth.transport.requests import AuthorizedSession
 
 import os
 
-# from pipeline_datalake_postgresql import check_bq_tables
+from dependencies.rdbms_operator import rdbms_operator
 from dependencies.bq_operator import bq_operator
 
 # Object client bigquery cursor
@@ -24,6 +24,8 @@ parser.add_option('--table', dest='table', help='specify table source')
 parser.add_option('--db', dest='db', help='specify database source')
 parser.add_option('--schema', dest='schema', help='specify schema source')
 parser.add_option('--dataset', dest='dataset', help='specify dataset source')
+parser.add_option('--date_col', dest='date_col', help='table column represent date')
+parser.add_option('--exc_date', dest='exc_date', help='execution date')
 
 (options, args) = parser.parse_args()
 
@@ -35,15 +37,35 @@ if not options.schema:
     parser.error('schema is not given')
 if not options.dataset:
     parser.error('dataset is not given')
+if not options.date_col:
+    parser.error('date_col is not given')
+if not options.exc_date:
+    parser.error('exc_date is not given')
 
 table = options.table
 db = options.db
 schema = options.schema
 dataset = options.dataset
+exc_date = options.exc_date
+encr = options.encr
 
 print('encrypt_file.py')
 
+def get_count(schema, table, db_name, date_col, exc_date):
+    sql = """
+    SELECT COUNT(*) FROM {schema}.{table}
+    WHERE 9=9
+    AND to_char({date_col}, 'YYYY-MM-DD') >= TO_CHAR((to_timestamp('{exc_date}', 'YYYY-MM-DD/HH24:MI') - INTERVAL '1 DAY'),'YYYY-MM-DD')
+    AND to_char({date_col}, 'YYYY-MM-DD') <= TO_CHAR(TO_TIMESTAMP('{exc_date}', 'YYYY-MM-DD/HH24:MI'), 'YYYY-MM-DD')
+    """.format(schema=schema,table=table,date_col=date_col, exc_date=exc_date)
 
+    # print(sql)
+    df = rdbms_operator('postgres', 'hijra', sql).execute('Y')
+    count = int(str(df['count'].values).replace('[','').replace(']',''))
+    print(count)
+    
+    return count
+    
 def read_gsheet_file(db, dataset, schema, table):
     # Tabulate
     pd.options.display.max_colwidth = 100000
@@ -222,13 +244,27 @@ def transform_gsheet(dframe, table):
 
 
 def main(db, dataset, schema, table):
+    if db == 'hijra':
+        db_host  = db_config.db_hijra_host
+        db_username = db_config.db_hijra_username
+        db_password = db_config.db_hijra_password
+        db_name = db_config.db_hijra_name
+        db_port = db_config.db_hijra_port
+
+    print("Processing: {}: {}.{}".format(db, schema, table))
+
+    count = get_count(schema, table, db_name, date_col, exc_date)
+    print(count)
+
     tables___ = 'dl__{db}__{schema}__{table}__dev'.format(db=db, schema=schema, table=table)
-    dframe = read_gsheet_file(db, dataset, schema, table)
-    if not dframe.empty:
-        column_select, encrypted_key, column_list = transform_gsheet(dframe, tables___)
-        bq_operator('hijra-data-dev', dataset, tables___, '', '', column_select, encrypted_key, column_list).__encryption__()
-    else:
-        raise ValueError('Trying to open non-existent sheet. Verify that the sheet name exists ' + table + '.')
+    if count != 0:
+    # tables___ = 'dl__{db}__{schema}__{table}__dev'.format(db=db, schema=schema, table=table)
+        dframe = read_gsheet_file(db, dataset, schema, table)
+        if not dframe.empty:
+            column_select, encrypted_key, column_list = transform_gsheet(dframe, tables___)
+            bq_operator('hijra-data-dev', dataset, tables___, '', '', column_select, encrypted_key, column_list).__encryption__()
+        else:
+            raise ValueError('Trying to open non-existent sheet. Verify that the sheet name exists ' + table + '.')
 
 if __name__ == "__main__":
     main(db, dataset, schema, table)
