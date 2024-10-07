@@ -46,8 +46,8 @@ table = options.table
 db = options.db
 schema = options.schema
 dataset = options.dataset
+date_col = options.date_col
 exc_date = options.exc_date
-encr = options.encr
 
 print('encrypt_file.py')
 
