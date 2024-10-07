@@ -12,6 +12,7 @@ import os
 
 from dependencies.rdbms_operator import rdbms_operator
 from dependencies.bq_operator import bq_operator
+from dependencies import db_config
 
 # Object client bigquery cursor
 client = bigquery.Client('hijra-data-dev')
