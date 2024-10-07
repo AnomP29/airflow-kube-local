@@ -54,80 +54,80 @@ def create_dag(yml_conf, queue_pool):
 
     with dag:
         for table in yml_conf["tables"]:
-            
-            bash_command = """\
-            PYTHONPATH={dags} python {dags}/{pipeline_script} --db={db} {schema} --dataset={dataset} --table={table} \
-            --date_col={date_col} --exc_date={exc_date} --encr={encr}\
-            """.format(
-                dags=DAGS_FOLDER,
-                pipeline_script=pipeline_script,
-                db=yml_conf["database"],
-                schema=schema,
-                dataset=yml_conf["dataset"],
-                table=table["name"],
-                date_col=table["date_col"],
-                encr=table["encryption"],
-                # exc_date='{{ (logical_date + macros.timedelta(hours=7)).strftime("%Y-%m-%d/%H:00") }}'
-                exc_date='{{ (logical_date + macros.timedelta(hours=7)).strftime("%Y-%m-%d/%H:00") }}'
-                # UTC +5 => 2jam sebelum execution_date (UTC+0)
-            )
-
-            bash_args = {
-                "task_id": table,
-                # "on_failure_callback": task_fail_slack_alert,
-                "pool": queue_pool,
-                "bash_command": bash_command,
-                "execution_timeout": timedelta(hours=2),
-            }
-            
- 
-            task = BashOperator(
-                task_id = table["name"],
-                bash_command = bash_command,
-                dag = dag
-            )
-            
-            encryption_command = ''
-            if table.get("encryption", default=False):
-                encryption_script = "scripts/encrypt.py"
-                encryption_command = encryption_script
-
-                encryption_command = """\
-                PYTHONPATH={dags} python {dags}/{encryption_script} --db={db} {schema} --dataset={dataset} --table={table} \
+            with TaskGroup(group_id=yml_conf["tables"] + '_group') as yml_conf["tables"]:
+                bash_command = """\
+                PYTHONPATH={dags} python {dags}/{pipeline_script} --db={db} {schema} --dataset={dataset} --table={table} \
+                --date_col={date_col} --exc_date={exc_date} --encr={encr}\
                 """.format(
                     dags=DAGS_FOLDER,
-                    encryption_script=encryption_script,
+                    pipeline_script=pipeline_script,
+                    db=yml_conf["database"],
+                    schema=schema,
+                    dataset=yml_conf["dataset"],
+                    table=table["name"],
+                    date_col=table["date_col"],
+                    encr=table["encryption"],
+                    # exc_date='{{ (logical_date + macros.timedelta(hours=7)).strftime("%Y-%m-%d/%H:00") }}'
+                    exc_date='{{ (logical_date + macros.timedelta(hours=7)).strftime("%Y-%m-%d/%H:00") }}'
+                    # UTC +5 => 2jam sebelum execution_date (UTC+0)
+                )
+    
+                bash_args = {
+                    "task_id": table,
+                    # "on_failure_callback": task_fail_slack_alert,
+                    "pool": queue_pool,
+                    "bash_command": bash_command,
+                    "execution_timeout": timedelta(hours=2),
+                }
+                
+     
+                task = BashOperator(
+                    task_id = table["name"],
+                    bash_command = bash_command,
+                    dag = dag
+                )
+                
+                encryption_command = ''
+                if table.get("encryption", default=False):
+                    encryption_script = "scripts/encrypt.py"
+                    encryption_command = encryption_script
+    
+                    encryption_command = """\
+                    PYTHONPATH={dags} python {dags}/{encryption_script} --db={db} {schema} --dataset={dataset} --table={table} \
+                    """.format(
+                        dags=DAGS_FOLDER,
+                        encryption_script=encryption_script,
+                        db=yml_conf["database"],
+                        schema=schema,
+                        dataset=yml_conf["dataset"],
+                        table=table["name"]
+                    )
+    
+                cleanup_script = "scripts/cleanup_pipeline.py"
+                cleanup_command ="PYTHONPATH={dags} python {dags}/{cleanup_script} --db={db} {schema} --dataset={dataset} --table={table}".format(
+                    dags=DAGS_FOLDER,
+                    cleanup_script=cleanup_script,
                     db=yml_conf["database"],
                     schema=schema,
                     dataset=yml_conf["dataset"],
                     table=table["name"]
                 )
-
-            cleanup_script = "scripts/cleanup_pipeline.py"
-            cleanup_command ="PYTHONPATH={dags} python {dags}/{cleanup_script} --db={db} {schema} --dataset={dataset} --table={table}".format(
-                dags=DAGS_FOLDER,
-                cleanup_script=cleanup_script,
-                db=yml_conf["database"],
-                schema=schema,
-                dataset=yml_conf["dataset"],
-                table=table["name"]
-            )
-            
-            cleanup = BashOperator(
-                task_id = table["name"] + '_cleanup',
-                bash_command = cleanup_command,
-                dag = dag
-            )
-            
-            if encryption_command != '':
-                encryption = BashOperator(
-                    task_id = table["name"] + '_encryption',
-                    bash_command = encryption_command,
+                
+                cleanup = BashOperator(
+                    task_id = table["name"] + '_cleanup',
+                    bash_command = cleanup_command,
                     dag = dag
                 )
-                task >> encryption >> cleanup
-            else:
-                task >> cleanup
+                
+                if encryption_command != '':
+                    encryption = BashOperator(
+                        task_id = table["name"] + '_encryption',
+                        bash_command = encryption_command,
+                        dag = dag
+                    )
+                    task >> encryption >> cleanup
+                else:
+                    task >> cleanup
                 
             
             # bash_command = "PYTHONPATH={dags} python {dags}/{pipeline_script} --db={db} {schema} --dataset={dataset} --table={table} ".format(
