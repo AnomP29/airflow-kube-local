@@ -102,7 +102,7 @@ def create_dag(yml_conf, queue_pool):
                         db=yml_conf["database"],
                         schema=schema,
                         dataset=yml_conf["dataset"],
-                        table=table["name"]
+                        table=table["name"],
                         date_col=table["date_col"],
                         exc_date='{{ (logical_date + macros.timedelta(hours=7)).strftime("%Y-%m-%d/%H:00") }}'
                     )
