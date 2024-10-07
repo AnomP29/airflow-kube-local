@@ -95,7 +95,7 @@ def create_dag(yml_conf, queue_pool):
     
                     encryption_command = """\
                     PYTHONPATH={dags} python {dags}/{encryption_script} --db={db} {schema} --dataset={dataset} --table={table} \
-                    --date_col={date_col} --exc_date={exc_date} --encr={encr}\
+                    --date_col={date_col} --exc_date={exc_date}\
                     """.format(
                         dags=DAGS_FOLDER,
                         encryption_script=encryption_script,
