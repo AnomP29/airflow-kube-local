@@ -33,6 +33,7 @@ def create_dag(yml_conf, queue_pool):
         "start_date": days_ago(1), 
         "retries": 1,
         "retry_delay": timedelta(seconds=60),
+        "depends_on_past": True,
     }
  
     dag = DAG(
