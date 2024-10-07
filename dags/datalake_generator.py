@@ -11,6 +11,7 @@ from datetime import timedelta
 from dependencies.utils import DAGS_FOLDER
 from airflow.operators.dummy import DummyOperator
 from airflow.utils.dates import days_ago
+from airflow.utils.task_group import TaskGroup
 
 large_tables = [
     'partner_ekyc_integration_record',
