@@ -55,7 +55,7 @@ def create_dag(yml_conf, queue_pool):
 
     with dag:
         for table in yml_conf["tables"]:
-            with TaskGroup(group_id=table["name"] + '_group') as yml_conf["tables"]:
+            with TaskGroup(group_id=table["name"]) as yml_conf["tables"]:
                 bash_command = """\
                 PYTHONPATH={dags} python {dags}/{pipeline_script} --db={db} {schema} --dataset={dataset} --table={table} \
                 --date_col={date_col} --exc_date={exc_date} --encr={encr}\
