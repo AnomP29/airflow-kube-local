@@ -348,7 +348,7 @@ def get_source_schema():
     where column_name NOT IN ('log_data','call_to_action') and table_schema = '{schema}' and table_name = '{source_table}'
     '''.format(schema=schema,source_table=table)
     
-    src_schema = rdbms_operator('postgres', db_name, sql).execute('Y')
+    src_schema = rdbms_operator('postgres', db, sql).execute('Y')
     return src_schema
 
 
