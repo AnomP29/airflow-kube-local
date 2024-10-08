@@ -57,7 +57,8 @@ class bq_operator():
                 self.__to_main_table__()                
 
         else:
-            print('table NOT exist')
+            raise ValueError('table NOT exist')
+            # print('table NOT exist')
 
     def __to_main_table__(self):
         sql_insert = self.__insert_tables__(self.dataset, self.column_select, 'tmptbl')
