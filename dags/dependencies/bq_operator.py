@@ -21,6 +21,15 @@ class bq_operator():
         self.client = bigquery.Client(self.projid)
 
         if self.encr == 'True':
+            if self.check_bq_tables(self.dataset) == 0:
+                print('a')
+                sql_create_main = '''
+                CREATE TABLE {dataset}.{table_name} ({column_list})
+                PARTITION BY row_loaded_ts
+                '''.format(dataset=self.dataset, table_name=self.tables, column_list=self.column_list)
+                print(sql_create_main)
+            else:
+                pass
             # print(self.encr)
             # if self.check_bq_tables(self.dataset) == 1:
             #     self.rsql = self.__insert_tables__(self.dataset, self.column_select)
@@ -28,7 +37,7 @@ class bq_operator():
             # else:
             #     self.rsql = self.__create_tables__(self.dataset, self.column_select)
             #     print(self.rsql)
-            pass
+            # pass
         else:
             print(self.encr)
             if self.check_bq_tables(self.dataset) == 1:
@@ -50,22 +59,17 @@ class bq_operator():
         self.sql = sql
         if self.dset == 'enigma':
             self.tables__ = self.tables + '_keys'
-            partition = ''
         else:
             self.tables__ = self.tables
-            partition = 'PARTITION BY row_loaded_ts'
             
         self.sql_str = """
-        CREATE TABLE {dataset}.{table_name} 
-        {partition}
-        AS {sql}
+        CREATE TABLE {dataset}.{table_name} AS {sql}
         FROM datalakes.{tables}__temp
         """.format(
             table_name=self.tables__,
             dataset=self.dset, 
             sql = self.sql,
             tables = self.tables,
-            partition = partition,
             )
         return self.sql_str
 
