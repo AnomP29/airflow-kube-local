@@ -36,9 +36,38 @@ class bq_operator():
                 self.__execute__(self.rsql)
                 print(self.rsql)
             else:
-                self.rsql = self.__create_tables__(self.dataset, self.column_select)
-                self.__execute__(self.rsql)
+                print('maint table tidak ada)
+                sql = '''
+                SELECT {column_list}
+                '''.format(column_list=self.column_list)
+                self.rsql = self.__create_tables__(self.dataset, sql)
                 print(self.rsql)
+                # self.__execute__(self.rsql)
+                
+
+    def __create_tables__(self, dataset=None, sql=None):
+        self.dset = dataset 
+        self.sql = sql
+        if self.dset == 'enigma':
+            self.tables__ = self.tables + '_keys'
+            partition = ''
+        else:
+            self.tables__ = self.tables
+            partition = 'PARTITION BY row_loaded_ts'
+            
+        self.sql_str = """
+        CREATE TABLE {dataset}.{table_name} 
+        {partition}
+        AS {sql}
+        FROM datalakes.{tables}__temp
+        """.format(
+            table_name=self.tables__,
+            dataset=self.dset, 
+            sql = self.sql,
+            tables = self.tables,
+            partition = partition,
+            )
+        return self.sql_str
 
     def __encryption__(self):
         print(self.column_select)
@@ -124,24 +153,6 @@ class bq_operator():
             print('success execution')
             return 'SUCCESS'
             
-    def __create_tables__(self, dataset=None, sql=None):
-        self.dset = dataset 
-        self.sql = sql
-        if self.dset == 'enigma':
-            self.tables__ = self.tables + '_keys'
-        else:
-            self.tables__ = self.tables
-            
-        self.sql_str = """
-        CREATE TABLE {dataset}.{table_name} AS {sql}
-        FROM datalakes.{tables}__temp
-        """.format(
-            table_name=self.tables__,
-            dataset=self.dset, 
-            sql = self.sql,
-            tables = self.tables,
-            )
-        return self.sql_str
         
     def __insert_tables__(self, dataset=None, sql=None, alias=None):
         self.dset = dataset 
