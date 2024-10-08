@@ -142,7 +142,7 @@ def read_gsheet_file(db, dataset, schema, table):
     pd.options.display.max_colwidth = 100000
 
     # Attach credential file from developer google (API)
-    print('connect to gsheet')
+    # print('connect to gsheet')
     scope = ['https://www.googleapis.com/auth/spreadsheets.readonly']
     credentials = service_account.Credentials.from_service_account_file('/opt/account/secrets/service_account2.json', scopes=scope)
     gc = gspread.Client(auth=credentials)
