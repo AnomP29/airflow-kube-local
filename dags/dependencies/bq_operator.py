@@ -57,7 +57,14 @@ class bq_operator():
                 self.__to_main_table__()                
 
         else:
-            raise ValueError('table NOT exist')
+            sql = '''
+            SELECT
+            CONCAT({key},row_loaded_ts) {key},
+            KEYS.NEW_KEYSET('AEAD_AES_GCM_256') AS keyset
+            '''.format(key=self.encrypted_key)
+            sql_create = __create_tables__(dataset='enigma', sql)
+            self.__execute__(sql_create)
+            # raise ValueError('table NOT exist')
             # print('table NOT exist')
 
     def __to_main_table__(self):
@@ -124,6 +131,7 @@ class bq_operator():
             
         self.sql_str = """
         CREATE TABLE {dataset}.{table_name} AS {sql}
+        FROM datalakes.{tables}__temp
         """.format(
             table_name=self.tables__,
             dataset=self.dset, 
@@ -155,14 +163,14 @@ class bq_operator():
         
 
     
-    def generate_schema(self):
-        sql = '''
-        SELECT column_name as target_column, data_type
-        FROM
-        {dataset}.INFORMATION_SCHEMA.COLUMNS
-        WHERE
-        table_name='{table_name}'
-        '''.format(dataset=self.dataset,table_name=self.tables)
-        self.original_schema = self.client.query(sql).to_dataframe()
+    # def generate_schema(self):
+    #     sql = '''
+    #     SELECT column_name as target_column, data_type
+    #     FROM
+    #     {dataset}.INFORMATION_SCHEMA.COLUMNS
+    #     WHERE
+    #     table_name='{table_name}'
+    #     '''.format(dataset=self.dataset,table_name=self.tables)
+    #     self.original_schema = self.client.query(sql).to_dataframe()
         
-        return self.original_schema
+    #     return self.original_schema
