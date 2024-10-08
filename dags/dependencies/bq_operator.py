@@ -46,12 +46,13 @@ class bq_operator():
                 print(self.rsql)
             else:
                 print('maint table tidak ada')
-                sql = '''
-                SELECT {column_list}
-                '''.format(column_list=self.column_list)
+                sql_create_main = '''
+                CREATE TABLE {dataset}.{table_name} ({column_list})
+                PARTITION BY row_loaded_ts
+                '''.format(dataset=self.dataset, table_name=self.tables, column_list=self.column_list)
                 self.rsql = self.__create_tables__(self.dataset, sql)
                 print(self.rsql)
-                if self.__execute__(sql) == 'SUCCESS':
+                if self.__execute__(sql_create_main) == 'SUCCESS':
                     self.__to_main_table__()
                 else:
                     raise ValueError('failed to insert to MAIN TABLES')
