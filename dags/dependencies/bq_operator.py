@@ -36,7 +36,7 @@ class bq_operator():
                 self.__execute__(self.rsql)
                 print(self.rsql)
             else:
-                print('maint table tidak ada)
+                print('maint table tidak ada')
                 sql = '''
                 SELECT {column_list}
                 '''.format(column_list=self.column_list)
