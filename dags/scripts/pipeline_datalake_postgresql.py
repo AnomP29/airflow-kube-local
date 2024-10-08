@@ -182,14 +182,15 @@ def transform_gsheet(dframe, table):
     if "PII" in df:
         if (any(df['PII'] == 'TRUE') == True) == True:
             df_selected = df[df['PII'] == 'TRUE']
-            df_selected['data_type'] = 'BYTES'
-            df_selected = df_selected.rename(columns={'Column Name':'target_column'})
-            df_init = df_selected[['target_column','data_type','Supported Key']]
-            df_inits = list(df_selected['target_column'])
+            df_n = df_selected.copy()
+            df_n['data_type'] = 'BYTES'
+            df_n = df_n.rename(columns={'Column Name':'target_column'})
+            df_init = df_n[['target_column','data_type','Supported Key']]
+            df_inits = list(df_n['target_column'])
             
-            encrypted_key = df_selected.head(1)['Encrypted Key'].to_string(index=False)
+            encrypted_key = df_n.head(1)['Encrypted Key'].to_string(index=False)
             
-            df_raw = df_selected.reset_index(drop=True)
+            df_raw = df_n.reset_index(drop=True)
             df_raw = df_raw.rename(
                 columns={
                     'Data Type':'type'
@@ -206,7 +207,7 @@ def transform_gsheet(dframe, table):
             FROM
                 {dataset}.INFORMATION_SCHEMA.COLUMNS
             WHERE
-                table_name='{table_name}'""".format(dataset=dataset,table_name=table)
+                table_name='{table_name}'""".format(dataset=dataset,table_name=table_name)
             original_schema = client.query(query_string).to_dataframe()
 
             # Check table is partition or not
@@ -217,11 +218,21 @@ def transform_gsheet(dframe, table):
                 {dataset}.INFORMATION_SCHEMA.COLUMNS
             WHERE
                 table_name='{table_name}' AND is_partitioning_column = 'YES'
-            """.format(dataset=dataset,table_name=table)
+            """.format(dataset=dataset,table_name=table_name)
             is_partition = client.query(query_string).to_dataframe()
             partition = is_partition
             
-            result = pd.merge(original_schema, df_init, on=["target_column"], how="left")
+            enc = df_n.drop_duplicates(subset='Encrypted Key', keep="first")
+    
+            if not original_schema.empty:
+                result = pd.merge(original_schema, df_init, on=["target_column"], how="left")
+                enc = pd.merge(enc['Encrypted Key'], original_schema, left_on="Encrypted Key", right_on='target_column', how="outer")
+            else:
+                df_emp = df[['Column Name', 'Data type']]
+                df_emp = df_emp.rename(columns={'Column Name':'target_column', 'Data type': 'data_type'})
+                result = pd.merge(df_emp, df_init, on=["target_column"], how="left")
+                enc = pd.merge(enc['Encrypted Key'], df_emp, left_on="Encrypted Key", right_on='target_column', how="outer")
+    
             result.replace(to_replace=[None], value=np.nan, inplace=True)
             result.fillna(value='', inplace=True)
             result["data_type_x"] = np.where((result["data_type_y"]==''), result["data_type_x"], result["data_type_y"])
@@ -235,7 +246,7 @@ def transform_gsheet(dframe, table):
                     ),CAST(tmptbl. \
                 '''.lstrip().format(
                         dataset=dataset, 
-                        table_name=table, 
+                        table_name=table_name, 
                         key=encrypted_key, 
                         target_column=result["target_column"],
                         supported_key=result["Supported Key"]
@@ -250,8 +261,6 @@ def transform_gsheet(dframe, table):
                 ,result["target_column"]
                 )
             
-            enc = df_selected.drop_duplicates(subset='Encrypted Key', keep="first")
-            enc = pd.merge(enc['Encrypted Key'], original_schema, left_on="Encrypted Key", right_on='target_column', how="outer")
             enc = enc.dropna()
             columns_enc = enc.target_column + ' ' + enc.data_type
             column_list_enc = pd.DataFrame(columns_enc).sort_index()
@@ -267,13 +276,12 @@ def transform_gsheet(dframe, table):
             column_list = pd.DataFrame(columns).sort_index()
             column_list = column_list.to_string(header=False,index=False)
             column_list = " ".join(column_list.split())
-            
+        
             return column_select, encrypted_key, column_list
         
         else:
-            # df_selected = df
             df_selected = df.rename(columns={'Column Name':'target_column'})
-            df_selected['data_type'] = 'STRING'
+            df_selected['data_type'] = df_selected['Data type']
             df_init = df_selected[['target_column','data_type','Supported Key']]
             df_raw = df_selected.reset_index(drop=True)
             df_raw = df_raw.rename(
@@ -284,6 +292,7 @@ def transform_gsheet(dframe, table):
                     ,'Description':'description'
                     }
                 )
+    
             # Get original schema
             query_string = """
             SELECT 
@@ -292,9 +301,9 @@ def transform_gsheet(dframe, table):
             FROM
                 {dataset}.INFORMATION_SCHEMA.COLUMNS
             WHERE
-                table_name='{table_name}'""".format(dataset=dataset,table_name=table)
+                table_name='{table_name}'""".format(dataset=dataset,table_name=table_name)
             original_schema = client.query(query_string).to_dataframe()
-
+    
             # Check table is partition or not
             query_string = """
             SELECT 
@@ -303,11 +312,17 @@ def transform_gsheet(dframe, table):
                 {dataset}.INFORMATION_SCHEMA.COLUMNS
             WHERE
                 table_name='{table_name}' AND is_partitioning_column = 'YES'
-            """.format(dataset=dataset,table_name=table)
+            """.format(dataset=dataset,table_name=table_name)
             is_partition = client.query(query_string).to_dataframe()
             partition = is_partition
+    
+            if not original_schema.empty:
+                result = pd.merge(original_schema, df_init, on=["target_column"], how="left")
+            else:
+                df_emp = df[['Column Name', 'Data type']]
+                df_emp = df_emp.rename(columns={'Column Name':'target_column', 'Data type': 'data_type'})
+                result = pd.merge(df_emp, df_init, on=["target_column"], how="left")
             
-            result = pd.merge(original_schema, df_init, on=["target_column"], how="left")
             result.replace(to_replace=[None], value=np.nan, inplace=True)
             result.fillna(value='', inplace=True)
             result["data_type_x"] = np.where((result["data_type_y"]==''), result["data_type_x"], result["data_type_y"])
