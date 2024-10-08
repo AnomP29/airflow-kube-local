@@ -50,7 +50,7 @@ class bq_operator():
                 CREATE TABLE {dataset}.{table_name} ({column_list})
                 PARTITION BY row_loaded_ts
                 '''.format(dataset=self.dataset, table_name=self.tables, column_list=self.column_list)
-                self.rsql = self.__create_tables__(self.dataset, sql)
+                self.rsql = self.__create_tables__(self.dataset, sql_create_main)
                 print(self.rsql)
                 if self.__execute__(sql_create_main) == 'SUCCESS':
                     self.__to_main_table__()
