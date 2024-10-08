@@ -207,7 +207,7 @@ def transform_gsheet(dframe, table):
             FROM
                 {dataset}.INFORMATION_SCHEMA.COLUMNS
             WHERE
-                table_name='{table_name}'""".format(dataset=dataset,table_name=table_name)
+                table_name='{table_name}'""".format(dataset=dataset,table_name=table)
             original_schema = client.query(query_string).to_dataframe()
 
             # Check table is partition or not
@@ -218,7 +218,7 @@ def transform_gsheet(dframe, table):
                 {dataset}.INFORMATION_SCHEMA.COLUMNS
             WHERE
                 table_name='{table_name}' AND is_partitioning_column = 'YES'
-            """.format(dataset=dataset,table_name=table_name)
+            """.format(dataset=dataset,table_name=table)
             is_partition = client.query(query_string).to_dataframe()
             partition = is_partition
             
@@ -246,7 +246,7 @@ def transform_gsheet(dframe, table):
                     ),CAST(tmptbl. \
                 '''.lstrip().format(
                         dataset=dataset, 
-                        table_name=table_name, 
+                        table_name=table, 
                         key=encrypted_key, 
                         target_column=result["target_column"],
                         supported_key=result["Supported Key"]
@@ -301,7 +301,7 @@ def transform_gsheet(dframe, table):
             FROM
                 {dataset}.INFORMATION_SCHEMA.COLUMNS
             WHERE
-                table_name='{table_name}'""".format(dataset=dataset,table_name=table_name)
+                table_name='{table_name}'""".format(dataset=dataset,table_name=table)
             original_schema = client.query(query_string).to_dataframe()
     
             # Check table is partition or not
@@ -312,7 +312,7 @@ def transform_gsheet(dframe, table):
                 {dataset}.INFORMATION_SCHEMA.COLUMNS
             WHERE
                 table_name='{table_name}' AND is_partitioning_column = 'YES'
-            """.format(dataset=dataset,table_name=table_name)
+            """.format(dataset=dataset,table_name=table)
             is_partition = client.query(query_string).to_dataframe()
             partition = is_partition
     
