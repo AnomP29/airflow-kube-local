@@ -61,11 +61,7 @@ encr = options.encr
 client = bigquery.Client('hijra-data-dev')
 
 def get_count(schema, table, db_name, date_col, exc_date):
-    # TODO: Ini juga perlu kita sederhanakan logic-nya.
-    # Di sini untuk p2p perlu pakai db_name juga.
     if (db != 'hijra_staging' and table in ['audit_trail','log_login','anl_user_register','user_lounges','rdl_api_log']) == True:
-#         if db == 'hijra' and table in ['application_activity']:
-#             sql = "SELECT COUNT(*) FROM {}.{} WHERE DATE(insert_date) >= (CURRENT_DATE - INTERVAL '1 DAY')".format(schema,table)
         if db_name == 'p2p_prod' and table in ['rdl_api_log']:
             sql = "SELECT COUNT(*) FROM {}.{} WHERE to_char({}, 'YYYY-MM-DD/HH:MM') >= '{}'".format(schema,table,date_col,exc_date)
         if db == 'hijra' and table in ['anl_user_register']:
@@ -78,12 +74,6 @@ def get_count(schema, table, db_name, date_col, exc_date):
             """.format(schema=schema,table=table,date_col=date_col, exc_date=exc_date)
 
             # sql = "SELECT COUNT(*) FROM {}.{} WHERE to_char({}, 'YYYY-MM-DD/HH:MM') >= '{}' AND id != 7934".format(schema,table,date_col,exc_date)
-        # if db == 'hijra' and table in ['user_lounges']:
-        #     sql = "SELECT COUNT(*) FROM {}.{} WHERE id != 7534".format(schema,table)
-        # if db_name == 'p2p_prod' and table in ['log_login']:
-        #     sql = "SELECT COUNT(*) FROM {}.{} WHERE DATE(log_date) >= (CURRENT_DATE - INTERVAL '2 DAY')".format(schema,table)
-        # if db_name == 'p2p_prod' and table in ['audit_trail','application_activity']:
-        #     sql = "SELECT COUNT(*) FROM {}.{} WHERE DATE(activity_date) >= (CURRENT_DATE - INTERVAL '5 DAY')".format(schema,table)
     else:
         sql = """
         SELECT COUNT(*) FROM {schema}.{table}
@@ -340,6 +330,27 @@ def transform_gsheet(dframe, table):
 
             return column_select, '', column_list
 
+def get_source_schema():
+    sql ='''
+    select 
+    column_name, 
+    CASE
+        WHEN column_name IN ('logo_web') THEN 'STRING'
+        WHEN column_name IN ('bni_trx_id_va') THEN 'NUMERIC'
+        WHEN udt_name IN ('int8','int4','int2') THEN 'INT64'
+        WHEN udt_name IN ('bytea') THEN 'STRING'
+        WHEN udt_name IN ('varchar','text','bpchar','jsonb','json','uuid','UUID','_text') THEN 'STRING'
+        WHEN udt_name IN ('float8','float4','numeric') THEN 'FLOAT64'
+        WHEN udt_name IN ('timestamptz','timestamp') THEN 'TIMESTAMP'
+        ELSE UPPER(udt_name)
+    END AS data_type, col_description('{schema}.{source_table}'::regclass, ordinal_position) as description
+    from information_schema.columns
+    where column_name NOT IN ('log_data','call_to_action') and table_schema = '{schema}' and table_name = '{source_table}'
+    '''.format(schema=schema,source_table=table)
+    
+    src_schema = rdbms_operator('postgres', db_name, sql).execute('Y')
+    return src_schema
+
 
 def main(db, dataset, schema, table, date_col, exc_date):
     # DB connect
@@ -357,6 +368,8 @@ def main(db, dataset, schema, table, date_col, exc_date):
 
     tables___ = 'dl__{db}__{schema}__{table}__dev'.format(db=db, schema=schema, table=table)
     if count != 0:
+        src_schema = get_source_schema()
+        print(src_schema)
         dframe = read_gsheet_file(db, dataset, schema, table)
         if not dframe.empty:
             get_data(db, dataset, schema, table, db_name, date_col, exc_date)
