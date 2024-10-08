@@ -64,8 +64,10 @@ class bq_operator():
             '''.lstrip().format(encrypted_key=self.encrypted_key)
             sql_create = self.__create_tables__('enigma', sql)
             print(sql_create)
-            self.__execute__(sql_create)
-            # raise ValueError('table NOT exist')
+            if self.__execute__(sql_create) == 'SUCCESS':
+                self.__to_main_table__()
+            else:
+                raise ValueError('failed to insert to MAIN TABLES')
             # print('table NOT exist')
 
     def __to_main_table__(self):
