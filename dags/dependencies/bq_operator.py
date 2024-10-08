@@ -51,7 +51,10 @@ class bq_operator():
                 '''.format(column_list=self.column_list)
                 self.rsql = self.__create_tables__(self.dataset, sql)
                 print(self.rsql)
-                # self.__execute__(self.rsql)
+                if self.__execute__(sql_create) == 'SUCCESS':
+                    self.__to_main_table__()
+                else:
+                    raise ValueError('failed to insert to MAIN TABLES')
                 
 
     def __create_tables__(self, dataset=None, sql=None):
