@@ -25,6 +25,15 @@ tables:
   - name: ciam_user_backoffice_activity
     encryption: false
     date_col: created_at
+  - name: ciam_permission
+    encryption: false
+    date_col: updated_date
+  - name: ciam_role_permission
+    encryption: false
+    date_col: updated_date
+  - name: ciam_user_backoffice_login
+    encryption: false
+    date_col: updated_date
 
 
 
