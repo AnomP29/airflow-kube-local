@@ -63,6 +63,7 @@ class bq_operator():
             KEYS.NEW_KEYSET('AEAD_AES_GCM_256') AS keyset
             '''.format(key=self.encrypted_key)
             sql_create = __create_tables__(dataset='enigma', sql)
+            print(sql_create)
             self.__execute__(sql_create)
             # raise ValueError('table NOT exist')
             # print('table NOT exist')
