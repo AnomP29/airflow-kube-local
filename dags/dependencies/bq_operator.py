@@ -136,7 +136,8 @@ class bq_operator():
         """.format(
             table_name=self.tables__,
             dataset=self.dset, 
-            sql = self.sql
+            sql = self.sql,
+            tables = self.tables,
             )
         return self.sql_str
         
