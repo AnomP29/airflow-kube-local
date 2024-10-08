@@ -346,6 +346,9 @@ def main(db, dataset, schema, table, date_col, exc_date):
         if not dframe.empty:
             get_data(db, dataset, schema, table, db_name, date_col, exc_date)
             column_select, encrypted_key, column_list = transform_gsheet(dframe, tables___)
+            print(column_select)
+            print(encrypted_key)
+            print(column_list)
             bq_operator('hijra-data-dev', dataset, tables___, '', encr, column_select, encrypted_key, column_list)
         else:
             raise ValueError('Trying to open non-existent sheet. Verify that the sheet name exists ' + table + '.')
