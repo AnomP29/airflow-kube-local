@@ -167,8 +167,9 @@ def read_gsheet_file(db, dataset, schema, table):
     # print(df)
     return df  
 
-def transform_gsheet(dframe, table):
+def transform_gsheet(dframe, table, src_schema):
     df = dframe
+    print(src_schema)
     if "PII" in df:
         if (any(df['PII'] == 'TRUE') == True) == True:
             df_selected = df[df['PII'] == 'TRUE']
@@ -343,7 +344,8 @@ def get_source_schema():
         WHEN udt_name IN ('float8','float4','numeric') THEN 'FLOAT64'
         WHEN udt_name IN ('timestamptz','timestamp') THEN 'TIMESTAMP'
         ELSE UPPER(udt_name)
-    END AS data_type, col_description('{schema}.{source_table}'::regclass, ordinal_position) as description
+    END AS data_type, 
+    col_description('{schema}.{source_table}'::regclass, ordinal_position) as description
     from information_schema.columns
     where column_name NOT IN ('log_data','call_to_action') and table_schema = '{schema}' and table_name = '{source_table}'
     '''.format(schema=schema,source_table=table)
@@ -369,11 +371,11 @@ def main(db, dataset, schema, table, date_col, exc_date):
     tables___ = 'dl__{db}__{schema}__{table}__dev'.format(db=db, schema=schema, table=table)
     if count != 0:
         src_schema = get_source_schema()
-        print(src_schema)
+        # print(src_schema)
         dframe = read_gsheet_file(db, dataset, schema, table)
-        # if not dframe.empty:
+        if not dframe.empty:
             # get_data(db, dataset, schema, table, db_name, date_col, exc_date)
-            # column_select, encrypted_key, column_list = transform_gsheet(dframe, tables___)
+            column_select, encrypted_key, column_list = transform_gsheet(dframe, tables___, src_schema)
             # bq_operator('hijra-data-dev', dataset, tables___, '', encr, column_select, encrypted_key, column_list)
         # else:
         #     raise ValueError('Trying to open non-existent sheet. Verify that the sheet name exists ' + table + '.')
