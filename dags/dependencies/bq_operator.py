@@ -59,9 +59,9 @@ class bq_operator():
         else:
             sql = '''
             SELECT
-            CONCAT({key},row_loaded_ts) {key},
+            CONCAT({encrypted_key},row_loaded_ts) AS {encrypted_key},
             KEYS.NEW_KEYSET('AEAD_AES_GCM_256') AS keyset
-            '''.format(key=self.encrypted_key)
+            '''.lstrip().format(encrypted_key=self.encrypted_key)
             sql_create = self.__create_tables__('enigma', sql)
             print(sql_create)
             self.__execute__(sql_create)
