@@ -351,7 +351,7 @@ def transform_gsheet(dframe, table, src_schema):
             column_list = column_list.to_string(header=False,index=False)
             column_list = " ".join(column_list.split())
 
-            return column_select, '', column_list, columns_insert
+            return column_select, encrypted_key, column_list, columns_insert
 
 def get_source_schema():
     sql ='''
@@ -397,8 +397,8 @@ def main(db, dataset, schema, table, date_col, exc_date):
         dframe = read_gsheet_file(db, dataset, schema, table)
         # print(dframe)
         if not dframe.empty:
-            # get_data(db, dataset, schema, table, db_name, date_col, exc_date)
             column_select, encrypted_key, column_list, columns_insert = transform_gsheet(dframe, tables___, src_schema)
+            # get_data(db, dataset, schema, table, db_name, date_col, exc_date)
             print(column_select)
             print(encrypted_key)
             print(column_list)
