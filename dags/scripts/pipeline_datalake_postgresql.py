@@ -168,11 +168,31 @@ def read_gsheet_file(db, dataset, schema, table):
     return df  
 
 def transform_gsheet(dframe, table, src_schema):
-    df = dframe
+    # dframe
     print(src_schema)
-    if "PII" in df:
-        if (any(df['PII'] == 'TRUE') == True) == True:
-            df_selected = df[df['PII'] == 'TRUE']
+    
+    df_sheets = dframe.rename(columns={'Column Name':'column_name', 'Data type':'data_type'})
+    df_sheets_slice = df_sheets[['column_name','data_type']]
+    # df_sheets_slice
+    df_src_ = pd.merge(df_sheets_slice, dframe, on=["column_name"], how="left")
+    with pd.option_context('future.no_silent_downcasting', True):
+        df_src_.replace(to_replace=[None], value=np.nan, inplace=True)
+        df_src_.fillna(value='', inplace=True)
+
+    df_src_['data_type_x'] = np.where(df_src_['data_type_y']=='',df_src_['data_type_x'],df_src_['data_type_y']) 
+    df_src_['scr_ins'] = df_src_.agg('CAST({0[column_name]} AS {0[data_type_x]}) AS {0[column_name]}'.format, axis=1)
+    df_src_ = df_src_.rename(columns={'data_type_x':'data_type'})
+    df_src_slice = df_src_[['column_name','data_type','scr_ins']]
+
+    columns_insert = df_src_slice.scr_ins + ','.strip()
+    columns_insert = columns_insert.to_string(header=False,index=False)
+    columns_insert = " ".join(columns_insert.split())
+    # columns_insert
+    
+    
+    if "PII" in dframe:
+        if (any(dframe['PII'] == 'TRUE') == True) == True:
+            df_selected = dframe[dframe['PII'] == 'TRUE']
             df_n = df_selected.copy()
             df_n['data_type'] = 'BYTES'
             df_n = df_n.rename(columns={'Column Name':'target_column'})
@@ -219,7 +239,7 @@ def transform_gsheet(dframe, table, src_schema):
                 result = pd.merge(original_schema, df_init, on=["target_column"], how="left")
                 enc = pd.merge(enc['Encrypted Key'], original_schema, left_on="Encrypted Key", right_on='target_column', how="outer")
             else:
-                df_emp = df[['Column Name', 'Data type']]
+                df_emp = dframe[['Column Name', 'Data type']]
                 df_emp = df_emp.rename(columns={'Column Name':'target_column', 'Data type': 'data_type'})
                 result = pd.merge(df_emp, df_init, on=["target_column"], how="left")
                 enc = pd.merge(enc['Encrypted Key'], df_emp, left_on="Encrypted Key", right_on='target_column', how="outer")
@@ -271,7 +291,7 @@ def transform_gsheet(dframe, table, src_schema):
             return column_select, encrypted_key, column_list
         
         else:
-            df_selected = df.rename(columns={'Column Name':'target_column'})
+            df_selected = dframe.rename(columns={'Column Name':'target_column'})
             df_selected['data_type'] = df_selected['Data type']
             df_init = df_selected[['target_column','data_type','Supported Key']]
             df_raw = df_selected.reset_index(drop=True)
@@ -310,7 +330,7 @@ def transform_gsheet(dframe, table, src_schema):
             if not original_schema.empty:
                 result = pd.merge(original_schema, df_init, on=["target_column"], how="left")
             else:
-                df_emp = df[['Column Name', 'Data type']]
+                df_emp = dframe[['Column Name', 'Data type']]
                 df_emp = df_emp.rename(columns={'Column Name':'target_column', 'Data type': 'data_type'})
                 result = pd.merge(df_emp, df_init, on=["target_column"], how="left")
             
@@ -329,7 +349,7 @@ def transform_gsheet(dframe, table, src_schema):
             column_list = column_list.to_string(header=False,index=False)
             column_list = " ".join(column_list.split())
 
-            return column_select, '', column_list
+            return column_select, '', column_list, columns_insert
 
 def get_source_schema():
     sql ='''
@@ -375,7 +395,11 @@ def main(db, dataset, schema, table, date_col, exc_date):
         dframe = read_gsheet_file(db, dataset, schema, table)
         if not dframe.empty:
             # get_data(db, dataset, schema, table, db_name, date_col, exc_date)
-            column_select, encrypted_key, column_list = transform_gsheet(dframe, tables___, src_schema)
+            column_select, encrypted_key, column_list, columns_insert = transform_gsheet(dframe, tables___, src_schema)
+            print(column_select)
+            print(encrypted_key)
+            print(column_list)
+            print(columns_insert)
             # bq_operator('hijra-data-dev', dataset, tables___, '', encr, column_select, encrypted_key, column_list)
         # else:
         #     raise ValueError('Trying to open non-existent sheet. Verify that the sheet name exists ' + table + '.')
