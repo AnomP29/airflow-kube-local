@@ -185,9 +185,9 @@ def transform_gsheet(dframe, table, src_schema):
     df_src_['data_type_x'] = np.where(df_src_['data_type_y']=='',df_src_['data_type_x'],df_src_['data_type_y']) 
     df_src_['src_ins'] = df_src_.agg('CAST({0[column_name]} AS {0[data_type_x]}) AS {0[column_name]}'.format, axis=1)
     df_src_ = df_src_.rename(columns={'data_type_x':'data_type'})
-    df_src_slice = df_src_[['column_name','data_type','scr_ins']]
+    df_src_slice = df_src_[['column_name','data_type','src_ins']]
 
-    columns_insert = df_src_slice.scr_ins + ','.strip()
+    columns_insert = df_src_slice.src_ins + ','.strip()
     columns_insert = columns_insert.to_string(header=False,index=False)
     columns_insert = " ".join(columns_insert.split())
     print(columns_insert)
