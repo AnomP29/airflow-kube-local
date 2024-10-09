@@ -35,7 +35,7 @@ def create_dag(dag_id, bash_command, encryption_command, queue_pool, db, table, 
         ),
         # schedule_interval=schedule,
         default_args=default_args,
-    catchup=True,
+        catchup=True,
         # is_paused_upon_creation=is_paused,
     )
 
@@ -62,7 +62,7 @@ def create_dag(dag_id, bash_command, encryption_command, queue_pool, db, table, 
 
         if encryption_command != '':
             encryption = BashOperator(
-                task_id=table + "_encryption",
+            task_id=table + "_encryption",
                 on_failure_callback=task_fail_slack_alert,
                 pool=queue_pool,
                 bash_command=encryption_command
