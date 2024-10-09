@@ -23,7 +23,7 @@ def create_dag(dag_id, bash_command, encryption_command, queue_pool, db, table, 
     default_args = {
         "owner": "data_engineer",
         "start_date": airflow.utils.dates.days_ago(8),
-        "retries": 3,
+        "retries": 2,
         "retry_delay": timedelta(seconds=300),
     }
 
@@ -32,10 +32,10 @@ def create_dag(dag_id, bash_command, encryption_command, queue_pool, db, table, 
         description="Data Lake from DB {db} to BigQuery".format(
             db=db
         ),
-        schedule_interval=schedule,
+        # schedule_interval=schedule,
         default_args=default_args,
         catchup=True,
-        is_paused_upon_creation=is_paused,
+        # is_paused_upon_creation=is_paused,
     )
 
     bash_args = {
