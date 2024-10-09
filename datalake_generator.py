@@ -10,6 +10,8 @@ from ruamel.yaml import YAML
 from datetime import timedelta
 from dependencies.utils import DAGS_FOLDER
 
+from
+
 
 large_tables = [
     'partner_ekyc_integration_record',
