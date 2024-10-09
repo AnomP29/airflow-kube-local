@@ -243,8 +243,10 @@ def transform_gsheet(dframe, table, src_schema):
             else:
                 df_emp = dframe[['Column Name', 'Data type']]
                 df_emp = df_emp.rename(columns={'Column Name':'target_column', 'Data type': 'data_type'})
+                df_emp = pd.merge(df_emp, df_src_slice, on=["target_column"], how="left")
+                df_emp = df_emp[['target_column','data_type_y']]
+                df_emp = df_emp.rename(columns={'data_type_y': 'data_type'})
                 result = pd.merge(df_emp, df_init, on=["target_column"], how="left")
-                enc = pd.merge(enc['Encrypted Key'], df_emp, left_on="Encrypted Key", right_on='target_column', how="outer")
     
             result.replace(to_replace=[None], value=np.nan, inplace=True)
             result.fillna(value='', inplace=True)
