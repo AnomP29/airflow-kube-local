@@ -169,17 +169,18 @@ def read_gsheet_file(db, dataset, schema, table):
 
 def transform_gsheet(dframe, table, src_schema):
     # dframe
-    print(src_schema)
-    print(dframe)
+    # print(src_schema)
+    # print(dframe)
     
     df_sheets = dframe.rename(columns={'Column Name':'column_name', 'Data type':'data_type'})
     df_sheets_slice = df_sheets[['column_name','data_type']]
     # df_sheets_slice
-    df_src_ = pd.merge(df_sheets_slice, dframe, on=["column_name"], how="left")
+    df_src_ = pd.merge(df_sheets_slice, src_schema, on=["column_name"], how="left")
     with pd.option_context('future.no_silent_downcasting', True):
         df_src_.replace(to_replace=[None], value=np.nan, inplace=True)
         df_src_.fillna(value='', inplace=True)
-
+    
+    print(df_src_)
     df_src_['data_type_x'] = np.where(df_src_['data_type_y']=='',df_src_['data_type_x'],df_src_['data_type_y']) 
     df_src_['scr_ins'] = df_src_.agg('CAST({0[column_name]} AS {0[data_type_x]}) AS {0[column_name]}'.format, axis=1)
     df_src_ = df_src_.rename(columns={'data_type_x':'data_type'})
