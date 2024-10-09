@@ -98,19 +98,43 @@ def read_gsheet_file(db, dataset, schema, table):
     return df  
 
 
-def transform_gsheet(dframe, table):
-    df = dframe
-    if "PII" in df:
-        if (any(df['PII'] == 'TRUE') == True) == True:
-            df_selected = df[df['PII'] == 'TRUE']
-            df_selected['data_type'] = 'BYTES'
-            df_selected = df_selected.rename(columns={'Column Name':'target_column'})
-            df_init = df_selected[['target_column','data_type','Supported Key']]
-            df_inits = list(df_selected['target_column'])
+def transform_gsheet(dframe, table, src_schema):
+    # dframe
+    # print(src_schema)
+    # print(dframe)
+    
+    df_sheets = dframe.rename(columns={'Column Name':'column_name', 'Data type':'data_type'})
+    df_sheets_slice = df_sheets[['column_name','data_type']]
+    # df_sheets_slice
+    df_src_ = pd.merge(df_sheets_slice, src_schema, on=["column_name"], how="left")
+    with pd.option_context('future.no_silent_downcasting', True):
+        df_src_.replace(to_replace=[None], value=np.nan, inplace=True)
+        df_src_.fillna(value='', inplace=True)
+    
+    # print(df_src_)
+    df_src_['data_type_x'] = np.where(df_src_['data_type_y']=='',df_src_['data_type_x'],df_src_['data_type_y']) 
+    df_src_['scr_ins'] = df_src_.agg('CAST({0[column_name]} AS {0[data_type_x]}) AS {0[column_name]}'.format, axis=1)
+    df_src_ = df_src_.rename(columns={'data_type_x':'data_type'})
+    df_src_slice = df_src_[['column_name','data_type','scr_ins']]
+
+    columns_insert = df_src_slice.scr_ins + ','.strip()
+    columns_insert = columns_insert.to_string(header=False,index=False)
+    columns_insert = " ".join(columns_insert.split())
+    print(columns_insert)
+    
+    
+    if "PII" in dframe:
+        if (any(dframe['PII'] == 'TRUE') == True) == True:
+            df_selected = dframe[dframe['PII'] == 'TRUE']
+            df_n = df_selected.copy()
+            df_n['data_type'] = 'BYTES'
+            df_n = df_n.rename(columns={'Column Name':'target_column'})
+            df_init = df_n[['target_column','data_type','Supported Key']]
+            df_inits = list(df_n['target_column'])
             
-            encrypted_key = df_selected.head(1)['Encrypted Key'].to_string(index=False)
+            encrypted_key = df_n.head(1)['Encrypted Key'].to_string(index=False)
             
-            df_raw = df_selected.reset_index(drop=True)
+            df_raw = df_n.reset_index(drop=True)
             df_raw = df_raw.rename(
                 columns={
                     'Data Type':'type'
@@ -142,7 +166,17 @@ def transform_gsheet(dframe, table):
             is_partition = client.query(query_string).to_dataframe()
             partition = is_partition
             
-            result = pd.merge(original_schema, df_init, on=["target_column"], how="left")
+            enc = df_n.drop_duplicates(subset='Encrypted Key', keep="first")
+    
+            if not original_schema.empty:
+                result = pd.merge(original_schema, df_init, on=["target_column"], how="left")
+                enc = pd.merge(enc['Encrypted Key'], original_schema, left_on="Encrypted Key", right_on='target_column', how="outer")
+            else:
+                df_emp = dframe[['Column Name', 'Data type']]
+                df_emp = df_emp.rename(columns={'Column Name':'target_column', 'Data type': 'data_type'})
+                result = pd.merge(df_emp, df_init, on=["target_column"], how="left")
+                enc = pd.merge(enc['Encrypted Key'], df_emp, left_on="Encrypted Key", right_on='target_column', how="outer")
+    
             result.replace(to_replace=[None], value=np.nan, inplace=True)
             result.fillna(value='', inplace=True)
             result["data_type_x"] = np.where((result["data_type_y"]==''), result["data_type_x"], result["data_type_y"])
@@ -153,14 +187,17 @@ def transform_gsheet(dframe, table):
                     (\
                         SELECT keyset FROM enigma.{table_name}_keys keys \
                         WHERE keys.{key} = CONCAT(tmptbl.{key}, tmptbl.row_loaded_ts) \
-                    ),CAST(tmptbl.'''.lstrip().format(
+                    ),CAST(tmptbl. \
+                '''.lstrip().format(
                         dataset=dataset, 
                         table_name=table, 
                         key=encrypted_key, 
                         target_column=result["target_column"],
                         supported_key=result["Supported Key"]
                         ) + result["target_column"] + ' ' +
-                '''AS STRING), CAST(tmptbl.'''.lstrip() + result["Supported Key"] + ' ' +
+                ''' \
+                    AS STRING), CAST( tmptbl.\
+                '''.strip() + result["Supported Key"] + ' ' +
                 ''' \
                     AS STRING) \
                 ) AS 
@@ -168,8 +205,6 @@ def transform_gsheet(dframe, table):
                 ,result["target_column"]
                 )
             
-            enc = df_selected.drop_duplicates(subset='Encrypted Key', keep="first")
-            enc = pd.merge(enc['Encrypted Key'], original_schema, left_on="Encrypted Key", right_on='target_column', how="outer")
             enc = enc.dropna()
             columns_enc = enc.target_column + ' ' + enc.data_type
             column_list_enc = pd.DataFrame(columns_enc).sort_index()
@@ -185,13 +220,12 @@ def transform_gsheet(dframe, table):
             column_list = pd.DataFrame(columns).sort_index()
             column_list = column_list.to_string(header=False,index=False)
             column_list = " ".join(column_list.split())
-            
-            return column_select, encrypted_key, column_list
+        
+            return column_select, encrypted_key, column_list, columns_insert
         
         else:
-            # df_selected = df
-            df_selected = df.rename(columns={'Column Name':'target_column'})
-            df_selected['data_type'] = 'STRING'
+            df_selected = dframe.rename(columns={'Column Name':'target_column'})
+            df_selected['data_type'] = df_selected['Data type']
             df_init = df_selected[['target_column','data_type','Supported Key']]
             df_raw = df_selected.reset_index(drop=True)
             df_raw = df_raw.rename(
@@ -202,6 +236,7 @@ def transform_gsheet(dframe, table):
                     ,'Description':'description'
                     }
                 )
+    
             # Get original schema
             query_string = """
             SELECT 
@@ -212,7 +247,7 @@ def transform_gsheet(dframe, table):
             WHERE
                 table_name='{table_name}'""".format(dataset=dataset,table_name=table)
             original_schema = client.query(query_string).to_dataframe()
-
+    
             # Check table is partition or not
             query_string = """
             SELECT 
@@ -224,8 +259,14 @@ def transform_gsheet(dframe, table):
             """.format(dataset=dataset,table_name=table)
             is_partition = client.query(query_string).to_dataframe()
             partition = is_partition
+    
+            if not original_schema.empty:
+                result = pd.merge(original_schema, df_init, on=["target_column"], how="left")
+            else:
+                df_emp = dframe[['Column Name', 'Data type']]
+                df_emp = df_emp.rename(columns={'Column Name':'target_column', 'Data type': 'data_type'})
+                result = pd.merge(df_emp, df_init, on=["target_column"], how="left")
             
-            result = pd.merge(original_schema, df_init, on=["target_column"], how="left")
             result.replace(to_replace=[None], value=np.nan, inplace=True)
             result.fillna(value='', inplace=True)
             result["data_type_x"] = np.where((result["data_type_y"]==''), result["data_type_x"], result["data_type_y"])
@@ -241,7 +282,29 @@ def transform_gsheet(dframe, table):
             column_list = column_list.to_string(header=False,index=False)
             column_list = " ".join(column_list.split())
 
-            return column_select, '', column_list
+            return column_select, '', column_list, columns_insert
+
+def get_source_schema():
+    sql ='''
+    select 
+    column_name, 
+    CASE
+        WHEN column_name IN ('logo_web') THEN 'STRING'
+        WHEN column_name IN ('bni_trx_id_va') THEN 'NUMERIC'
+        WHEN udt_name IN ('int8','int4','int2') THEN 'INT64'
+        WHEN udt_name IN ('bytea') THEN 'STRING'
+        WHEN udt_name IN ('varchar','text','bpchar','jsonb','json','uuid','UUID','_text') THEN 'STRING'
+        WHEN udt_name IN ('float8','float4','numeric') THEN 'FLOAT64'
+        WHEN udt_name IN ('timestamptz','timestamp') THEN 'TIMESTAMP'
+        ELSE UPPER(udt_name)
+    END AS data_type, 
+    col_description('{schema}.{source_table}'::regclass, ordinal_position) as description
+    from information_schema.columns
+    where column_name NOT IN ('log_data','call_to_action') and table_schema = '{schema}' and table_name = '{source_table}'
+    '''.format(schema=schema,source_table=table)
+    
+    src_schema = rdbms_operator('postgres', db, sql).execute('Y')
+    return src_schema
 
 
 def main(db, dataset, schema, table):
@@ -260,10 +323,15 @@ def main(db, dataset, schema, table):
     tables___ = 'dl__{db}__{schema}__{table}__dev'.format(db=db, schema=schema, table=table)
     if count != 0:
     # tables___ = 'dl__{db}__{schema}__{table}__dev'.format(db=db, schema=schema, table=table)
+        src_schema = get_source_schema()
         dframe = read_gsheet_file(db, dataset, schema, table)
         if not dframe.empty:
-            column_select, encrypted_key, column_list = transform_gsheet(dframe, tables___)
-            bq_operator('hijra-data-dev', dataset, tables___, '', '', column_select, encrypted_key, column_list).__encryption__()
+            column_select, encrypted_key, column_list, columns_insert = transform_gsheet(dframe, tables___, src_schema)
+            print(column_select)
+            print(encrypted_key)
+            print(column_list)
+            print(columns_insert)
+            # bq_operator('hijra-data-dev', dataset, tables___, '', '', column_select, encrypted_key, column_list).__encryption__()
         else:
             raise ValueError('Trying to open non-existent sheet. Verify that the sheet name exists ' + table + '.')
 
