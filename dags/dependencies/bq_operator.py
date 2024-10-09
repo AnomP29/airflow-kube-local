@@ -28,7 +28,7 @@ class bq_operator():
                 CREATE TABLE {dataset}.{table_name} ({column_list})
                 PARTITION BY DATE(row_loaded_ts)
                 '''.format(dataset=self.dataset, table_name=self.tables, column_list=self.column_list)
-                print(sql_create_main)
+                # print(sql_create_main)
                 self.__execute__(sql_create_main)
             else:
                 pass
@@ -103,7 +103,7 @@ class bq_operator():
             # print('table NOT exist')
 
     def __to_main_table__(self):
-        sql_insert = self.__insert_tables__(self.dataset, self.column_select, 'tmptbl')
+        sql_insert = self.__insert_tables__(self.dataset, self.columns_insert, 'tmptbl')
         print(sql_insert)
         self.__execute__(sql_insert)
         
@@ -178,17 +178,3 @@ class bq_operator():
             )
         # print(self.sql)
         return self.sql_str
-        
-
-    
-    # def generate_schema(self):
-    #     sql = '''
-    #     SELECT column_name as target_column, data_type
-    #     FROM
-    #     {dataset}.INFORMATION_SCHEMA.COLUMNS
-    #     WHERE
-    #     table_name='{table_name}'
-    #     '''.format(dataset=self.dataset,table_name=self.tables)
-    #     self.original_schema = self.client.query(sql).to_dataframe()
-        
-    #     return self.original_schema
