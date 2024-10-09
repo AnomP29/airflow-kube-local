@@ -360,7 +360,7 @@ def get_source_schema():
     CASE
         WHEN column_name IN ('logo_web') THEN 'STRING'
         WHEN column_name IN ('bni_trx_id_va') THEN 'NUMERIC'
-        WHEN udt_name IN ('int8','int4','int2') THEN 'INT64'
+        WHEN udt_name IN ('int8','int4','int2','bigserial') THEN 'INT64'
         WHEN udt_name IN ('bytea') THEN 'STRING'
         WHEN udt_name IN ('varchar','text','bpchar','jsonb','json','uuid','UUID','_text') THEN 'STRING'
         WHEN udt_name IN ('float8','float4','numeric') THEN 'FLOAT64'
