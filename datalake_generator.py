@@ -22,7 +22,7 @@ large_tables = [
 def create_dag(dag_id, bash_command, encryption_command, queue_pool, db, table, schedule, is_paused):
     default_args = {
         "owner": "data_engineer",
-        "start_date": airflow.utils.dates.days_ago(1),
+        "start_date": airflow.utils.dates.days_ago(8),
         "retries": 3,
         "retry_delay": timedelta(seconds=300),
     }
@@ -34,7 +34,7 @@ def create_dag(dag_id, bash_command, encryption_command, queue_pool, db, table, 
         ),
         schedule_interval=schedule,
         default_args=default_args,
-        catchup=False,
+        catchup=True,
         is_paused_upon_creation=is_paused,
     )
 
