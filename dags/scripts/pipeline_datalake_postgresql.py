@@ -170,6 +170,7 @@ def read_gsheet_file(db, dataset, schema, table):
 def transform_gsheet(dframe, table, src_schema):
     # dframe
     print(src_schema)
+    print(dframe)
     
     df_sheets = dframe.rename(columns={'Column Name':'column_name', 'Data type':'data_type'})
     df_sheets_slice = df_sheets[['column_name','data_type']]
@@ -391,9 +392,9 @@ def main(db, dataset, schema, table, date_col, exc_date):
     tables___ = 'dl__{db}__{schema}__{table}__dev'.format(db=db, schema=schema, table=table)
     if count != 0:
         src_schema = get_source_schema()
-        print(src_schema)
+        # print(src_schema)
         dframe = read_gsheet_file(db, dataset, schema, table)
-        print(dframe)
+        # print(dframe)
         if not dframe.empty:
             # get_data(db, dataset, schema, table, db_name, date_col, exc_date)
             column_select, encrypted_key, column_list, columns_insert = transform_gsheet(dframe, tables___, src_schema)
