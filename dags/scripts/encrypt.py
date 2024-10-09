@@ -125,6 +125,7 @@ def transform_gsheet(dframe, table, src_schema):
     
     if "PII" in dframe:
         if (any(dframe['PII'] == 'TRUE') == True) == True:
+            df_src_slice = df_src_slice.rename(columns={'column_name':'target_column'})
             df_selected = dframe[dframe['PII'] == 'TRUE']
             df_n = df_selected.copy()
             df_n['data_type'] = 'BYTES'
@@ -174,8 +175,10 @@ def transform_gsheet(dframe, table, src_schema):
             else:
                 df_emp = dframe[['Column Name', 'Data type']]
                 df_emp = df_emp.rename(columns={'Column Name':'target_column', 'Data type': 'data_type'})
+                df_emp = pd.merge(df_emp, df_src_slice, on=["target_column"], how="left")
+                df_emp = df_emp[['target_column','data_type_y']]
+                df_emp = df_emp.rename(columns={'data_type_y': 'data_type'})
                 result = pd.merge(df_emp, df_init, on=["target_column"], how="left")
-                enc = pd.merge(enc['Encrypted Key'], df_emp, left_on="Encrypted Key", right_on='target_column', how="outer")
     
             result.replace(to_replace=[None], value=np.nan, inplace=True)
             result.fillna(value='', inplace=True)
@@ -265,6 +268,9 @@ def transform_gsheet(dframe, table, src_schema):
             else:
                 df_emp = dframe[['Column Name', 'Data type']]
                 df_emp = df_emp.rename(columns={'Column Name':'target_column', 'Data type': 'data_type'})
+                df_emp = pd.merge(df_emp, df_src_slice, on=["target_column"], how="left")
+                df_emp = df_emp[['target_column','data_type_y']]
+                df_emp = df_emp.rename(columns={'data_type_y': 'data_type'})
                 result = pd.merge(df_emp, df_init, on=["target_column"], how="left")
             
             result.replace(to_replace=[None], value=np.nan, inplace=True)
@@ -283,7 +289,7 @@ def transform_gsheet(dframe, table, src_schema):
             column_list = " ".join(column_list.split())
 
             return column_select, '', column_list, columns_insert
-
+            
 def get_source_schema():
     sql ='''
     select 
@@ -331,7 +337,7 @@ def main(db, dataset, schema, table):
             print(encrypted_key)
             print(column_list)
             print(columns_insert)
-            bq_operator('hijra-data-dev', dataset, tables___, '', '', column_select, encrypted_key, column_list).__encryption__()
+            bq_operator('hijra-data-dev', dataset, tables___, '', '', column_select, encrypted_key, column_list, columns_insert).__encryption__()
         else:
             raise ValueError('Trying to open non-existent sheet. Verify that the sheet name exists ' + table + '.')
 
