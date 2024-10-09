@@ -130,19 +130,6 @@ class bq_operator():
 
         return self.df.iloc[0]['f0_']
     
-        # self.sql2 = '''
-        #     SELECT 
-        #     CONCAT({encrypted_key}, row_loaded_ts) {encrypted_key},
-        #     KEYS.NEW_KEYSET('AEAD_AES_GCM_256') AS keyset
-        #     FROM {dataset}.{table_name}__temp
-        #     '''.format(
-        #         column_select=self.column_select, 
-        #         encrypted_key=self.encrypted_key, 
-        #         table_name=self.tables, 
-        #         dataset=self.dataset
-        #         )
-        # print(self.query)
-            
     def __execute__(self, sql):
         self.exsql = sql
         try:
