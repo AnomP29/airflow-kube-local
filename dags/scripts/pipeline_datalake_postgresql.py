@@ -290,7 +290,7 @@ def transform_gsheet(dframe, table, src_schema):
             column_list = column_list.to_string(header=False,index=False)
             column_list = " ".join(column_list.split())
         
-            return column_select, '', column_list, columns_insert
+            return column_select, encrypted_key, column_list, columns_insert
         
         else:
             df_selected = dframe.rename(columns={'Column Name':'target_column'})
@@ -351,7 +351,7 @@ def transform_gsheet(dframe, table, src_schema):
             column_list = column_list.to_string(header=False,index=False)
             column_list = " ".join(column_list.split())
 
-            return column_select, encrypted_key, column_list, columns_insert
+            return column_select, '', column_list, columns_insert
 
 def get_source_schema():
     sql ='''
