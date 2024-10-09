@@ -183,7 +183,7 @@ def transform_gsheet(dframe, table, src_schema):
     
     # print(df_src_)
     df_src_['data_type_x'] = np.where(df_src_['data_type_y']=='',df_src_['data_type_x'],df_src_['data_type_y']) 
-    df_src_['scr_ins'] = df_src_.agg('CAST({0[column_name]} AS {0[data_type_x]}) AS {0[column_name]}'.format, axis=1)
+    df_src_['src_ins'] = df_src_.agg('CAST({0[column_name]} AS {0[data_type_x]}) AS {0[column_name]}'.format, axis=1)
     df_src_ = df_src_.rename(columns={'data_type_x':'data_type'})
     df_src_slice = df_src_[['column_name','data_type','scr_ins']]
 
@@ -278,7 +278,14 @@ def transform_gsheet(dframe, table, src_schema):
                 ,result["target_column"]
                 )
             
+            result['src_ins'] = np.where((result['data_type_y']==''), result['src_ins'], result['enc'])
+
             enc = enc.dropna()
+
+            columns_insert = result.src_ins + ','.strip()
+            columns_insert = columns_insert.to_string(header=False,index=False)
+            columns_insert = " ".join(columns_insert.split())
+
             columns_enc = enc.target_column + ' ' + enc.data_type
             column_list_enc = pd.DataFrame(columns_enc).sort_index()
             column_list_enc = column_list_enc.to_string(header=False,index=False)
