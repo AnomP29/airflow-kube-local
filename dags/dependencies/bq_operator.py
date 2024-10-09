@@ -36,7 +36,7 @@ class bq_operator():
         else:
             print(self.encr)
             if self.check_bq_tables(self.dataset) == 1:
-                self.rsql = self.__insert_tables__(self.dataset, self.column_select, '')
+                self.rsql = self.__insert_tables__(self.dataset, self.columns_insert, '')
                 self.__execute__(self.rsql)
                 print(self.rsql)
             else:
