@@ -296,6 +296,7 @@ def transform_gsheet(dframe, table, src_schema):
             return column_select, encrypted_key, column_list, columns_insert
         
         else:
+            df_src_slice = df_src_slice.rename(columns={'column_name':'target_column'})
             df_selected = dframe.rename(columns={'Column Name':'target_column'})
             df_selected['data_type'] = df_selected['Data type']
             df_init = df_selected[['target_column','data_type','Supported Key']]
