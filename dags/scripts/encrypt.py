@@ -113,16 +113,10 @@ def transform_gsheet(dframe, table, src_schema):
     
     # print(df_src_)
     df_src_['data_type_x'] = np.where(df_src_['data_type_y']=='',df_src_['data_type_x'],df_src_['data_type_y']) 
-    df_src_['scr_ins'] = df_src_.agg('CAST({0[column_name]} AS {0[data_type_x]}) AS {0[column_name]}'.format, axis=1)
+    df_src_['src_ins'] = df_src_.agg('CAST({0[column_name]} AS {0[data_type_x]}) AS {0[column_name]}'.format, axis=1)
     df_src_ = df_src_.rename(columns={'data_type_x':'data_type'})
-    df_src_slice = df_src_[['column_name','data_type','scr_ins']]
+    df_src_slice = df_src_[['column_name','data_type','src_ins']]
 
-    columns_insert = df_src_slice.scr_ins + ','.strip()
-    columns_insert = columns_insert.to_string(header=False,index=False)
-    columns_insert = " ".join(columns_insert.split())
-    print(columns_insert)
-    
-    
     if "PII" in dframe:
         if (any(dframe['PII'] == 'TRUE') == True) == True:
             df_src_slice = df_src_slice.rename(columns={'column_name':'target_column'})
@@ -171,6 +165,7 @@ def transform_gsheet(dframe, table, src_schema):
     
             if not original_schema.empty:
                 result = pd.merge(original_schema, df_init, on=["target_column"], how="left")
+                result = pd.merge(result, df_src_slice, on=["target_column"], how="left")
                 enc = pd.merge(enc['Encrypted Key'], original_schema, left_on="Encrypted Key", right_on='target_column', how="outer")
             else:
                 df_emp = dframe[['Column Name', 'Data type']]
@@ -207,6 +202,8 @@ def transform_gsheet(dframe, table, src_schema):
                 '''.strip() + ' ' + result['target_column']
                 ,result["target_column"]
                 )
+
+            result['src_ins'] = np.where((result['data_type_y']==''), result['src_ins'], result['enc'])
             
             enc = enc.dropna()
             columns_enc = enc.target_column + ' ' + enc.data_type
@@ -223,6 +220,12 @@ def transform_gsheet(dframe, table, src_schema):
             column_list = pd.DataFrame(columns).sort_index()
             column_list = column_list.to_string(header=False,index=False)
             column_list = " ".join(column_list.split())
+
+            columns_insert = result.src_ins + ','.strip()
+            columns_insert = columns_insert.to_string(header=False,index=False)
+            columns_insert = " ".join(columns_insert.split())
+            # print(columns_insert)
+
         
             return column_select, encrypted_key, column_list, columns_insert
         
@@ -287,6 +290,11 @@ def transform_gsheet(dframe, table, src_schema):
             column_list = pd.DataFrame(columns).sort_index()
             column_list = column_list.to_string(header=False,index=False)
             column_list = " ".join(column_list.split())
+
+            columns_insert = df_src_slice.src_ins + ','.strip()
+            columns_insert = columns_insert.to_string(header=False,index=False)
+            columns_insert = " ".join(columns_insert.split())
+
 
             return column_select, '', column_list, columns_insert
             
