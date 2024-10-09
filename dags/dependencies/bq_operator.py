@@ -8,7 +8,7 @@ import pandas_gbq
 
 class bq_operator():
     def __init__(self, projid, dataset, tables, query, encr='True',
-                 column_select=None, encrypted_key=None, column_list=None, 
+                 column_select=None, encrypted_key=None, column_list=None, columns_insert=None,
                  *args, **kwargs) -> None:
         self.projid = projid
         self.dataset = dataset
@@ -18,26 +18,21 @@ class bq_operator():
         self.column_select = column_select
         self.encrypted_key = encrypted_key    
         self.column_list = column_list   
+        self.columns_insert = columns_insert
         self.client = bigquery.Client(self.projid)
 
         if self.encr == 'True':
             if self.check_bq_tables(self.dataset) == 0:
                 print('a')
                 sql_create_main = '''
-                CREATE TABLE {dataset}.{table_name} ({column_list})
+                CREATE TABLE {dataset}.{table_name} ({columns_insert})
                 PARTITION BY DATE(row_loaded_ts)
-                '''.format(dataset=self.dataset, table_name=self.tables, column_list=self.column_list)
+                '''.format(dataset=self.dataset, table_name=self.tables, columns_insert=self.columns_insert)
                 print(sql_create_main)
+                self.__execute__(sql_create_main)
             else:
                 pass
-            # print(self.encr)
-            # if self.check_bq_tables(self.dataset) == 1:
-            #     self.rsql = self.__insert_tables__(self.dataset, self.column_select)
-            #     print(self.rsql)
-            # else:
-            #     self.rsql = self.__create_tables__(self.dataset, self.column_select)
-            #     print(self.rsql)
-            # pass
+
         else:
             print(self.encr)
             if self.check_bq_tables(self.dataset) == 1:

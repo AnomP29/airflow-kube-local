@@ -403,7 +403,7 @@ def main(db, dataset, schema, table, date_col, exc_date):
             print(encrypted_key)
             print(column_list)
             print(columns_insert)
-            # bq_operator('hijra-data-dev', dataset, tables___, '', encr, column_select, encrypted_key, column_list)
+            bq_operator('hijra-data-dev', dataset, tables___, '', encr, column_select, encrypted_key, column_list, columns_insert)
         # else:
         #     raise ValueError('Trying to open non-existent sheet. Verify that the sheet name exists ' + table + '.')
 
