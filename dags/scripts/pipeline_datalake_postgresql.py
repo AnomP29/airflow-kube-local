@@ -337,7 +337,7 @@ def transform_gsheet(dframe, table, src_schema):
             if not original_schema.empty:
                 result = pd.merge(original_schema, df_init, on=["target_column"], how="left")
             else:
-                df_emp = df[['Column Name', 'Data type']]
+                df_emp = dframe[['Column Name', 'Data type']]
                 df_emp = df_emp.rename(columns={'Column Name':'target_column', 'Data type': 'data_type'})
                 df_emp = pd.merge(df_emp, df_src_slice, on=["target_column"], how="left")
                 df_emp = df_emp[['target_column','data_type_y','src_ins']]
