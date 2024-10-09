@@ -243,16 +243,18 @@ def transform_gsheet(dframe, table, src_schema):
     
             if not original_schema.empty:
                 result = pd.merge(original_schema, df_init, on=["target_column"], how="left")
+                result = pd.merge(result, df_src_slice, on=["target_column"], how="left")
                 enc = pd.merge(enc['Encrypted Key'], original_schema, left_on="Encrypted Key", right_on='target_column', how="outer")
             else:
                 print('table tidak ada')
                 df_emp = dframe[['Column Name', 'Data type']]
                 df_emp = df_emp.rename(columns={'Column Name':'target_column', 'Data type': 'data_type'})
                 df_emp = pd.merge(df_emp, df_src_slice, on=["target_column"], how="left")
-                df_emp = df_emp[['target_column','data_type_y']]
+                df_emp = df_emp[['target_column','data_type_y','src_ins']]
                 df_emp = df_emp.rename(columns={'data_type_y': 'data_type'})
                 result = pd.merge(df_emp, df_init, on=["target_column"], how="left")
-    
+                enc = pd.merge(enc['Encrypted Key'], df_emp, left_on="Encrypted Key", right_on='target_column', how="outer")
+                
             result.replace(to_replace=[None], value=np.nan, inplace=True)
             result.fillna(value='', inplace=True)
             result["data_type_x"] = np.where((result["data_type_y"]==''), result["data_type_x"], result["data_type_y"])
