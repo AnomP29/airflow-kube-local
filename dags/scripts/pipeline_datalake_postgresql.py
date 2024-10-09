@@ -341,15 +341,13 @@ def transform_gsheet(dframe, table, src_schema):
             is_partition = client.query(query_string).to_dataframe()
             partition = is_partition
     
-            if not original_schema.empty:
-                result = pd.merge(original_schema, df_init, on=["target_column"], how="left")
-            else:
-                df_emp = dframe[['Column Name', 'Data type']]
-                df_emp = df_emp.rename(columns={'Column Name':'target_column', 'Data type': 'data_type'})
-                df_emp = pd.merge(df_emp, df_src_slice, on=["target_column"], how="left")
-                df_emp = df_emp[['target_column','data_type_y','src_ins']]
-                df_emp = df_emp.rename(columns={'data_type_y': 'data_type'})
-                result = pd.merge(df_emp, df_init, on=["target_column"], how="left")
+            df_emp = df[['Column Name', 'Data type']]
+            df_emp = df_emp.rename(columns={'Column Name':'target_column', 'Data type': 'data_type'})
+            df_emp = pd.merge(df_emp, df_src_slice, on=["target_column"], how="left")
+            df_emp = df_emp[['target_column','data_type_y','src_ins']]
+            df_emp = df_emp.rename(columns={'data_type_y': 'data_type'})
+                
+            result = pd.merge(df_emp, df_init, on=["target_column"], how="left")
             
             result.replace(to_replace=[None], value=np.nan, inplace=True)
             result.fillna(value='', inplace=True)
@@ -357,7 +355,7 @@ def transform_gsheet(dframe, table, src_schema):
             columns_insert = result.src_ins + ','.strip()
             columns_insert = columns_insert.to_string(header=False,index=False)
             columns_insert = " ".join(columns_insert.split())
-            
+                
             # List column to select
             column_select = result.target_column + ','.strip()
             column_select = column_select.to_string(header=False,index=False)
