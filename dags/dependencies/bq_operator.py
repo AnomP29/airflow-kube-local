@@ -25,9 +25,9 @@ class bq_operator():
             if self.check_bq_tables(self.dataset) == 0:
                 print('a')
                 sql_create_main = '''
-                CREATE TABLE {dataset}.{table_name} ({columns_insert})
+                CREATE TABLE {dataset}.{table_name} ({column_list})
                 PARTITION BY DATE(row_loaded_ts)
-                '''.format(dataset=self.dataset, table_name=self.tables, columns_insert=self.columns_insert)
+                '''.format(dataset=self.dataset, table_name=self.tables, column_list=self.column_list)
                 print(sql_create_main)
                 self.__execute__(sql_create_main)
             else:
