@@ -331,7 +331,7 @@ def main(db, dataset, schema, table):
             print(encrypted_key)
             print(column_list)
             print(columns_insert)
-            # bq_operator('hijra-data-dev', dataset, tables___, '', '', column_select, encrypted_key, column_list).__encryption__()
+            bq_operator('hijra-data-dev', dataset, tables___, '', '', column_select, encrypted_key, column_list).__encryption__()
         else:
             raise ValueError('Trying to open non-existent sheet. Verify that the sheet name exists ' + table + '.')
 
