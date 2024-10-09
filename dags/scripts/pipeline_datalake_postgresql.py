@@ -170,13 +170,13 @@ def read_gsheet_file(db, dataset, schema, table):
 
 def transform_gsheet(dframe, table, src_schema):
     # dframe
-    print(src_schema)
-    print(dframe)
+    # print(src_schema)
+    # print(dframe)
     
     df_sheets = dframe.rename(columns={'Column Name':'column_name', 'Data type':'data_type'})
     df_sheets_slice = df_sheets[['column_name','data_type']]
 
-    print(df_sheets_slice)
+    # print(df_sheets_slice)
 
     df_src_ = pd.merge(df_sheets_slice, src_schema, on=["column_name"], how="left")
     with pd.option_context('future.no_silent_downcasting', True):
@@ -245,6 +245,7 @@ def transform_gsheet(dframe, table, src_schema):
                 result = pd.merge(original_schema, df_init, on=["target_column"], how="left")
                 enc = pd.merge(enc['Encrypted Key'], original_schema, left_on="Encrypted Key", right_on='target_column', how="outer")
             else:
+                print('table tidak ada')
                 df_emp = dframe[['Column Name', 'Data type']]
                 df_emp = df_emp.rename(columns={'Column Name':'target_column', 'Data type': 'data_type'})
                 df_emp = pd.merge(df_emp, df_src_slice, on=["target_column"], how="left")
