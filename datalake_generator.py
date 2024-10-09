@@ -34,7 +34,7 @@ def create_dag(dag_id, bash_command, encryption_command, queue_pool, db, table, 
         ),
         schedule_interval=schedule,
         default_args=default_args,
-        catchup=True,
+        catchup=False,
         is_paused_upon_creation=is_paused,
     )
 
