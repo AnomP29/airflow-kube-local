@@ -34,6 +34,33 @@ tables:
   - name: ciam_user_backoffice_login
     encryption: false
     date_col: updated_date
+  - name: device_info
+    encryption: false
+    date_col: created_date
+  - name: device_info_changelog
+    encryption: false
+    date_col: created_at
+  - name: notification_preference
+    encryption: true
+    date_col: created_date
+  - name: otp_token
+    encryption: true
+    date_col: created_date
+  - name: user_activity_request
+    encryption: false
+    date_col: request_date
+  - name: user_login
+    encryption: true
+    date_col: update_date
+  - name: user_lounges
+    encryption: true
+    date_col: updated_at
+  - name: user_preference
+    encryption: false
+    date_col: update_date
+  - name: verification_token
+    encryption: false
+    date_col: created_date
 
 
 
