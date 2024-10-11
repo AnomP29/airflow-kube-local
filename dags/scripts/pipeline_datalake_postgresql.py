@@ -62,6 +62,7 @@ exc_date = options.exc_date
 encr = options.encr
 gsheet = options.gsheet
 client = bigquery.Client('hijra-data-dev')
+print(db)
 
 def get_count(schema, table, db_name, date_col, exc_date):
     if (db != 'hijra_staging' and table in ['audit_trail','log_login','anl_user_register','user_lounges','rdl_api_log']) == True:
@@ -427,7 +428,7 @@ def main(db, dataset, schema, table, date_col, exc_date):
     elif db == 'hijra_account':
         db_name = db_config.db_hijra_account_name
         
-
+    print('DB = ' + db_name)
     print("Processing: {}: {}.{}".format(db, schema, table))
 
     count = get_count(schema, table, db_name, date_col, exc_date)
