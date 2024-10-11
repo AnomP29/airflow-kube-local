@@ -35,6 +35,7 @@ class rdbms_operator():
             self.db_name = db_config.db_hijra_account_name
                     
     def conn_postgres_(self):
+        print(self.db_name)
         try:
             conn = psycopg2.connect(
                 host=self.db_host,
