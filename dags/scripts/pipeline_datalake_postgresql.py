@@ -64,6 +64,16 @@ def get_count(schema, table, db_name, date_col, exc_date):
     if (db != 'hijra_staging' and table in ['audit_trail','log_login','anl_user_register','user_lounges','rdl_api_log']) == True:
         if db_name == 'p2p_prod' and table in ['rdl_api_log']:
             sql = "SELECT COUNT(*) FROM {}.{} WHERE to_char({}, 'YYYY-MM-DD/HH:MM') >= '{}'".format(schema,table,date_col,exc_date)
+
+        if db == 'hijra' and table in ['user_lounges']:
+            sql = """
+            SELECT COUNT(*) FROM {schema}.{table}
+            WHERE 9=9
+            AND id != 7534
+            AND to_char({date_col}, 'YYYY-MM-DD') >= TO_CHAR((to_timestamp('{exc_date}', 'YYYY-MM-DD/HH24:MI') - INTERVAL '1 DAY'),'YYYY-MM-DD')
+            AND to_char({date_col}, 'YYYY-MM-DD') <= TO_CHAR(TO_TIMESTAMP('{exc_date}', 'YYYY-MM-DD/HH24:MI'), 'YYYY-MM-DD')
+            """.format(schema=schema,table=table,date_col=date_col, exc_date=exc_date)
+        
         if db == 'hijra' and table in ['anl_user_register']:
             sql = """
             SELECT COUNT(*) FROM {schema}.{table}
