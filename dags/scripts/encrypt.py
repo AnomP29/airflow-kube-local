@@ -350,10 +350,10 @@ def main(db, dataset, schema, table):
         dframe = read_gsheet_file(db, dataset, schema, table)
         if not dframe.empty:
             column_select, encrypted_key, column_list, columns_insert = transform_gsheet(dframe, tables___, src_schema)
-            print(column_select)
-            print(encrypted_key)
-            print(column_list)
-            print(columns_insert)
+            # print(column_select)
+            # print(encrypted_key)
+            # print(column_list)
+            # print(columns_insert)
             bq_operator('hijra-data-dev', dataset, tables___, '', '', column_select, encrypted_key, column_list, columns_insert).__encryption__()
         else:
             raise ValueError('Trying to open non-existent sheet. Verify that the sheet name exists ' + table + '.')
