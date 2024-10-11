@@ -31,7 +31,7 @@ parser.add_option('--dataset', dest='dataset', help='specify dataset source')
 parser.add_option('--date_col', dest='date_col', help='table column represent date')
 parser.add_option('--exc_date', dest='exc_date', help='execution date')
 parser.add_option('--encr', dest='encr', help='encryption table or not')
-
+parser.add_option('--gsheet', dest='gsheet', help='GoogleSheet Id')
 
 (options, args) = parser.parse_args()
 
@@ -49,6 +49,8 @@ if not options.exc_date:
     parser.error('exc_date is not given')
 if not options.encr:
     parser.error('encr is not given')
+if not options.gsheet:
+    parser.error('gsheet is not given')
 
 
 table = options.table
@@ -58,6 +60,7 @@ dataset = options.dataset
 date_col = options.date_col
 exc_date = options.exc_date
 encr = options.encr
+gsheet = options.gsheet
 client = bigquery.Client('hijra-data-dev')
 
 def get_count(schema, table, db_name, date_col, exc_date):
@@ -167,7 +170,8 @@ def read_gsheet_file(db, dataset, schema, table):
     dataset = dataset
 
     # Create the pandas DataFrame
-    google_sheet_id = '1HSyAlLe7mWWOPKeNWE7H0dSO-xRysdCbZqb8RjtJ_g0'
+    # google_sheet_id = '1HSyAlLe7mWWOPKeNWE7H0dSO-xRysdCbZqb8RjtJ_g0'
+    google_sheet_id = gsheet
     sheet = gc.open_by_key(google_sheet_id)
 
     try:

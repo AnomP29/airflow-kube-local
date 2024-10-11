@@ -3,8 +3,6 @@ from google.api_core.exceptions import NotFound
 from dependencies import db_config
 
 import pandas as pd
-import pandas_gbq
-
 
 class bq_operator():
     def __init__(self, projid, dataset, tables, query, encr='True',

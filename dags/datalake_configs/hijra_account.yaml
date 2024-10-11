@@ -1,0 +1,13 @@
+database: hijra_account
+template: templates/pipeline-datalake-hijra_account-production-to-bq.py.tmpl
+dataset: datalakes
+type: postgresql
+schema: account
+schedule: 0 17 * * *
+intval: 1
+intval_unit: DAILY
+gsheet_id: 1gP3_dLqkBrkJgpMfvsZ5KGfWC6noR61IZj28VmT75JQ
+tables:
+  - name: account_hijra_box
+    encryption: true
+    date_col: updated_date

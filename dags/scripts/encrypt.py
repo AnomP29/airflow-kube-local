@@ -27,6 +27,7 @@ parser.add_option('--schema', dest='schema', help='specify schema source')
 parser.add_option('--dataset', dest='dataset', help='specify dataset source')
 parser.add_option('--date_col', dest='date_col', help='table column represent date')
 parser.add_option('--exc_date', dest='exc_date', help='execution date')
+parser.add_option('--gsheet', dest='gsheet', help='GoogleSheet Id')
 
 (options, args) = parser.parse_args()
 
@@ -42,6 +43,8 @@ if not options.date_col:
     parser.error('date_col is not given')
 if not options.exc_date:
     parser.error('exc_date is not given')
+if not options.gsheet:
+    parser.error('gsheet is not given')
 
 table = options.table
 db = options.db
@@ -49,6 +52,7 @@ schema = options.schema
 dataset = options.dataset
 date_col = options.date_col
 exc_date = options.exc_date
+gsheet = options.gsheet
 
 print('encrypt_file.py')
 
@@ -82,7 +86,8 @@ def read_gsheet_file(db, dataset, schema, table):
     dataset = dataset
 
     # Create the pandas DataFrame
-    google_sheet_id = '1HSyAlLe7mWWOPKeNWE7H0dSO-xRysdCbZqb8RjtJ_g0'
+    # google_sheet_id = '1HSyAlLe7mWWOPKeNWE7H0dSO-xRysdCbZqb8RjtJ_g0'
+    google_sheet_id = gsheet
     sheet = gc.open_by_key(google_sheet_id)
 
     try:

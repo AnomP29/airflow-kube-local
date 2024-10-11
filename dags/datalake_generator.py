@@ -9,7 +9,7 @@ from airflow.operators.bash import BashOperator
 from ruamel.yaml import YAML
 from datetime import timedelta
 from dependencies.utils import DAGS_FOLDER
-from airflow.operators.dummy import DummyOperator
+# from airflow.operators.dummy import DummyOperator
 from airflow.utils.dates import days_ago
 from airflow.utils.task_group import TaskGroup
 
@@ -60,7 +60,7 @@ def create_dag(yml_conf, queue_pool):
             with TaskGroup(group_id=table["name"]) as yml_conf["tables"]:
                 bash_command = """\
                 PYTHONPATH={dags} python {dags}/{pipeline_script} --db={db} {schema} --dataset={dataset} --table={table} \
-                --date_col={date_col} --exc_date={exc_date} --encr={encr}\
+                --date_col={date_col} --exc_date={exc_date} --encr={encr} --gsheet={gsheet}\
                 """.format(
                     dags=DAGS_FOLDER,
                     pipeline_script=pipeline_script,
@@ -70,6 +70,7 @@ def create_dag(yml_conf, queue_pool):
                     table=table["name"],
                     date_col=table["date_col"],
                     encr=table["encryption"],
+                    gsheet=yml_conf['gsheet_id'],
                     # exc_date='{{ (logical_date + macros.timedelta(hours=7)).strftime("%Y-%m-%d/%H:00") }}'
                     exc_date='{{ (logical_date + macros.timedelta(hours=7)).strftime("%Y-%m-%d/%H:00") }}'
                     # UTC +5 => 2jam sebelum execution_date (UTC+0)
@@ -97,7 +98,7 @@ def create_dag(yml_conf, queue_pool):
     
                     encryption_command = """\
                     PYTHONPATH={dags} python {dags}/{encryption_script} --db={db} {schema} --dataset={dataset} --table={table} \
-                    --date_col={date_col} --exc_date={exc_date}\
+                    --date_col={date_col} --exc_date={exc_date} --gsheet={gsheet}\
                     """.format(
                         dags=DAGS_FOLDER,
                         encryption_script=encryption_script,
@@ -106,6 +107,7 @@ def create_dag(yml_conf, queue_pool):
                         dataset=yml_conf["dataset"],
                         table=table["name"],
                         date_col=table["date_col"],
+                        gsheet=yml_conf['gsheet_id'],
                         exc_date='{{ (logical_date + macros.timedelta(hours=7)).strftime("%Y-%m-%d/%H:00") }}'
                     )
     
