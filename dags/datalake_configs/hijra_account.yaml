@@ -11,3 +11,6 @@ tables:
   - name: account_hijra_box
     encryption: true
     date_col: updated_date
+  - name: account_info
+    encryption: true
+    date_col: updated_date
