@@ -116,12 +116,12 @@ def get_data(db, dataset, schema, table, db_name, date_col, exc_date):
     print(sys.getsizeof(results))
 
     df = pd.DataFrame(results)
-    df = df.map(lambda x: " ".join(x.splitlines()) if isinstance(x, str) else x)
-    df = df.astype('str')    
-    # df = df.fillna(value='', inplace=True)
     df = df.replace('None', '')
     df = df.replace('NaT', '')
     df = df.replace('nan', '')
+    df = df.map(lambda x: " ".join(x.splitlines()) if isinstance(x, str) else x)
+    df = df.astype('str')    
+    # df = df.fillna(value='', inplace=True)
     # df['row_loaded_ts'] = pd.Timestamp.now().strftime('%Y-%m-%d %H:%M:%S.%s')
     # df = df[['row_loaded_ts'] + [x for x in df.columns if x != 'row_loaded_ts']]
 
