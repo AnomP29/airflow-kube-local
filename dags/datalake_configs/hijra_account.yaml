@@ -14,3 +14,11 @@ tables:
   - name: account_info
     encryption: true
     date_col: updated_date
+  - name: donation_account_agency
+    encryption: true
+    date_col: updated_date
+  - name: donation_transaction
+    encryption: true
+    date_col: updated_date
+
+
