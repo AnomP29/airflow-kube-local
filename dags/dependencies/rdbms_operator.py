@@ -24,15 +24,15 @@ class rdbms_operator():
         # self.date_col = date_col
         # self.exc_date = exc_date
         # pass
-        db_host  = db_config.db_hijra_host
-        db_username = db_config.db_hijra_username
-        db_password = db_config.db_hijra_password
-        db_port = db_config.db_hijra_port
+        self.db_host  = db_config.db_hijra_host
+        self.db_username = db_config.db_hijra_username
+        self.db_password = db_config.db_hijra_password
+        self.db_port = db_config.db_hijra_port
     
         if db == 'hijra':
-            db_name = db_config.db_hijra_name
+            self.db_name = db_config.db_hijra_name
         elif db == 'hijra_account':
-            db_name = db_config.db_hijra_account_name
+            self.db_name = db_config.db_hijra_account_name
                     
     def conn_postgres_(self):
         try:
