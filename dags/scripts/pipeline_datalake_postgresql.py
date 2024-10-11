@@ -417,12 +417,16 @@ def get_source_schema():
 
 def main(db, dataset, schema, table, date_col, exc_date):
     # DB connect
+    db_host  = db_config.db_hijra_host
+    db_username = db_config.db_hijra_username
+    db_password = db_config.db_hijra_password
+    db_port = db_config.db_hijra_port
+
     if db == 'hijra':
-        db_host  = db_config.db_hijra_host
-        db_username = db_config.db_hijra_username
-        db_password = db_config.db_hijra_password
         db_name = db_config.db_hijra_name
-        db_port = db_config.db_hijra_port
+    elif db == 'hijra_account':
+        db_name = db_config.db_hijra_account_name
+        
 
     print("Processing: {}: {}.{}".format(db, schema, table))
 

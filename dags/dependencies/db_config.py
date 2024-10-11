@@ -14,6 +14,8 @@ db_hijraprod_name = os.environ.get("DB_HIJRAPROD_NAME")
 db_hijraprod_host = os.environ.get("DB_HIJRAPROD_HOST")
 db_hijraprod_port = os.environ.get("DB_HIJRAPROD_PORT")
 
+db_hijra_account_name = os.environ.get("DB_HIJRA_ACCOUNT_NAME")
+
 # DB Hijra
 db_hijra_username = os.environ.get("DB_HIJRA_USERNAME")
 db_hijra_password = os.environ.get("DB_HIJRA_PASSWORD")
