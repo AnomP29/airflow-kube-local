@@ -119,6 +119,7 @@ def transform_gsheet(dframe, table, src_schema):
     df_src_slice = df_src_[['column_name','data_type','src_ins']]
 
     if "PII" in dframe:
+        if (any(dframe['PII'] == 'TRUE') == True) == True:
             df_src_slice = df_src_slice.rename(columns={'column_name':'target_column'})
             df_selected = dframe[dframe['PII'] == 'TRUE']
             df_n = df_selected.copy()
