@@ -65,7 +65,7 @@ def get_count(schema, table, db_name, date_col, exc_date):
     """.format(schema=schema,table=table,date_col=date_col, exc_date=exc_date)
 
     # print(sql)
-    df = rdbms_operator('postgres', 'hijra', sql).execute('Y')
+    df = rdbms_operator('postgres', db_name, sql).execute('Y')
     count = int(str(df['count'].values).replace('[','').replace(']',''))
     print(count)
     
