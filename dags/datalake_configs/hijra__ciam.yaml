@@ -44,7 +44,7 @@ tables:
     encryption: true
     date_col: created_date
   - name: otp_token
-    encryption: true
+    encryption: false
     date_col: created_date
   - name: user_activity_request
     encryption: false
