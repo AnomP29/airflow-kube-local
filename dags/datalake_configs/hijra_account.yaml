@@ -18,7 +18,7 @@ tables:
     encryption: true
     date_col: updated_date
   - name: donation_reward
-    encryption: true
+    encryption: false
     date_col: updated_date
   - name: donation_transaction
     encryption: true
