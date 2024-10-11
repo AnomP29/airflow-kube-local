@@ -62,7 +62,6 @@ exc_date = options.exc_date
 encr = options.encr
 gsheet = options.gsheet
 client = bigquery.Client('hijra-data-dev')
-print(db)
 
 def get_count(schema, table, db_name, date_col, exc_date):
     if (db != 'hijra_staging' and table in ['audit_trail','log_login','anl_user_register','user_lounges','rdl_api_log']) == True:
@@ -99,7 +98,7 @@ def get_count(schema, table, db_name, date_col, exc_date):
     # print(sql)
     df = rdbms_operator('postgres', db_name, sql).execute('Y')
     count = int(str(df['count'].values).replace('[','').replace(']',''))
-    print(count)
+    # print(count)
     
     return count
 
@@ -428,7 +427,6 @@ def main(db, dataset, schema, table, date_col, exc_date):
     elif db == 'hijra_account':
         db_name = db_config.db_hijra_account_name
         
-    print('DB = ' + db_name)
     print("Processing: {}: {}.{}".format(db, schema, table))
 
     count = get_count(schema, table, db_name, date_col, exc_date)
@@ -443,10 +441,10 @@ def main(db, dataset, schema, table, date_col, exc_date):
         if not dframe.empty:
             column_select, encrypted_key, column_list, columns_insert = transform_gsheet(dframe, tables___, src_schema)
             get_data(db, dataset, schema, table, db_name, date_col, exc_date)
-            print(column_select)
-            print(encrypted_key)
-            print(column_list)
-            print(columns_insert)
+            # print(column_select)
+            # print(encrypted_key)
+            # print(column_list)
+            # print(columns_insert)
             bq_operator('hijra-data-dev', dataset, tables___, '', encr, column_select, encrypted_key, column_list, columns_insert)
         # else:
         #     raise ValueError('Trying to open non-existent sheet. Verify that the sheet name exists ' + table + '.')
