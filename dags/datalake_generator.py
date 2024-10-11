@@ -47,7 +47,7 @@ def create_dag(yml_conf, queue_pool):
         # schedule_interval=None,
         default_args=default_args,
         catchup=True,
-        max_active_runs=1,
+        # max_active_runs=1,
         # is_paused_upon_creation=is_paused,
     )
     
