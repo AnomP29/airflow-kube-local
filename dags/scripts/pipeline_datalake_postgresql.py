@@ -133,7 +133,7 @@ def get_data(db, dataset, schema, table, db_name, date_col, exc_date):
 
     tables___ = 'dl__{db}__{schema}__{table}__dev'.format(db=db, schema=schema, table=table)
     print('create TEMP tables')
-    print(df)
+    # print(df)
     try:
         pandas_gbq.to_gbq(df, dataset + '.' + tables___ + '__temp' , project_id='hijra-data-dev',if_exists='append',api_method='load_csv', chunksize=100000)
     except Exception as e:
@@ -149,7 +149,7 @@ def get_data(db, dataset, schema, table, db_name, date_col, exc_date):
         client.query(sql).result()
 
         if encr == 'True':
-            print(encr)
+            # print(encr)
             pass
         # else:
         #     check_bq_tables(dataset, tables___)
@@ -211,7 +211,7 @@ def transform_gsheet(dframe, table, src_schema):
     columns_insert = df_src_slice.src_ins + ','.strip()
     columns_insert = columns_insert.to_string(header=False,index=False)
     columns_insert = " ".join(columns_insert.split())
-    print(columns_insert)
+    # print(columns_insert)
     
     
     if "PII" in dframe:
@@ -265,7 +265,7 @@ def transform_gsheet(dframe, table, src_schema):
                 result = pd.merge(result, df_src_slice, on=["target_column"], how="left")
                 enc = pd.merge(enc['Encrypted Key'], original_schema, left_on="Encrypted Key", right_on='target_column', how="outer")
             else:
-                print('table tidak ada')
+                # print('table tidak ada')
                 df_emp = dframe[['Column Name', 'Data type']]
                 df_emp = df_emp.rename(columns={'Column Name':'target_column', 'Data type': 'data_type'})
                 df_emp = pd.merge(df_emp, df_src_slice, on=["target_column"], how="left")
