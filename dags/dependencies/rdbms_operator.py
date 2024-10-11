@@ -48,7 +48,7 @@ class rdbms_operator():
         else:
             pass
             # print('connection success')
-        
+        print("conn :" + conn)
         return conn
 
     def execute(self, dframe='N'):
