@@ -115,7 +115,7 @@ def get_data(db, dataset, schema, table, db_name, date_col, exc_date):
     AND to_char({date_col}, 'YYYY-MM-DD') <= TO_CHAR(TO_TIMESTAMP('{exc_date}', 'YYYY-MM-DD/HH24:MI'), 'YYYY-MM-DD')
     """.format(schema=schema,table=table,date_col=date_col, exc_date=exc_date)
     
-    results = rdbms_operator('postgres', 'hijra', sql).execute('N')
+    results = rdbms_operator('postgres', db_name, sql).execute('N')
     
     print(sys.getsizeof(results))
 
@@ -412,7 +412,7 @@ def get_source_schema():
     where column_name NOT IN ('log_data','call_to_action') and table_schema = '{schema}' and table_name = '{source_table}'
     '''.format(schema=schema,source_table=table)
     
-    src_schema = rdbms_operator('postgres', db, sql).execute('Y')
+    src_schema = rdbms_operator('postgres', db_name, sql).execute('Y')
     return src_schema
 
 
