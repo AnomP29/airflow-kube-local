@@ -119,7 +119,6 @@ def transform_gsheet(dframe, table, src_schema):
     df_src_slice = df_src_[['column_name','data_type','src_ins']]
 
     if "PII" in dframe:
-        if (any(dframe['PII'] == 'TRUE') == True) == True:
             df_src_slice = df_src_slice.rename(columns={'column_name':'target_column'})
             df_selected = dframe[dframe['PII'] == 'TRUE']
             df_n = df_selected.copy()
@@ -169,13 +168,15 @@ def transform_gsheet(dframe, table, src_schema):
                 result = pd.merge(result, df_src_slice, on=["target_column"], how="left")
                 enc = pd.merge(enc['Encrypted Key'], original_schema, left_on="Encrypted Key", right_on='target_column', how="outer")
             else:
+                print('table tidak ada')
                 df_emp = dframe[['Column Name', 'Data type']]
                 df_emp = df_emp.rename(columns={'Column Name':'target_column', 'Data type': 'data_type'})
                 df_emp = pd.merge(df_emp, df_src_slice, on=["target_column"], how="left")
-                df_emp = df_emp[['target_column','data_type_y']]
+                df_emp = df_emp[['target_column','data_type_y','src_ins']]
                 df_emp = df_emp.rename(columns={'data_type_y': 'data_type'})
                 result = pd.merge(df_emp, df_init, on=["target_column"], how="left")
-    
+                enc = pd.merge(enc['Encrypted Key'], df_emp, left_on="Encrypted Key", right_on='target_column', how="outer")
+                
             result.replace(to_replace=[None], value=np.nan, inplace=True)
             result.fillna(value='', inplace=True)
             result["data_type_x"] = np.where((result["data_type_y"]==''), result["data_type_x"], result["data_type_y"])
@@ -203,10 +204,15 @@ def transform_gsheet(dframe, table, src_schema):
                 '''.strip() + ' ' + result['target_column']
                 ,result["target_column"]
                 )
-
-            result['src_ins'] = np.where((result['data_type_y']==''), result['src_ins'], result['enc'])
             
+            result['src_ins'] = np.where((result['data_type_y']==''), result['src_ins'], result['enc'])
+
             enc = enc.dropna()
+
+            columns_insert = result.src_ins + ','.strip()
+            columns_insert = columns_insert.to_string(header=False,index=False)
+            columns_insert = " ".join(columns_insert.split())
+
             columns_enc = enc.target_column + ' ' + enc.data_type
             column_list_enc = pd.DataFrame(columns_enc).sort_index()
             column_list_enc = column_list_enc.to_string(header=False,index=False)
@@ -221,12 +227,6 @@ def transform_gsheet(dframe, table, src_schema):
             column_list = pd.DataFrame(columns).sort_index()
             column_list = column_list.to_string(header=False,index=False)
             column_list = " ".join(column_list.split())
-
-            columns_insert = result.src_ins + ','.strip()
-            columns_insert = columns_insert.to_string(header=False,index=False)
-            columns_insert = " ".join(columns_insert.split())
-            # print(columns_insert)
-
         
             return column_select, encrypted_key, column_list, columns_insert
         
