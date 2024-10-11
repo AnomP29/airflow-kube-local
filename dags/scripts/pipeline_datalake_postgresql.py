@@ -393,7 +393,7 @@ def transform_gsheet(dframe, table, src_schema):
 
             return column_select, '', column_list, columns_insert
 
-def get_source_schema():
+def get_source_schema(schema, db_name, table):
     sql ='''
     select 
     column_name, 
@@ -436,7 +436,7 @@ def main(db, dataset, schema, table, date_col, exc_date):
 
     tables___ = 'dl__{db}__{schema}__{table}__dev'.format(db=db, schema=schema, table=table)
     if count != 0:
-        src_schema = get_source_schema()
+        src_schema = get_source_schema(schema, db_name, table)
         # print(src_schema)
         dframe = read_gsheet_file(db, dataset, schema, table)
         # print(dframe)
