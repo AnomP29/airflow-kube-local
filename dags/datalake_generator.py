@@ -34,7 +34,7 @@ def create_dag(yml_conf, queue_pool):
         "start_date": days_ago(8), 
         "retries": 1,
         "retry_delay": timedelta(seconds=60),
-        "depends_on_past": True,
+        # "depends_on_past": True,
         'wait_for_downstream': True,
     }
  
@@ -47,7 +47,7 @@ def create_dag(yml_conf, queue_pool):
         # schedule_interval=None,
         default_args=default_args,
         catchup=True,
-        max_active_runs=1,
+        # max_active_runs=1,
         # is_paused_upon_creation=is_paused,
     )
     
