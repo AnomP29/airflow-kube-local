@@ -134,6 +134,10 @@ def get_data(db, dataset, schema, table, db_name, date_col, exc_date):
     tables___ = 'dl__{db}__{schema}__{table}__dev'.format(db=db, schema=schema, table=table)
     print('create TEMP tables')
     # print(df)
+
+    format_date = datetime.strptime(exc_date.replace('/', 'T') + ':00', '%Y-%m-%dT%H:%M:%S')
+    format_date_min_7 = datetime.strftime((format_date - timedelta(hours=7)), '%Y-%m-%dT%H:%M:%S').replace('T', ' ')
+    
     try:
         pandas_gbq.to_gbq(df, dataset + '.' + tables___ + '__temp' , project_id='hijra-data-dev',if_exists='append',api_method='load_csv', chunksize=100000)
     except Exception as e:
@@ -143,8 +147,8 @@ def get_data(db, dataset, schema, table, db_name, date_col, exc_date):
         sql = '''
         CREATE OR REPLACE TABLE {dataset}.{tables___}__temp
         AS
-        SELECT '{exc_date}' row_loaded_ts, * FROM {dataset}.{tables___}__temp
-        '''.format(exc_date=exc_date, tables___ = tables___, dataset=dataset)
+        SELECT '{format_date_min_7}' row_loaded_ts, * FROM {dataset}.{tables___}__temp
+        '''.format(format_date_min_7=format_date_min_7, tables___ = tables___, dataset=dataset)
 
         client.query(sql).result()
 
