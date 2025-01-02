@@ -151,10 +151,7 @@ def get_data(db, dataset, schema, table, db_name, date_col, exc_date):
         if encr == 'True':
             # print(encr)
             pass
-        # else:
-        #     check_bq_tables(dataset, tables___)
-        #     print(encr)
-
+    print(sql)
 def read_gsheet_file(db, dataset, schema, table):
     # Tabulate
     pd.options.display.max_colwidth = 100000
