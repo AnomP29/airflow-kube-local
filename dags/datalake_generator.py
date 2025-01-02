@@ -60,7 +60,7 @@ def create_dag(yml_conf, queue_pool):
             with TaskGroup(group_id=table["name"]) as yml_conf["tables"]:
                 bash_command = """\
                 PYTHONPATH={dags} python {dags}/{pipeline_script} --db={db} {schema} --dataset={dataset} --table={table} \
-                --date_col={date_col} --exc_date={exc_date} --encr={encr} --gsheet={gsheet}\
+                --date_col={date_col} --exc_date={exc_date} --encr={encr} --gsheet={gsheet} --exc_date_utc={exc_date_utc}\
                 """.format(
                     dags=DAGS_FOLDER,
                     pipeline_script=pipeline_script,
