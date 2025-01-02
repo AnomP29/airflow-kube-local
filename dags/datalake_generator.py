@@ -60,7 +60,7 @@ def create_dag(yml_conf, queue_pool):
             with TaskGroup(group_id=table["name"]) as yml_conf["tables"]:
                 bash_command = """\
                 PYTHONPATH={dags} python {dags}/{pipeline_script} --db={db} {schema} --dataset={dataset} --table={table} \
-                --date_col={date_col} --exc_date={exc_date} --encr={encr} --gsheet={gsheet} --exc_date_utc={exc_date_utc}\
+                --date_col={date_col} --exc_date={exc_date} --encr={encr} --gsheet={gsheet} \
                 """.format(
                     dags=DAGS_FOLDER,
                     pipeline_script=pipeline_script,
@@ -71,7 +71,6 @@ def create_dag(yml_conf, queue_pool):
                     date_col=table["date_col"],
                     encr=table["encryption"],
                     gsheet=yml_conf['gsheet_id'],
-                    exc_date_utc='{{ ts  }}',
                     exc_date='{{ (logical_date + macros.timedelta(hours=7)).strftime("%Y-%m-%d/%H:00") }}'
                     # UTC +5 => 2jam sebelum execution_date (UTC+0)
                 )
