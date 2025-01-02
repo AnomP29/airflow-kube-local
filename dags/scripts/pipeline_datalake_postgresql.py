@@ -148,7 +148,7 @@ def get_data(db, dataset, schema, table, db_name, date_col, exc_date):
         sql = '''
         CREATE OR REPLACE TABLE {dataset}.{tables___}__temp
         AS
-        SELECT '{format_date_min_7}' row_loaded_ts, * FROM {dataset}.{tables___}__temp
+        SELECT CURRENT_TIMESTAMP() row_loaded_ts, * FROM {dataset}.{tables___}__temp
         '''.format(format_date_min_7=format_date_min_7, tables___ = tables___, dataset=dataset)
 
         client.query(sql).result()
